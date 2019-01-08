@@ -1,0 +1,12 @@
+# Configuration file
+# # Classification (U)
+# # Unclassified until filled.
+
+host = "{HOST_NAME}"
+port = 9200
+# Threshold cutoff for Memory check in whole numbers
+cutoff_mem = 75
+# Threshold cutoff for CPU usage check in whole numbers
+cutoff_cpu = 75
+# Threshold cutoff for Disk usage check in whole numbers
+cutoff_disk = 75
