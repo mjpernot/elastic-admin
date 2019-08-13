@@ -87,7 +87,6 @@ import elastic_lib.elastic_class as elastic_class
 import elastic_lib.elastic_libs as elastic_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -99,8 +98,6 @@ def help_message(**kwargs):
         message when -h option is selected.
 
     Arguments:
-        (input) **kwargs:
-            None
 
     """
 
@@ -115,8 +112,6 @@ def list_nodes(ES, **kwargs):
 
     Arguments:
         (input) ES -> Elasticsearch class instance.
-        (input) **kwargs:
-            None
 
     """
 
@@ -134,8 +129,6 @@ def list_repos(ES, **kwargs):
 
     Arguments:
         (input) ES -> Elasticsearch class instance.
-        (input) **kwargs:
-            None
 
     """
 
@@ -151,8 +144,6 @@ def list_master(ES, **kwargs):
 
     Arguments:
         (input) ES -> Elasticsearch class instance.
-        (input) **kwargs:
-            None
 
     """
 
