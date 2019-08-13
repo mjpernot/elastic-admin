@@ -2,6 +2,7 @@
 .coverage
 *.swp
 config/*.py
+config/*.pyc
 lib
 elastic_lib
 coverage.xml
