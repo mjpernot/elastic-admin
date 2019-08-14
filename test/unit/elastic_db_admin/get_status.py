@@ -47,6 +47,8 @@ class ElasticStatus(object):
 
     Methods:
         __init__ -> Initialize configuration environment.
+        get_nodes -> Stub holder for ElasticStatus.get_nodes method.
+        get_cluster -> Stub holder for ElasticStatus.get_cluster method.
         get_all -> Stub holder for ElasticStatus.get_all method.
 
     """
@@ -65,14 +67,40 @@ class ElasticStatus(object):
 
         self.repo_name = repo
 
+    def get_nodes(self, json=True):
+
+        """Method:  get_nodes
+
+        Description:  Stub holder for ElasticStatus.get_nodes method.
+
+        Arguments:
+            (input) json -> True|False - JSON format.
+
+        """
+
+        return True
+
+    def get_cluster(self, json=True):
+
+        """Method:  get_cluster
+
+        Description:  Stub holder for ElasticStatus.get_cluster method.
+
+        Arguments:
+            (input) json -> True|False - JSON format.
+
+        """
+
+        return True
+
     def get_all(self, json):
 
         """Method:  get_all
 
-        Description:  Initialization instance of the class.
+        Description:  Stub holder for ElasticStatus.get_all method.
 
         Arguments:
-            (input) json -> JSON format?
+            (input) json -> True|False - JSON format.
 
         """
 
@@ -137,6 +165,8 @@ class UnitTest(unittest.TestCase):
 
         self.es = ElasticCluster()
         self.args_array = {"-L": "reponame"}
+        self.args_array2 = {"-L": "reponame", "-D": ["get_cluster"]}
+        self.status_class = [get_cluster]
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_json(self, mock_class):
@@ -150,9 +180,10 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_class.return_value = ElasticStatus
-STOPPED HERE
+
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.get_status(self.es))
+            self.assertFalse(elastic_db_admin.get_status(self.es,
+                status_class=self.status_class))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_display_all(self, mock_class):
@@ -168,7 +199,8 @@ STOPPED HERE
         mock_class.return_value = ElasticStatus
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.get_status(self.es))
+            self.assertFalse(elastic_db_admin.get_status(self.es,
+                status_class=self.status_class))
 
 
 if __name__ == "__main__":
