@@ -24,6 +24,14 @@ pipeline {
                 virtualenv test_env
                 source test_env/bin/activate
                 pip2 install mock --user
+                pip2 install python-elasticsearch --user
+                pip2 install python-requests --user
+                ./test/unit/elastic_db_admin/failed_dumps.py
+                ./test/unit/elastic_db_admin/help_message.py
+                ./test/unit/elastic_db_admin/list_dumps.py
+                ./test/unit/elastic_db_admin/list_master.py
+                ./test/unit/elastic_db_admin/list_nodes.py
+                ./test/unit/elastic_db_admin/list_repos.py
                 deactivate
                 rm -rf test_env
                 """
