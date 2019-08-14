@@ -63,7 +63,10 @@ class ElasticDump(object):
 
         """
 
+        self.node = "nodename"
+        self.port = 1234
         self.repo_name = repo
+        self.dump_list = ["dump1", "dump2"]
 
 
 class ElasticCluster(object):
@@ -91,7 +94,8 @@ class ElasticCluster(object):
 
         """
 
-        self.dump_list = ["dump1", "dump2"]
+        self.node = "nodename"
+        self.port = 1234
 
 
 class UnitTest(unittest.TestCase):
@@ -135,10 +139,11 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticDump
+        mock_class.return_value = ElasticDump(self.es.node, None, self.es.port)
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.list_dumps(self.es))
+            self.assertFalse(elastic_db_admin.list_dumps(self.es,
+                                                         args_array={}))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticDump")
     @mock.patch("elastic_db_admin.elastic_libs.list_dumps")
@@ -153,7 +158,9 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_list.return_value = True
-        mock_class.return_value = ElasticDump
+        mock_class.return_value = ElasticDump(self.es.node,
+                                              self.args_array["-L"],
+                                              self.es.port)
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.list_dumps(self.es,
