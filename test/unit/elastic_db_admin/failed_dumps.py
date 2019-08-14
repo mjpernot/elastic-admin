@@ -125,7 +125,8 @@ class UnitTest(unittest.TestCase):
         self.args_array = {"-F": "reponame"}
 
 
-    def test_no_repo(self):
+    @mock.patch("elastic_db_admin.elastic_class.ElasticDump")
+    def test_no_repo(self, mock_class):
 
         """Function:  test_no_repo
 
@@ -135,11 +136,14 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        mock_class.return_value = ElasticDump
+
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.failed_dumps(self.es))
 
+    @mock.patch("elastic_db_admin.elastic_class.ElasticDump")
     @mock.patch("elastic_db_admin.elastic_libs.list_dumps")
-    def test_failed_dumps(self, mock_list):
+    def test_failed_dumps(self, mock_list, mock_class):
 
         """Function:  test_failed_dumps
 
@@ -150,6 +154,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_list.return_value = True
+        mock_class.return_value = ElasticDump
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.failed_dumps(self.es,
