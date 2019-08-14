@@ -9,7 +9,6 @@
         test/unit/elastic_db_admin/list_nodes.py
 
     Arguments:
-        None
 
 """
 
@@ -32,7 +31,6 @@ import elastic_db_admin
 import lib.gen_libs as gen_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -103,7 +101,7 @@ class UnitTest(unittest.TestCase):
         """
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.list_nodes())
+            self.assertFalse(elastic_db_admin.list_nodes(self.es))
 
 
 if __name__ == "__main__":
