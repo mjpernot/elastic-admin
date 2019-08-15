@@ -228,8 +228,8 @@ def get_status(ES, **kwargs):
 
     else:
         if json:
-            data = gen_libs.merge_2_dicts(EC.get_cluster(json),
-                                          EC.get_nodes(json))
+            data = gen_libs.merge_two_dicts(EC.get_cluster(json),
+                                            EC.get_nodes(json))
 
         else:
             data = EC.get_cluster() + "\n" + EC.get_nodes()
@@ -241,9 +241,8 @@ def get_status(ES, **kwargs):
                 if json:
                     # Call class method using option passed and merge results
                     data = \
-                         gen_libs.merge_2_dicts(data,
-                                                getattr(EC,
-                                                        func_call[opt])(json))
+                         gen_libs.merge_two_dicts(data,
+                            getattr(EC, func_call[opt])(json))
 
                 else:
                     # Call method using option passed & concatenate results
@@ -321,7 +320,7 @@ def check_status(ES, **kwargs):
                     err_flag = True
 
                     if json:
-                        err_msg = gen_libs.merge_2_dicts(err_msg, results)
+                        err_msg = gen_libs.merge_two_dicts(err_msg, results)
 
                     else:
                         err_msg = err_msg + "\n" + results

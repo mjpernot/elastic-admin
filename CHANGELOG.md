@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.2.5] - 2019-08-15
+### Fixed
+- get_status:  Replaced "gen_libs.merge_2_dicts" with "gen_libs.merge_two_dicts".
+- check_status:  Replaced "gen_libs.merge_2_dicts" with "gen_libs.merge_two_dicts".
+
+
 ## [0.2.4] - 2018-11-19
 ### Updated
 - list_repos:  Replaced "elastic_libs.list_repos" with "elastic_libs.list_repos2" call.
