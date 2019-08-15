@@ -6,6 +6,7 @@
 
 echo ""
 echo "Unit test:"
+test/unit/elastic_db_admin/check_status.py
 test/unit/elastic_db_admin/failed_dumps.py
 #test/unit/elastic_db_admin/get_status.py
 test/unit/elastic_db_admin/help_message.py
@@ -13,3 +14,5 @@ test/unit/elastic_db_admin/list_dumps.py
 test/unit/elastic_db_admin/list_master.py
 test/unit/elastic_db_admin/list_nodes.py
 test/unit/elastic_db_admin/list_repos.py
+test/unit/elastic_db_admin/run_program.py
+test/unit/elastic_db_admin/main.py
