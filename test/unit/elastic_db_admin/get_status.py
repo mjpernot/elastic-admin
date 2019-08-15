@@ -66,9 +66,10 @@ class ElasticStatus(object):
 
         """
 
-        self.repo_name = repo
+        self.node = node
+        self.port = port
 
-    def get_mem_status(self, json=True):
+    def get_mem_status(self, json=False):
 
         """Method:  get_mem_status
 
@@ -79,9 +80,13 @@ class ElasticStatus(object):
 
         """
 
-        return {"memory":  "memory_status"}
+        if json:
+            return {"memory":  "memory_status"}
 
-    def get_nodes(self, json=True):
+        else:
+            return "memory:  memory_status"
+
+    def get_nodes(self, json=False):
 
         """Method:  get_nodes
 
@@ -92,9 +97,13 @@ class ElasticStatus(object):
 
         """
 
-        return {"node":  "node_name"}
+        if json:
+            return {"node":  "node_name"}
 
-    def get_cluster(self, json=True):
+        else:
+            return "node:  node_name"
+
+    def get_cluster(self, json=False):
 
         """Method:  get_cluster
 
@@ -105,9 +114,13 @@ class ElasticStatus(object):
 
         """
 
-        return {"cluster":  "cluster_name"}
+        if json:
+            return {"cluster":  "cluster_name"}
 
-    def get_all(self, json):
+        else:
+            return "cluster:  cluster_name"
+
+    def get_all(self, json=False):
 
         """Method:  get_all
 
