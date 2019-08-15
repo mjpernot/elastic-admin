@@ -162,6 +162,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialization for unit testing.
+        test_incorrect_option -> Test with incorrect option.
         test_json_one_option -> Test with JSON format with one option.
         test_json_all -> Test with JSON format with all option.
         test_json -> Test with JSON format with no options.
@@ -189,7 +190,26 @@ class UnitTest(unittest.TestCase):
         self.args_array4 = {"-L": "reponame", "-D": [], "-j": True}
         self.args_array5 = {"-L": "reponame", "-D": ["all"], "-j": True}
         self.args_array6 = {"-L": "reponame", "-D": ["memory"], "-j": True}
+        self.args_array7 = {"-L": "reponame", "-D": ["incorrect"], "-j": True}
         self.status_call = {"memory": "get_mem_status"}
+
+    @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
+    def test_incorrect_option(self, mock_class):
+
+        """Function:  test_incorrect_option
+
+        Description:  Test with incorrect option.
+
+        Arguments:
+
+        """
+
+        mock_class.return_value = ElasticStatus
+
+        with gen_libs.no_std_out():
+            self.assertFalse(elastic_db_admin.get_status(self.es,
+                status_call=self.status_call,
+                args_array=self.args_array7))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_json_one_option(self, mock_class):
