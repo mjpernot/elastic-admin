@@ -162,6 +162,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialization for unit testing.
+        test_std_out_cutoff -> Test with standard out with cutoff options.
         test_std_out_option_cfg -> Test std out one option & config settings.
         test_json_one_option_cfg -> Test JSON format option & config settings.
         test_json_one_option_error -> Test JSON format one option with error.
@@ -187,6 +188,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        self.mem = 90
+        self.cpu = 95
+        self.disk = 80
         self.es = ElasticCluster()
         self.args_array = {"-C": ["all"]}
         self.args_array2 = {"-C": ["memory"]}
@@ -195,15 +199,32 @@ class UnitTest(unittest.TestCase):
         self.args_array5 = {"-C": ["all"], "-j": True}
         self.args_array6 = {"-C": ["memory"], "-j": True}
         self.args_array7 = {"-C": ["incorrect"], "-j": True}
+        self.args_array8 = {"-C": ["memory"], "-j": True, "-m": self.mem,
+                            "-u":  self.cpu, "-p": self.disk}
         self.check_call = {"memory": "chk_mem"}
-        self.mem = 90
-        self.cpu = 95
-        self.disk = 80
         cfg = collections.namedtuple("Cfg",
                                      "cutoff_mem cutoff_cpu cutoff_disk")
         self.cfg = cfg("75", "70", "65")
         cfg2 = collections.namedtuple("Cfg", "test")
         self.cfg2 = cfg2("test")
+
+    @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
+    def test_std_out_cutoff(self, mock_class):
+
+        """Function:  test_std_out_one_option
+
+        Description:  Test with standard out with cutoff options.
+
+        Arguments:
+
+        """
+
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port,
+                                                self.mem, self.cpu, self.disk)
+
+        self.assertFalse(elastic_db_admin.check_status(self.es,
+            check_call=self.check_call, args_array=self.args_array8,
+            cfg=self.cfg2))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_std_out_option_cfg(self, mock_class):
@@ -221,7 +242,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(elastic_db_admin.check_status(self.es,
             check_call=self.check_call, args_array=self.args_array2,
-            cfg=self.cfg2))
+            cfg=self.cfg))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_json_one_option_cfg(self, mock_class):
