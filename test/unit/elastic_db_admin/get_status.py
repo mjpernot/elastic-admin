@@ -162,7 +162,10 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialization for unit testing.
-        test_json -> Test with JSON format.
+        test_json_one_option -> Test with JSON format with one option.
+        test_json_all -> Test with JSON format with all option.
+        test_json -> Test with JSON format with no options.
+        test_std_out_no_options -> Test with standard out with no options.
         test_std_out_one_option -> Test with standard out with one option.
         test_display_all -> Test with display all option.
         test_display_default -> Test with display default option.
@@ -182,14 +185,18 @@ class UnitTest(unittest.TestCase):
         self.es = ElasticCluster()
         self.args_array = {"-L": "reponame", "-D": ["all"]}
         self.args_array2 = {"-L": "reponame", "-D": ["memory"]}
+        self.args_array3 = {"-L": "reponame", "-D": []}
+        self.args_array4 = {"-L": "reponame", "-D": [], "-j": True}
+        self.args_array5 = {"-L": "reponame", "-D": ["all"], "-j": True}
+        self.args_array6 = {"-L": "reponame", "-D": ["memory"], "-j": True}
         self.status_call = {"memory": "get_mem_status"}
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
-    def test_json(self, mock_class):
+    def test_json_one_option(self, mock_class):
 
-        """Function:  test_json
+        """Function:  test_json_one_option
 
-        Description:  Test with JSON format.
+        Description:  Test with JSON format with one option.
 
         Arguments:
 
@@ -199,7 +206,62 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_call=self.status_call))
+                status_call=self.status_call,
+                args_array=self.args_array6))
+
+    @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
+    def test_json_all(self, mock_class):
+
+        """Function:  test_json_all
+
+        Description:  Test with JSON format with all option.
+
+        Arguments:
+
+        """
+
+        mock_class.return_value = ElasticStatus
+
+        with gen_libs.no_std_out():
+            self.assertFalse(elastic_db_admin.get_status(self.es,
+                status_call=self.status_call,
+                args_array=self.args_array5))
+
+    @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
+    def test_json(self, mock_class):
+
+        """Function:  test_json
+
+        Description:  Test with JSON format with no options.
+
+        Arguments:
+
+        """
+
+        mock_class.return_value = ElasticStatus
+
+        with gen_libs.no_std_out():
+            self.assertFalse(elastic_db_admin.get_status(self.es,
+                status_call=self.status_call,
+                args_array=self.args_array4))
+
+    @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
+    def test_std_out_no_options(self, mock_class):
+
+        """Function:  test_std_out_no_options
+
+        Description:  Test with standard out with no options.
+
+        Arguments:
+
+        """
+
+        mock_class.return_value = ElasticStatus
+
+        with gen_libs.no_std_out():
+            self.assertFalse(elastic_db_admin.get_status(self.es,
+                status_call=self.status_call,
+                args_array=self.args_array3))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_std_out_one_option(self, mock_class):
