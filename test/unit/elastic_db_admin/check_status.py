@@ -162,6 +162,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialization for unit testing.
+        test_std_one_option_error -> 
         test_std_out_cutoff -> Test with standard out with cutoff options.
         test_std_out_option_cfg -> Test std out one option & config settings.
         test_json_one_option_cfg -> Test JSON format option & config settings.
@@ -207,6 +208,28 @@ class UnitTest(unittest.TestCase):
         self.cfg = cfg("75", "70", "65")
         cfg2 = collections.namedtuple("Cfg", "test")
         self.cfg2 = cfg2("test")
+
+    @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
+    def test_std_one_option_error(self, mock_class):
+
+        """Function:  test_std_one_option_error
+
+        Description:  Test with std format with one option with error.
+
+        Arguments:
+
+        """
+
+        es = ElasticStatus(self.es.node, self.es.port, self.mem, self.cpu,
+                           self.disk)
+        es.mem_err_msg = "Err: Error Message"
+        es.cluster_err_msg = ""
+        mock_class.return_value = es
+
+        with gen_libs.no_std_out():
+            self.assertFalse(elastic_db_admin.check_status(self.es,
+                check_call=self.check_call, args_array=self.args_array2,
+                cfg=self.cfg2))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_std_out_cutoff(self, mock_class):
