@@ -165,8 +165,8 @@ class UnitTest(unittest.TestCase):
 
         self.es = ElasticCluster()
         self.args_array = {"-L": "reponame"}
-        self.args_array2 = {"-L": "reponame", "-D": ["get_cluster"]}
-        self.status_class = [get_cluster]
+        self.args_array2 = {"-L": "reponame", "-D": ["cluster"]}
+        self.status_call = {"cluster": "get_cluster"}
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_json(self, mock_class):
@@ -183,7 +183,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_class=self.status_class))
+                status_call=self.status_call))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_display_all(self, mock_class):
@@ -200,7 +200,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_class=self.status_class))
+                status_call=self.status_call))
 
 
 if __name__ == "__main__":
