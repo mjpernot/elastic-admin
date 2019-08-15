@@ -204,7 +204,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticStatus
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
@@ -222,7 +222,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticStatus
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
@@ -240,7 +240,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticStatus
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
@@ -258,7 +258,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticStatus
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
@@ -276,7 +276,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticStatus
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
@@ -294,7 +294,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticStatus
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
@@ -312,7 +312,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticStatus
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
@@ -330,7 +330,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticStatus
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
