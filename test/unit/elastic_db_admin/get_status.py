@@ -184,13 +184,13 @@ class UnitTest(unittest.TestCase):
         """
 
         self.es = ElasticCluster()
-        self.args_array = {"-L": "reponame", "-D": ["all"]}
-        self.args_array2 = {"-L": "reponame", "-D": ["memory"]}
-        self.args_array3 = {"-L": "reponame", "-D": []}
-        self.args_array4 = {"-L": "reponame", "-D": [], "-j": True}
-        self.args_array5 = {"-L": "reponame", "-D": ["all"], "-j": True}
-        self.args_array6 = {"-L": "reponame", "-D": ["memory"], "-j": True}
-        self.args_array7 = {"-L": "reponame", "-D": ["incorrect"], "-j": True}
+        self.args_array = {"-D": ["all"]}
+        self.args_array2 = {"-D": ["memory"]}
+        self.args_array3 = {"-D": []}
+        self.args_array4 = {"-D": [], "-j": True}
+        self.args_array5 = {"-D": ["all"], "-j": True}
+        self.args_array6 = {"-D": ["memory"], "-j": True}
+        self.args_array7 = {"-D": ["incorrect"], "-j": True}
         self.status_call = {"memory": "get_mem_status"}
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
