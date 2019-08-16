@@ -151,7 +151,7 @@ def list_master(es, **kwargs):
     print("{0:25}".format(es.master))
 
 
-def failed_dumps(ES, **kwargs):
+def failed_dumps(es, **kwargs):
 
     """Function:  failed_dumps
 
@@ -159,19 +159,19 @@ def failed_dumps(ES, **kwargs):
         repository.
 
     Arguments:
-        (input) ES -> Elasticsearch class instance.
+        (input) es -> Elasticsearch class instance.
         (input) **kwargs:
             args_array -> Dict of command line options and values.
 
     """
 
-    ED = elastic_class.ElasticDump(ES.node,
+    ED = elastic_class.ElasticDump(es.node,
                                    kwargs.get("args_array").get("-F", None),
-                                   ES.port, **kwargs)
+                                   es.port, **kwargs)
 
     if ED.repo_name:
         print("\n{0:25}".format("List of Failed Dumps"))
-        elastic_libs.list_dumps(ES.dump_list)
+        elastic_libs.list_dumps(es.dump_list)
 
     else:
         print("WARNING:  Repository name not set")
