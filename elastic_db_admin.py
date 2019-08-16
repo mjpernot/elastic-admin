@@ -165,11 +165,11 @@ def failed_dumps(es, **kwargs):
 
     """
 
-    ED = elastic_class.ElasticDump(es.node,
+    ed = elastic_class.ElasticDump(es.node,
                                    kwargs.get("args_array").get("-F", None),
                                    es.port, **kwargs)
 
-    if ED.repo_name:
+    if ed.repo_name:
         print("\n{0:25}".format("List of Failed Dumps"))
         elastic_libs.list_dumps(es.dump_list)
 
