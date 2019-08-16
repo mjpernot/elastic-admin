@@ -366,7 +366,7 @@ def _process_data(check_list, err_flag, err_msg, ec, json, **kwargs):
     cutoff_mem = kwargs.get("cutoff_mem")
     cutoff_disk = kwargs.get("cutoff_disk")
 
-    if json:
+    if json and err_msg:
         err_msg = dict(err_msg)
 
     for opt in check_list:
