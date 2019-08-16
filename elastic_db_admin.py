@@ -121,19 +121,19 @@ def list_nodes(es, **kwargs):
         print("{0:25}".format(x))
 
 
-def list_repos(ES, **kwargs):
+def list_repos(es, **kwargs):
 
     """Function:  list_repos
 
     Description:  Lists the current repositories in the Elasticsearch database.
 
     Arguments:
-        (input) ES -> Elasticsearch class instance.
+        (input) es -> Elasticsearch class instance.
 
     """
 
     print("\n{0:25}".format("List of Repositories"))
-    elastic_libs.list_repos2(ES.repo_dict)
+    elastic_libs.list_repos2(es.repo_dict)
 
 
 def list_master(ES, **kwargs):
