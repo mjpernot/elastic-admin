@@ -202,7 +202,7 @@ def list_dumps(es, **kwargs):
         print("WARNING:  Repository name not set")
 
 
-def get_status(ES, **kwargs):
+def get_status(es, **kwargs):
 
     """Function:  get_status
 
@@ -210,29 +210,29 @@ def get_status(ES, **kwargs):
         Elasticsearch database cluster.
 
     Arguments:
-        (input) ES -> Elasticsearch class instance.
+        (input) es -> Elasticsearch class instance.
         (input) **kwargs:
             args_array -> Dict of command line options and values.
             status_call -> Contains class method names for the '-D' option.
 
     """
 
-    EC = elastic_class.ElasticStatus(ES.node, ES.port, **kwargs)
+    ec = elastic_class.ElasticStatus(es.node, es.port, **kwargs)
 
     display_list = list(kwargs.get("args_array").get("-D", []))
     json = kwargs.get("args_array").get("-j", False)
     func_call = kwargs.get("status_call")
 
     if not display_list or "all" in display_list:
-        print(EC.get_all(json))
+        print(ec.get_all(json))
 
     else:
         if json:
-            data = gen_libs.merge_two_dicts(EC.get_cluster(json),
-                                            EC.get_nodes(json))
+            data = gen_libs.merge_two_dicts(ec.get_cluster(json),
+                                            ec.get_nodes(json))
 
         else:
-            data = EC.get_cluster() + "\n" + EC.get_nodes()
+            data = ec.get_cluster() + "\n" + ec.get_nodes()
 
         for opt in display_list:
 
@@ -242,11 +242,11 @@ def get_status(ES, **kwargs):
                     # Call class method using option passed and merge results
                     data = \
                          gen_libs.merge_two_dicts(data,
-                            getattr(EC, func_call[opt])(json))
+                            getattr(ec, func_call[opt])(json))
 
                 else:
                     # Call method using option passed & concatenate results
-                    data = data + "\n" + getattr(EC, func_call[opt])()
+                    data = data + "\n" + getattr(ec, func_call[opt])()
 
             else:
                 print("Warning:  Option '{%s}' is not supported" % (opt))
