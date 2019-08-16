@@ -87,7 +87,6 @@ import elastic_lib.elastic_class as elastic_class
 import elastic_lib.elastic_libs as elastic_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -99,68 +98,60 @@ def help_message(**kwargs):
         message when -h option is selected.
 
     Arguments:
-        (input) **kwargs:
-            None
 
     """
 
     print(__doc__)
 
 
-def list_nodes(ES, **kwargs):
+def list_nodes(es, **kwargs):
 
     """Function:  list_nodes
 
     Description:  Lists the current nodes in the Elasticsearch cluster.
 
     Arguments:
-        (input) ES -> Elasticsearch class instance.
-        (input) **kwargs:
-            None
+        (input) es -> Elasticsearch class instance.
 
     """
 
     print("\n{0:25}".format("List of Nodes"))
 
-    for x in ES.nodes:
+    for x in es.nodes:
         print("{0:25}".format(x))
 
 
-def list_repos(ES, **kwargs):
+def list_repos(es, **kwargs):
 
     """Function:  list_repos
 
     Description:  Lists the current repositories in the Elasticsearch database.
 
     Arguments:
-        (input) ES -> Elasticsearch class instance.
-        (input) **kwargs:
-            None
+        (input) es -> Elasticsearch class instance.
 
     """
 
     print("\n{0:25}".format("List of Repositories"))
-    elastic_libs.list_repos2(ES.repo_dict)
+    elastic_libs.list_repos2(es.repo_dict)
 
 
-def list_master(ES, **kwargs):
+def list_master(es, **kwargs):
 
     """Function:  list_master
 
     Description:  Displays the current master node name.
 
     Arguments:
-        (input) ES -> Elasticsearch class instance.
-        (input) **kwargs:
-            None
+        (input) es-> Elasticsearch class instance.
 
     """
 
     print("\n{0:25}".format("Master Node"))
-    print("{0:25}".format(ES.master))
+    print("{0:25}".format(es.master))
 
 
-def failed_dumps(ES, **kwargs):
+def failed_dumps(es, **kwargs):
 
     """Function:  failed_dumps
 
@@ -168,50 +159,50 @@ def failed_dumps(ES, **kwargs):
         repository.
 
     Arguments:
-        (input) ES -> Elasticsearch class instance.
+        (input) es -> Elasticsearch class instance.
         (input) **kwargs:
             args_array -> Dict of command line options and values.
 
     """
 
-    ED = elastic_class.ElasticDump(ES.node,
-                                   kwargs.get("args_array").get("-F", None),
-                                   ES.port, **kwargs)
+    args_array = dict(kwargs.get("args_array"))
+    ed = elastic_class.ElasticDump(es.node, args_array.get("-F", None),
+                                   es.port, **kwargs)
 
-    if ED.repo_name:
+    if ed.repo_name:
         print("\n{0:25}".format("List of Failed Dumps"))
-        elastic_libs.list_dumps(ES.dump_list)
+        elastic_libs.list_dumps(es.dump_list)
 
     else:
         print("WARNING:  Repository name not set")
 
 
-def list_dumps(ES, **kwargs):
+def list_dumps(es, **kwargs):
 
     """Function:  list_dumps
 
     Description:  Lists the dumps under the current repository.
 
     Arguments:
-        (input) ES -> Elasticsearch class instance.
+        (input) es -> Elasticsearch class instance.
         (input) **kwargs:
             args_array -> Dict of command line options and values.
 
     """
 
-    ED = elastic_class.ElasticDump(ES.node,
-                                   kwargs.get("args_array").get("-L", None),
-                                   ES.port, **kwargs)
+    args_array = dict(kwargs.get("args_array"))
+    ed = elastic_class.ElasticDump(es.node, args_array.get("-L", None),
+                                   es.port, **kwargs)
 
-    if ED.repo_name:
+    if ed.repo_name:
         print("\n{0:25}".format("List of Dumps"))
-        elastic_libs.list_dumps(ED.dump_list, **kwargs)
+        elastic_libs.list_dumps(ed.dump_list, **kwargs)
 
     else:
         print("WARNING:  Repository name not set")
 
 
-def get_status(ES, **kwargs):
+def get_status(es, **kwargs):
 
     """Function:  get_status
 
@@ -219,52 +210,76 @@ def get_status(ES, **kwargs):
         Elasticsearch database cluster.
 
     Arguments:
-        (input) ES -> Elasticsearch class instance.
+        (input) es -> Elasticsearch class instance.
         (input) **kwargs:
             args_array -> Dict of command line options and values.
             status_call -> Contains class method names for the '-D' option.
 
     """
 
-    EC = elastic_class.ElasticStatus(ES.node, ES.port, **kwargs)
-
-    display_list = list(kwargs.get("args_array").get("-D", []))
-    json = kwargs.get("args_array").get("-j", False)
-    func_call = kwargs.get("status_call")
+    ec = elastic_class.ElasticStatus(es.node, es.port, **kwargs)
+    args_array = dict(kwargs.get("args_array"))
+    display_list = list(args_array.get("-D", []))
+    json = args_array.get("-j", False)
 
     if not display_list or "all" in display_list:
-        print(EC.get_all(json))
+        print(ec.get_all(json))
 
     else:
         if json:
-            data = gen_libs.merge_2_dicts(EC.get_cluster(json),
-                                          EC.get_nodes(json))
+            data, _, _ = gen_libs.merge_two_dicts(ec.get_cluster(json),
+                                                  ec.get_nodes(json))
 
         else:
-            data = EC.get_cluster() + "\n" + EC.get_nodes()
+            data = ec.get_cluster() + "\n" + ec.get_nodes()
 
         for opt in display_list:
-
-            if opt in func_call:
-
-                if json:
-                    # Call class method using option passed and merge results
-                    data = \
-                         gen_libs.merge_2_dicts(data,
-                                                getattr(EC,
-                                                        func_call[opt])(json))
-
-                else:
-                    # Call method using option passed & concatenate results
-                    data = data + "\n" + getattr(EC, func_call[opt])()
-
-            else:
-                print("Warning:  Option '{%s}' is not supported" % (opt))
+            data = _get_data(json, data, ec, opt, **kwargs)
 
         print(data)
 
 
-def check_status(ES, **kwargs):
+def _get_data(json, data, ec, opt, **kwargs):
+
+    """Function:  _get_data
+
+    Description:  Private function for get_status function.  Get data from
+        Elasticsearch database.
+
+    Arguments:
+        (input) json -> True|False - Data to be formatted as JSON.
+        (input) data -> Data results.
+        (input) ec -> Elasticsearch status class instance.
+        (input) opt -> Method to run in class instance.
+        (input) **kwargs:
+            status_call -> Contains class method names for the '-D' option.
+        (output) data -> Modified data results.
+
+    """
+
+    func_call = dict(kwargs.get("status_call"))
+
+    if json:
+        data = dict(data)
+
+    if opt in func_call:
+        if json:
+            # Call class method using option passed and merge results
+            data, _, _ = \
+                gen_libs.merge_two_dicts(data, getattr(ec,
+                                                       func_call[opt])(json))
+
+        else:
+            # Call method using option passed & concatenate results
+            data = data + "\n" + getattr(ec, func_call[opt])()
+
+    else:
+        print("Warning:  Option '{%s}' is not supported" % (opt))
+
+    return data
+
+
+def check_status(es, **kwargs):
 
     """Function:  check_status
 
@@ -272,7 +287,7 @@ def check_status(ES, **kwargs):
         Elasticsearch database cluster.
 
     Arguments:
-        (input) ES -> Elasticsearch class instance.
+        (input) es -> Elasticsearch class instance.
         (input) **kwargs:
             args_array -> Dict of command line options and values.
             check_call -> Contains class method names for the '-C' option.
@@ -280,11 +295,13 @@ def check_status(ES, **kwargs):
 
     """
 
-    check_list = list(kwargs.get("args_array").get("-C", []))
-    json = kwargs.get("args_array").get("-j", False)
-    cutoff_mem = kwargs.get("args_array").get("-m", None)
-    cutoff_cpu = kwargs.get("args_array").get("-u", None)
-    cutoff_disk = kwargs.get("args_array").get("-p", None)
+    args_array = dict(kwargs.get("args_array"))
+    check_list = list(args_array.get("-C", []))
+    json = args_array.get("-j", False)
+    cutoff_mem = args_array.get("-m", None)
+    cutoff_cpu = args_array.get("-u", None)
+    cutoff_disk = args_array.get("-p", None)
+    cfg = kwargs.get("cfg")
 
     if cutoff_mem:
         cutoff_mem = int(cutoff_mem)
@@ -295,51 +312,84 @@ def check_status(ES, **kwargs):
     if cutoff_disk:
         cutoff_disk = int(cutoff_disk)
 
-    func_call = kwargs.get("check_call")
-    cfg = kwargs.get("cfg")
-
     cfg_cutoff_mem = cfg.cutoff_mem if hasattr(cfg, "cutoff_mem") else None
     cfg_cutoff_cpu = cfg.cutoff_cpu if hasattr(cfg, "cutoff_cpu") else None
     cfg_cutoff_disk = cfg.cutoff_disk if hasattr(cfg, "cutoff_disk") else None
 
-    EC = elastic_class.ElasticStatus(ES.node, ES.port, cfg_cutoff_mem,
+    ec = elastic_class.ElasticStatus(es.node, es.port, cfg_cutoff_mem,
                                      cfg_cutoff_cpu, cfg_cutoff_disk, **kwargs)
 
     if not check_list or "all" in check_list:
-        err_msg = EC.chk_all(json, cutoff_cpu=cutoff_cpu,
+        err_msg = ec.chk_all(json, cutoff_cpu=cutoff_cpu,
                              cutoff_mem=cutoff_mem, cutoff_disk=cutoff_disk)
 
         if err_msg:
             print(err_msg)
 
     else:
-
         err_flag = False
-        err_msg = EC.get_cluster(json)
+        err_msg = ec.get_cluster(json)
 
-        for opt in check_list:
-
-            if opt in func_call:
-
-                results = getattr(EC, func_call[opt])(json,
-                                                      cutoff_cpu=cutoff_cpu,
-                                                      cutoff_mem=cutoff_mem,
-                                                      cutoff_disk=cutoff_disk)
-
-                if results:
-                    err_flag = True
-
-                    if json:
-                        err_msg = gen_libs.merge_2_dicts(err_msg, results)
-
-                    else:
-                        err_msg = err_msg + "\n" + results
-
-            else:
-                print("Warning:  Option '{%s}' is not supported" % (opt))
+        err_flag, err_msg = _process_data(check_list, err_flag, err_msg, ec,
+                                          json, cutoff_cpu=cutoff_cpu,
+                                          cutoff_mem=cutoff_mem,
+                                          cutoff_disk=cutoff_disk, **kwargs)
 
         if err_flag:
             print(err_msg)
+
+
+def _process_data(check_list, err_flag, err_msg, ec, json, **kwargs):
+
+    """Function:  _process_data
+
+    Description:  Private function for check_status function.  Process data
+        from Elasticsearch database.
+
+    Arguments:
+        (input) check_list -> Contains class method names for the '-C' option.
+        (input) err_flag -> True|False - Status of results.
+        (input) err_msg -> Error message(s).
+        (input) ec -> Elasticsearch status class instance.
+        (input) json -> True|False - Data to be formatted as JSON.
+        (input) **kwargs:
+            check_call -> Contains class method names for the '-C' option.
+            cutoff_cpu -> Cutoff value for CPU usage.
+            cutoff_mem -> Cutoff value for Memory usage.
+            cutoff_disk -> Cutoff value for Disk usage.
+        (output) err_flag -> True|False - Status of results.
+        (output) err_msg -> Error message(s).
+
+    """
+
+    check_list = list(check_list)
+    func_call = dict(kwargs.get("check_call"))
+    cutoff_cpu = kwargs.get("cutoff_cpu")
+    cutoff_mem = kwargs.get("cutoff_mem")
+    cutoff_disk = kwargs.get("cutoff_disk")
+
+    if json and err_msg:
+        err_msg = dict(err_msg)
+
+    for opt in check_list:
+        if opt in func_call:
+            results = getattr(ec, func_call[opt])(json, cutoff_cpu=cutoff_cpu,
+                                                  cutoff_mem=cutoff_mem,
+                                                  cutoff_disk=cutoff_disk)
+
+            if results:
+                err_flag = True
+
+                if json:
+                    err_msg, _, _ = gen_libs.merge_two_dicts(err_msg, results)
+
+                else:
+                    err_msg = err_msg + "\n" + results
+
+        else:
+            print("Warning:  Option '{%s}' is not supported" % (opt))
+
+    return err_flag, err_msg
 
 
 def run_program(args_array, func_dict, **kwargs):
@@ -358,17 +408,19 @@ def run_program(args_array, func_dict, **kwargs):
 
     """
 
+    args_array = dict(args_array)
+    func_dict = dict(func_dict)
     cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
 
     try:
-        PROG_LOCK = gen_class.ProgramLock(sys.argv, cfg.host)
+        prog_lock = gen_class.ProgramLock(sys.argv, cfg.host)
 
         # Intersect args_array & func_dict to find which functions to call.
         for opt in set(args_array.keys()) & set(func_dict.keys()):
-            ES = elastic_class.ElasticCluster(cfg.host, cfg.port, **kwargs)
-            func_dict[opt](ES, args_array=args_array, cfg=cfg, **kwargs)
+            es = elastic_class.ElasticCluster(cfg.host, cfg.port, **kwargs)
+            func_dict[opt](es, args_array=args_array, cfg=cfg, **kwargs)
 
-        del PROG_LOCK
+        del prog_lock
 
     except gen_class.SingleInstanceException:
         print("Warning:  elastic_db_admin lock in place for: %s" % (cfg.host))
@@ -420,11 +472,11 @@ def main():
                                        opt_val=opt_val,
                                        multi_val=opt_multi_list)
 
-    if not gen_libs.help_func(args_array, __version__, help_message):
-        if not arg_parser.arg_require(args_array, opt_req_list) \
-           and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
-            run_program(args_array, func_dict, status_call=status_call,
-                        check_call=check_call)
+    if not gen_libs.help_func(args_array, __version__, help_message) \
+       and not arg_parser.arg_require(args_array, opt_req_list) \
+       and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
+        run_program(args_array, func_dict, status_call=status_call,
+                    check_call=check_call)
 
 
 if __name__ == "__main__":
