@@ -80,7 +80,7 @@ class ElasticStatus(object):
         """
 
         if json:
-            return {"memory":  "memory_status"}
+            return {"memory": "memory_status"}
 
         else:
             return "memory:  memory_status"
@@ -97,7 +97,7 @@ class ElasticStatus(object):
         """
 
         if json:
-            return {"node":  "node_name"}
+            return {"node": "node_name"}
 
         else:
             return "node:  node_name"
@@ -114,7 +114,7 @@ class ElasticStatus(object):
         """
 
         if json:
-            return {"cluster":  "cluster_name"}
+            return {"cluster": "cluster_name"}
 
         else:
             return "cluster:  cluster_name"
@@ -182,9 +182,10 @@ class UnitTest(unittest.TestCase):
         """
 
         with gen_libs.no_std_out():
-            self.assertEqual(elastic_db_admin._get_data(self.json, self.data,
-                self.es, self.opt2, status_call=self.status_call),
-                             ({}))
+            self.assertEqual(
+                elastic_db_admin._get_data(
+                    self.json, self.data, self.es, self.opt2,
+                    status_call=self.status_call), ({}))
 
     def test_json_one_option(self):
 
@@ -196,9 +197,10 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertEqual(elastic_db_admin._get_data(self.json, self.data,
-            self.es, self.opt, status_call=self.status_call),
-                         ({"memory":  "memory_status"}))
+        self.assertEqual(
+            elastic_db_admin._get_data(
+                self.json, self.data, self.es, self.opt,
+                status_call=self.status_call), ({"memory": "memory_status"}))
 
     def test_json(self):
 
@@ -210,9 +212,10 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertEqual(elastic_db_admin._get_data(self.json, self.data,
-            self.es, self.opt, status_call=self.status_call),
-                         ({"memory":  "memory_status"}))
+        self.assertEqual(
+            elastic_db_admin._get_data(
+                self.json, self.data, self.es, self.opt,
+                status_call=self.status_call), ({"memory": "memory_status"}))
 
     def test_std_out_one_option(self):
 
@@ -224,9 +227,10 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertEqual(elastic_db_admin._get_data(self.json2, self.data2,
-            self.es, self.opt, status_call=self.status_call),
-                         ("\nmemory:  memory_status"))
+        self.assertEqual(
+            elastic_db_admin._get_data(
+                self.json2, self.data2, self.es, self.opt,
+                status_call=self.status_call), ("\nmemory:  memory_status"))
 
 
 if __name__ == "__main__":
