@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [0.2.5] - 2019-08-16
 ### Fixed
+- \_get_data:  Added throwaway variables for gen_libs.merge_two_dicts call.
 - get_status:  Added throwaway variables for gen_libs.merge_two_dicts call.
 - \_process_data:  Added throwaway variables for gen_libs.merge_two_dicts call.
 - failed_dumps:  Fixed mutable list/dictionary argument issue.
