@@ -28,6 +28,7 @@ pipeline {
                 pip2 install requests --user
                 ./test/unit/elastic_db_admin/check_status.py
                 ./test/unit/elastic_db_admin/failed_dumps.py
+                ./test/unit/elastic_db_admin/get_data.py
                 ./test/unit/elastic_db_admin/get_status.py
                 ./test/unit/elastic_db_admin/help_message.py
                 ./test/unit/elastic_db_admin/list_dumps.py

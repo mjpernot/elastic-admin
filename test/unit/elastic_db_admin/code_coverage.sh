@@ -10,6 +10,7 @@ echo ""
 echo "Running unit test modules in conjunction with coverage"
 coverage run -a --source=elastic_db_admin test/unit/elastic_db_admin/check_status.py
 coverage run -a --source=elastic_db_admin test/unit/elastic_db_admin/failed_dumps.py
+coverage run -a --source=elastic_db_admin test/unit/elastic_db_admin/get_data.py
 coverage run -a --source=elastic_db_admin test/unit/elastic_db_admin/get_status.py
 coverage run -a --source=elastic_db_admin test/unit/elastic_db_admin/help_message.py
 coverage run -a --source=elastic_db_admin test/unit/elastic_db_admin/list_dumps.py

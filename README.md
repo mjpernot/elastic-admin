@@ -144,6 +144,7 @@ pip install -r requirements-requests-lib.txt --target elastic_lib/requests_lib -
 cd {Python_Project}/elastic-admin
 test/unit/elastic_db_admin/check_status.py
 test/unit/elastic_db_admin/failed_dumps.py
+test/unit/elastic_db_admin/get_data.py
 test/unit/elastic_db_admin/get_status.py
 test/unit/elastic_db_admin/help_message.py
 test/unit/elastic_db_admin/list_dumps.py
