@@ -160,6 +160,7 @@ class UnitTest(unittest.TestCase):
         self.err_flag = False
         self.err_msg = {}
         self.err_msg2 = ""
+        self.err_msg3 = {"Error": True}
         self.json = True
         self.json2 = False
 
@@ -198,10 +199,10 @@ class UnitTest(unittest.TestCase):
         self.es.cluster_err_msg = {}
 
         self.assertEqual(elastic_db_admin._process_data(self.check_list,
-            self.err_flag, self.err_msg, self.es, self.json,
+            self.err_flag, self.err_msg3, self.es, self.json,
             check_call=self.check_call, cutoff_cpu=self.cutoff_cpu,
             cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk),
-                         (True, {"Err": "Error Message"}))
+                         (True, {"Err": "Error Message", "Error": True}))
 
     def test_incorrect_option(self):
 
