@@ -182,8 +182,9 @@ class UnitTest(unittest.TestCase):
         """
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin._get_data(self.json, self.data,
-                self.es, self.opt2, status_call=self.status_call))
+            self.assertEqual(elastic_db_admin._get_data(self.json, self.data,
+                self.es, self.opt2, status_call=self.status_call),
+                             ({}))
 
     def test_json_one_option(self):
 
@@ -195,9 +196,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin._get_data(self.json, self.data,
-                self.es, self.opt, status_call=self.status_call))
+        self.assertEqual(elastic_db_admin._get_data(self.json, self.data,
+            self.es, self.opt, status_call=self.status_call),
+                         ({"memory":  "memory_status"}))
 
     def test_json(self):
 
@@ -209,9 +210,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin._get_data(self.json, self.data,
-                self.es, self.opt, status_call=self.status_call))
+        self.assertEqual(elastic_db_admin._get_data(self.json, self.data,
+            self.es, self.opt, status_call=self.status_call),
+                         ({"memory":  "memory_status"}))
 
     def test_std_out_one_option(self):
 
@@ -223,9 +224,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin._get_data(self.json2, self.data2,
-                self.es, self.opt, status_call=self.status_call))
+        self.assertEqual(elastic_db_admin._get_data(self.json2, self.data2,
+            self.es, self.opt, status_call=self.status_call),
+                         ("\nmemory:  memory_status"))
 
 
 if __name__ == "__main__":
