@@ -379,10 +379,11 @@ def _process_data(check_list, err_flag, err_msg, ec, json, **kwargs):
                 err_flag = True
 
                 if json:
-                    err_msg = gen_libs.merge_two_dicts(err_msg, results)
+                    err_msg, _, _ = gen_libs.merge_two_dicts(err_msg, results)
 
                 else:
                     err_msg = err_msg + "\n" + results
+            print(err_msg)
 
         else:
             print("Warning:  Option '{%s}' is not supported" % (opt))
