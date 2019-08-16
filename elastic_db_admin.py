@@ -299,7 +299,6 @@ def check_status(es, **kwargs):
     cutoff_mem = args_array.get("-m", None)
     cutoff_cpu = args_array.get("-u", None)
     cutoff_disk = args_array.get("-p", None)
-    func_call = dict(kwargs.get("check_call"))
     cfg = kwargs.get("cfg")
 
     if cutoff_mem:
