@@ -14,6 +14,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - check_status:  Replaced "gen_libs.merge_2_dicts" with "gen_libs.merge_two_dicts".
 
 ### Changed
+- get_status:  Reduced code complexity in function by calling private function.
 - main:  Refactored "if" statements.
 - run_program:  Changed variables to standard naming convention.
 - check_status:  Changed variables to standard naming convention.
@@ -23,6 +24,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - list_master:  Changed variable to standard naming convention.
 - list_repos:  Changed variable to standard naming convention.
 - list_nodes:  Changed variable to standard naming convention.
+
+### Added
+- _get_data:  Private function for get_status().  Get data from database.
 
 
 ## [0.2.4] - 2018-11-19
