@@ -221,7 +221,6 @@ def get_status(es, **kwargs):
     args_array = dict(kwargs.get("args_array"))
     display_list = list(args_array.get("-D", []))
     json = args_array.get("-j", False)
-    func_call = dict(kwargs.get("status_call"))
 
     if not display_list or "all" in display_list:
         print(ec.get_all(json))
@@ -235,21 +234,46 @@ def get_status(es, **kwargs):
             data = ec.get_cluster() + "\n" + ec.get_nodes()
 
         for opt in display_list:
-            if opt in func_call:
-                if json:
-                    # Call class method using option passed and merge results
-                    data = \
-                         gen_libs.merge_two_dicts(data,
-                            getattr(ec, func_call[opt])(json))
-
-                else:
-                    # Call method using option passed & concatenate results
-                    data = data + "\n" + getattr(ec, func_call[opt])()
-
-            else:
-                print("Warning:  Option '{%s}' is not supported" % (opt))
+            data = _get_data(json, data, ec, opt, **kwargs)
 
         print(data)
+
+def _get_data(json, data, ec, opt, **kwargs):
+
+    """Function:  _get_data
+
+    Description:  Private function for get_status function.  Get data from
+        Elasticsearch database.
+
+    Arguments:
+        (input) json -> True|False - Data to be formatted as JSON.
+        (input) data -> Data results.
+        (input) ec -> Elasticsearch status class instance.
+        (input) opt -> Method to run in class instance.
+        (input) **kwargs:
+            status_call -> Contains class method names for the '-D' option.
+
+    """
+
+    func_call = dict(kwargs.get("status_call"))
+
+    if json:
+        data = dict(data)
+
+    if opt in func_call:
+        if json:
+            # Call class method using option passed and merge results
+            data = gen_libs.merge_two_dicts(data,
+                                            getattr(ec, func_call[opt])(json))
+
+        else:
+            # Call method using option passed & concatenate results
+            data = data + "\n" + getattr(ec, func_call[opt])()
+
+    else:
+        print("Warning:  Option '{%s}' is not supported" % (opt))
+
+    return data
 
 
 def check_status(es, **kwargs):
