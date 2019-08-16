@@ -152,7 +152,7 @@ class UnitTest(unittest.TestCase):
         self.cutoff_cpu = 90
         self.cutoff_mem = 95
         self.cutoff_disk = 80
-        self.es = ElasticStatus("nodename", 1234, self.cutoff_cpu, 
+        self.es = ElasticStatus("nodename", 1234, self.cutoff_cpu,
                                 self.cutoff_mem, self.cutoff_disk)
         self.check_call = {"memory": "chk_mem"}
         self.check_list = ["memory"]
@@ -163,7 +163,6 @@ class UnitTest(unittest.TestCase):
         self.err_msg3 = {"Error": True}
         self.json = True
         self.json2 = False
-
 
     def test_std_one_option_error(self):
 
@@ -179,11 +178,13 @@ class UnitTest(unittest.TestCase):
         self.es.cluster_err_msg = ""
 
         with gen_libs.no_std_out():
-            self.assertEqual(elastic_db_admin._process_data(self.check_list,
-                self.err_flag, self.err_msg2, self.es, self.json2,
-                check_call=self.check_call, cutoff_cpu=self.cutoff_cpu,
-                cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk),
-                             (True, "\nErr: Error Message"))
+            self.assertEqual(
+                elastic_db_admin._process_data(
+                    self.check_list, self.err_flag, self.err_msg2, self.es,
+                    self.json2, check_call=self.check_call,
+                    cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
+                    cutoff_disk=self.cutoff_disk),
+                (True, "\nErr: Error Message"))
 
     def test_json_one_option_error(self):
 
@@ -198,11 +199,13 @@ class UnitTest(unittest.TestCase):
         self.es.mem_err_msg = {"Err": "Error Message"}
         self.es.cluster_err_msg = {}
 
-        self.assertEqual(elastic_db_admin._process_data(self.check_list,
-            self.err_flag, self.err_msg3, self.es, self.json,
-            check_call=self.check_call, cutoff_cpu=self.cutoff_cpu,
-            cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk),
-                         (True, {"Err": "Error Message", "Error": True}))
+        self.assertEqual(
+            elastic_db_admin._process_data(
+                self.check_list, self.err_flag, self.err_msg3, self.es,
+                self.json, check_call=self.check_call,
+                cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
+                cutoff_disk=self.cutoff_disk),
+            (True, {"Err": "Error Message", "Error": True}))
 
     def test_incorrect_option(self):
 
@@ -215,11 +218,12 @@ class UnitTest(unittest.TestCase):
         """
 
         with gen_libs.no_std_out():
-            self.assertEqual(elastic_db_admin._process_data(self.check_list2,
-                self.err_flag, self.err_msg, self.es, self.json,
-                check_call=self.check_call, cutoff_cpu=self.cutoff_cpu,
-                cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk),
-                             (False, {}))
+            self.assertEqual(
+                elastic_db_admin._process_data(
+                    self.check_list2, self.err_flag, self.err_msg, self.es,
+                    self.json, check_call=self.check_call,
+                    cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
+                    cutoff_disk=self.cutoff_disk), (False, {}))
 
     def test_json_one_option(self):
 
@@ -231,11 +235,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertEqual(elastic_db_admin._process_data(self.check_list,
-                self.err_flag, self.err_msg, self.es, self.json,
-                check_call=self.check_call, cutoff_cpu=self.cutoff_cpu,
-                cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk),
-                         (False, {}))
+        self.assertEqual(
+            elastic_db_admin._process_data(
+                self.check_list, self.err_flag, self.err_msg, self.es,
+                self.json, check_call=self.check_call,
+                cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
+                cutoff_disk=self.cutoff_disk), (False, {}))
 
     def test_std_out_one_option(self):
 
@@ -247,11 +252,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertEqual(elastic_db_admin._process_data(self.check_list,
-                self.err_flag, self.err_msg2, self.es, self.json2,
-                check_call=self.check_call, cutoff_cpu=self.cutoff_cpu,
-                cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk),
-                         (False, ""))
+        self.assertEqual(
+            elastic_db_admin._process_data(
+                self.check_list, self.err_flag, self.err_msg2, self.es,
+                self.json2, check_call=self.check_call,
+                cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
+                cutoff_disk=self.cutoff_disk), (False, ""))
 
 
 if __name__ == "__main__":
