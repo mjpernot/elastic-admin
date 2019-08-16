@@ -227,7 +227,7 @@ def get_status(es, **kwargs):
 
     else:
         if json:
-            data = gen_libs.merge_two_dicts(ec.get_cluster(json),
+            data, _, _ = gen_libs.merge_two_dicts(ec.get_cluster(json),
                                             ec.get_nodes(json))
 
         else:
