@@ -143,7 +143,7 @@ def list_master(es, **kwargs):
     Description:  Displays the current master node name.
 
     Arguments:
-        (input) s-> Elasticsearch class instance.
+        (input) es-> Elasticsearch class instance.
 
     """
 
