@@ -62,6 +62,7 @@ class ElasticCluster(object):
 
         self.repo_dict = {"node": True}
 
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -89,7 +90,6 @@ class UnitTest(unittest.TestCase):
         """
 
         self.es = ElasticCluster()
-
 
     @mock.patch("elastic_db_admin.elastic_libs.list_repos2")
     def test_list_repos(self, mock_lib):
