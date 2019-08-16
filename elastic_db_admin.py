@@ -104,20 +104,20 @@ def help_message(**kwargs):
     print(__doc__)
 
 
-def list_nodes(ES, **kwargs):
+def list_nodes(es, **kwargs):
 
     """Function:  list_nodes
 
     Description:  Lists the current nodes in the Elasticsearch cluster.
 
     Arguments:
-        (input) ES -> Elasticsearch class instance.
+        (input) es -> Elasticsearch class instance.
 
     """
 
     print("\n{0:25}".format("List of Nodes"))
 
-    for x in ES.nodes:
+    for x in es.nodes:
         print("{0:25}".format(x))
 
 
