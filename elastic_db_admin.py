@@ -165,8 +165,8 @@ def failed_dumps(es, **kwargs):
 
     """
 
-    ed = elastic_class.ElasticDump(es.node,
-                                   kwargs.get("args_array").get("-F", None),
+    args_array = dict(kwargs.get("args_array"))
+    ed = elastic_class.ElasticDump(es.node, args_array.get("-F", None),
                                    es.port, **kwargs)
 
     if ed.repo_name:
