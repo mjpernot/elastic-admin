@@ -61,6 +61,7 @@ class ElasticCluster(object):
 
         self.nodes = ["Node1", "Node2"]
 
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -88,7 +89,6 @@ class UnitTest(unittest.TestCase):
         """
 
         self.es = ElasticCluster()
-
 
     def test_list_nodes(self):
 

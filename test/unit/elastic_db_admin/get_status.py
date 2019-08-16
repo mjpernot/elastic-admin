@@ -47,6 +47,7 @@ class ElasticStatus(object):
 
     Methods:
         __init__ -> Initialize configuration environment.
+        get_mem_status -> Stub holder for ElasticStatus.get_mem_status method.
         get_nodes -> Stub holder for ElasticStatus.get_nodes method.
         get_cluster -> Stub holder for ElasticStatus.get_cluster method.
         get_all -> Stub holder for ElasticStatus.get_all method.
@@ -65,9 +66,27 @@ class ElasticStatus(object):
 
         """
 
-        self.repo_name = repo
+        self.node = node
+        self.port = port
 
-    def get_nodes(self, json=True):
+    def get_mem_status(self, json=False):
+
+        """Method:  get_mem_status
+
+        Description:  Stub holder for ElasticStatus.get_mem_status method.
+
+        Arguments:
+            (input) json -> True|False - JSON format.
+
+        """
+
+        if json:
+            return {"memory": "memory_status"}
+
+        else:
+            return "memory:  memory_status"
+
+    def get_nodes(self, json=False):
 
         """Method:  get_nodes
 
@@ -78,9 +97,13 @@ class ElasticStatus(object):
 
         """
 
-        return True
+        if json:
+            return {"node": "node_name"}
 
-    def get_cluster(self, json=True):
+        else:
+            return "node:  node_name"
+
+    def get_cluster(self, json=False):
 
         """Method:  get_cluster
 
@@ -91,9 +114,13 @@ class ElasticStatus(object):
 
         """
 
-        return True
+        if json:
+            return {"cluster": "cluster_name"}
 
-    def get_all(self, json):
+        else:
+            return "cluster:  cluster_name"
+
+    def get_all(self, json=False):
 
         """Method:  get_all
 
@@ -148,8 +175,14 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialization for unit testing.
-        test_json -> Test with JSON format.
+        test_incorrect_option -> Test with incorrect option.
+        test_json_one_option -> Test with JSON format with one option.
+        test_json_all -> Test with JSON format with all option.
+        test_json -> Test with JSON format with no options.
+        test_std_out_no_options -> Test with standard out with no options.
+        test_std_out_one_option -> Test with standard out with one option.
         test_display_all -> Test with display all option.
+        test_display_default -> Test with display default option.
 
     """
 
@@ -164,26 +197,128 @@ class UnitTest(unittest.TestCase):
         """
 
         self.es = ElasticCluster()
-        self.args_array = {"-L": "reponame"}
-        self.args_array2 = {"-L": "reponame", "-D": ["get_cluster"]}
-        self.status_class = [get_cluster]
+        self.args_array = {"-D": ["all"]}
+        self.args_array2 = {"-D": ["memory"]}
+        self.args_array3 = {"-D": []}
+        self.args_array4 = {"-D": [], "-j": True}
+        self.args_array5 = {"-D": ["all"], "-j": True}
+        self.args_array6 = {"-D": ["memory"], "-j": True}
+        self.args_array7 = {"-D": ["incorrect"], "-j": True}
+        self.status_call = {"memory": "get_mem_status"}
+
+    @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
+    def test_incorrect_option(self, mock_class):
+
+        """Function:  test_incorrect_option
+
+        Description:  Test with incorrect option.
+
+        Arguments:
+
+        """
+
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
+
+        with gen_libs.no_std_out():
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.es, status_call=self.status_call,
+                    args_array=self.args_array7))
+
+    @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
+    def test_json_one_option(self, mock_class):
+
+        """Function:  test_json_one_option
+
+        Description:  Test with JSON format with one option.
+
+        Arguments:
+
+        """
+
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
+
+        with gen_libs.no_std_out():
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.es, status_call=self.status_call,
+                    args_array=self.args_array6))
+
+    @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
+    def test_json_all(self, mock_class):
+
+        """Function:  test_json_all
+
+        Description:  Test with JSON format with all option.
+
+        Arguments:
+
+        """
+
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
+
+        with gen_libs.no_std_out():
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.es, status_call=self.status_call,
+                    args_array=self.args_array5))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_json(self, mock_class):
 
         """Function:  test_json
 
-        Description:  Test with JSON format.
+        Description:  Test with JSON format with no options.
 
         Arguments:
 
         """
 
-        mock_class.return_value = ElasticStatus
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_class=self.status_class))
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.es, status_call=self.status_call,
+                    args_array=self.args_array4))
+
+    @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
+    def test_std_out_no_options(self, mock_class):
+
+        """Function:  test_std_out_no_options
+
+        Description:  Test with standard out with no options.
+
+        Arguments:
+
+        """
+
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
+
+        with gen_libs.no_std_out():
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.es, status_call=self.status_call,
+                    args_array=self.args_array3))
+
+    @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
+    def test_std_out_one_option(self, mock_class):
+
+        """Function:  test_std_out_one_option
+
+        Description:  Test with standard out with one option.
+
+        Arguments:
+
+        """
+
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
+
+        with gen_libs.no_std_out():
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.es, status_call=self.status_call,
+                    args_array=self.args_array2))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_display_all(self, mock_class):
@@ -196,11 +331,31 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticStatus
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_class=self.status_class))
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.es, status_call=self.status_call,
+                    args_array=self.args_array))
+
+    @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
+    def test_display_default(self, mock_class):
+
+        """Function:  test_display_default
+
+        Description:  Test with display default option.
+
+        Arguments:
+
+        """
+
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
+
+        with gen_libs.no_std_out():
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.es, status_call=self.status_call, args_array={}))
 
 
 if __name__ == "__main__":
