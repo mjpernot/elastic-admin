@@ -4,6 +4,36 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.2.5] - 2019-08-16
+### Fixed
+- \_get_data:  Added throwaway variables for gen_libs.merge_two_dicts call.
+- get_status:  Added throwaway variables for gen_libs.merge_two_dicts call.
+- \_process_data:  Added throwaway variables for gen_libs.merge_two_dicts call.
+- failed_dumps:  Fixed mutable list/dictionary argument issue.
+- list_dumps:  Fixed mutable list/dictionary argument issue.
+- check_status:  Fixed mutable list/dictionary argument issue.
+- run_program:  Fixed mutable list/dictionary argument issue.
+- get_status:  Replaced "gen_libs.merge_2_dicts" with "gen_libs.merge_two_dicts".
+- check_status:  Replaced "gen_libs.merge_2_dicts" with "gen_libs.merge_two_dicts".
+
+### Changed
+- check_status:  Reduced code complexity in function by calling private function.
+- get_status:  Reduced code complexity in function by calling private function.
+- main:  Refactored "if" statements.
+- run_program:  Changed variables to standard naming convention.
+- check_status:  Changed variables to standard naming convention.
+- get_status:  Changed variables to standard naming convention.
+- list_dumps:  Changed variables to standard naming convention.
+- failed_dumps:  Changed variables to standard naming convention.
+- list_master:  Changed variable to standard naming convention.
+- list_repos:  Changed variable to standard naming convention.
+- list_nodes:  Changed variable to standard naming convention.
+
+### Added
+- \_process_data:  Private function for check_status().  Process data from database.
+- \_get_data:  Private function for get_status().  Get data from database.
+
+
 ## [0.2.4] - 2018-11-19
 ### Updated
 - list_repos:  Replaced "elastic_libs.list_repos" with "elastic_libs.list_repos2" call.
