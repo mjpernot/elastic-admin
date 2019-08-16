@@ -81,7 +81,7 @@ class ElasticStatus(object):
         """
 
         if json:
-            return {"memory":  "memory_status"}
+            return {"memory": "memory_status"}
 
         else:
             return "memory:  memory_status"
@@ -98,7 +98,7 @@ class ElasticStatus(object):
         """
 
         if json:
-            return {"node":  "node_name"}
+            return {"node": "node_name"}
 
         else:
             return "node:  node_name"
@@ -115,7 +115,7 @@ class ElasticStatus(object):
         """
 
         if json:
-            return {"cluster":  "cluster_name"}
+            return {"cluster": "cluster_name"}
 
         else:
             return "cluster:  cluster_name"
@@ -220,9 +220,10 @@ class UnitTest(unittest.TestCase):
         mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_call=self.status_call,
-                args_array=self.args_array7))
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.es, status_call=self.status_call,
+                    args_array=self.args_array7))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_json_one_option(self, mock_class):
@@ -238,9 +239,10 @@ class UnitTest(unittest.TestCase):
         mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_call=self.status_call,
-                args_array=self.args_array6))
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.es, status_call=self.status_call,
+                    args_array=self.args_array6))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_json_all(self, mock_class):
@@ -256,9 +258,10 @@ class UnitTest(unittest.TestCase):
         mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_call=self.status_call,
-                args_array=self.args_array5))
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.es, status_call=self.status_call,
+                    args_array=self.args_array5))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_json(self, mock_class):
@@ -274,9 +277,10 @@ class UnitTest(unittest.TestCase):
         mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_call=self.status_call,
-                args_array=self.args_array4))
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.es, status_call=self.status_call,
+                    args_array=self.args_array4))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_std_out_no_options(self, mock_class):
@@ -292,9 +296,10 @@ class UnitTest(unittest.TestCase):
         mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_call=self.status_call,
-                args_array=self.args_array3))
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.es, status_call=self.status_call,
+                    args_array=self.args_array3))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_std_out_one_option(self, mock_class):
@@ -310,9 +315,10 @@ class UnitTest(unittest.TestCase):
         mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_call=self.status_call,
-                args_array=self.args_array2))
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.es, status_call=self.status_call,
+                    args_array=self.args_array2))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_display_all(self, mock_class):
@@ -328,9 +334,10 @@ class UnitTest(unittest.TestCase):
         mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_call=self.status_call,
-                args_array=self.args_array))
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.es, status_call=self.status_call,
+                    args_array=self.args_array))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_display_default(self, mock_class):
@@ -346,9 +353,9 @@ class UnitTest(unittest.TestCase):
         mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_call=self.status_call,
-                args_array={}))
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.es, status_call=self.status_call, args_array={}))
 
 
 if __name__ == "__main__":

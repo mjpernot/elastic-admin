@@ -126,7 +126,6 @@ class UnitTest(unittest.TestCase):
         self.es = ElasticCluster()
         self.args_array = {"-F": "reponame"}
 
-
     @mock.patch("elastic_db_admin.elastic_class.ElasticDump")
     def test_no_repo(self, mock_class):
 
@@ -141,8 +140,8 @@ class UnitTest(unittest.TestCase):
         mock_class.return_value = ElasticDump(self.es.node, None, self.es.port)
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.failed_dumps(self.es,
-                                                           args_array={}))
+            self.assertFalse(
+                elastic_db_admin.failed_dumps(self.es, args_array={}))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticDump")
     @mock.patch("elastic_db_admin.elastic_libs.list_dumps")
@@ -158,11 +157,13 @@ class UnitTest(unittest.TestCase):
 
         mock_list.return_value = True
         mock_class.return_value = ElasticDump(self.es.node,
-                                              self.args_array["-F"],self.es.port)
+                                              self.args_array["-F"],
+                                              self.es.port)
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.failed_dumps(self.es,
-                args_array=self.args_array))
+            self.assertFalse(
+                elastic_db_admin.failed_dumps(self.es,
+                                              args_array=self.args_array))
 
 
 if __name__ == "__main__":

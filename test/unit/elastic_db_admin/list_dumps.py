@@ -163,8 +163,9 @@ class UnitTest(unittest.TestCase):
                                               self.es.port)
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.list_dumps(self.es,
-                args_array=self.args_array))
+            self.assertFalse(
+                elastic_db_admin.list_dumps(self.es,
+                                            args_array=self.args_array))
 
 
 if __name__ == "__main__":
