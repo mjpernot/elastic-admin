@@ -6,7 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [0.2.5] - 2019-08-16
 ### Fixed
-- check_status:  Added throwaway variables for gen_libs.merge_two_dicts call.
+- \_process_data:  Added throwaway variables for gen_libs.merge_two_dicts call.
 - failed_dumps:  Fixed mutable list/dictionary argument issue.
 - list_dumps:  Fixed mutable list/dictionary argument issue.
 - check_status:  Fixed mutable list/dictionary argument issue.
@@ -28,8 +28,8 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - list_nodes:  Changed variable to standard naming convention.
 
 ### Added
-- _process_data:  Private function for check_status().  Process data from database.
-- _get_data:  Private function for get_status().  Get data from database.
+- \_process_data:  Private function for check_status().  Process data from database.
+- \_get_data:  Private function for get_status().  Get data from database.
 
 
 ## [0.2.4] - 2018-11-19
