@@ -218,10 +218,10 @@ def get_status(es, **kwargs):
     """
 
     ec = elastic_class.ElasticStatus(es.node, es.port, **kwargs)
-
-    display_list = list(kwargs.get("args_array").get("-D", []))
-    json = kwargs.get("args_array").get("-j", False)
-    func_call = kwargs.get("status_call")
+    args_array = dict(kwargs.get("args_array"))
+    display_list = list(args_array.get("-D", []))
+    json = args_array.get("-j", False)
+    func_call = dict(kwargs.get("status_call"))
 
     if not display_list or "all" in display_list:
         print(ec.get_all(json))
@@ -235,9 +235,7 @@ def get_status(es, **kwargs):
             data = ec.get_cluster() + "\n" + ec.get_nodes()
 
         for opt in display_list:
-
             if opt in func_call:
-
                 if json:
                     # Call class method using option passed and merge results
                     data = \
@@ -307,9 +305,7 @@ def check_status(es, **kwargs):
         err_msg = ec.get_cluster(json)
 
         for opt in check_list:
-
             if opt in func_call:
-
                 results = getattr(ec, func_call[opt])(json,
                                                       cutoff_cpu=cutoff_cpu,
                                                       cutoff_mem=cutoff_mem,
