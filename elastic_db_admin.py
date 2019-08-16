@@ -383,7 +383,6 @@ def _process_data(check_list, err_flag, err_msg, ec, json, **kwargs):
 
                 else:
                     err_msg = err_msg + "\n" + results
-            print(err_msg)
 
         else:
             print("Warning:  Option '{%s}' is not supported" % (opt))
