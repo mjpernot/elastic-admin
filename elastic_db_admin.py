@@ -177,26 +177,26 @@ def failed_dumps(es, **kwargs):
         print("WARNING:  Repository name not set")
 
 
-def list_dumps(ES, **kwargs):
+def list_dumps(es, **kwargs):
 
     """Function:  list_dumps
 
     Description:  Lists the dumps under the current repository.
 
     Arguments:
-        (input) ES -> Elasticsearch class instance.
+        (input) es -> Elasticsearch class instance.
         (input) **kwargs:
             args_array -> Dict of command line options and values.
 
     """
 
-    ED = elastic_class.ElasticDump(ES.node,
+    ed = elastic_class.ElasticDump(es.node,
                                    kwargs.get("args_array").get("-L", None),
-                                   ES.port, **kwargs)
+                                   es.port, **kwargs)
 
-    if ED.repo_name:
+    if ed.repo_name:
         print("\n{0:25}".format("List of Dumps"))
-        elastic_libs.list_dumps(ED.dump_list, **kwargs)
+        elastic_libs.list_dumps(ed.dump_list, **kwargs)
 
     else:
         print("WARNING:  Repository name not set")
