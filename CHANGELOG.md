@@ -6,6 +6,8 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [0.2.5] - 2019-08-16
 ### Fixed
+- failed_dumps:  Fixed mutable list/dictionary argument issue.
+- list_dumps:  Fixed mutable list/dictionary argument issue.
 - check_status:  Fixed mutable list/dictionary argument issue.
 - run_program:  Fixed mutable list/dictionary argument issue.
 - get_status:  Replaced "gen_libs.merge_2_dicts" with "gen_libs.merge_two_dicts".
