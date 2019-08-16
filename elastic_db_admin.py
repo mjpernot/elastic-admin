@@ -270,11 +270,14 @@ def check_status(es, **kwargs):
 
     """
 
-    check_list = list(kwargs.get("args_array").get("-C", []))
-    json = kwargs.get("args_array").get("-j", False)
-    cutoff_mem = kwargs.get("args_array").get("-m", None)
-    cutoff_cpu = kwargs.get("args_array").get("-u", None)
-    cutoff_disk = kwargs.get("args_array").get("-p", None)
+    args_array = dict(kwargs.get("args_array"))
+    check_list = list(args_array.get("-C", []))
+    json = args_array.get("-j", False)
+    cutoff_mem = args_array.get("-m", None)
+    cutoff_cpu = args_array.get("-u", None)
+    cutoff_disk = args_array.get("-p", None)
+    func_call = dict(kwargs.get("check_call"))
+    cfg = kwargs.get("cfg")
 
     if cutoff_mem:
         cutoff_mem = int(cutoff_mem)
@@ -284,9 +287,6 @@ def check_status(es, **kwargs):
 
     if cutoff_disk:
         cutoff_disk = int(cutoff_disk)
-
-    func_call = kwargs.get("check_call")
-    cfg = kwargs.get("cfg")
 
     cfg_cutoff_mem = cfg.cutoff_mem if hasattr(cfg, "cutoff_mem") else None
     cfg_cutoff_cpu = cfg.cutoff_cpu if hasattr(cfg, "cutoff_cpu") else None
@@ -303,7 +303,6 @@ def check_status(es, **kwargs):
             print(err_msg)
 
     else:
-
         err_flag = False
         err_msg = ec.get_cluster(json)
 
