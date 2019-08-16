@@ -221,8 +221,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_call=self.status_call,
-                args_array=self.args_array7))
+                status_call=self.status_call, args_array=self.args_array7))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_json_one_option(self, mock_class):
@@ -239,8 +238,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_call=self.status_call,
-                args_array=self.args_array6))
+                status_call=self.status_call, args_array=self.args_array6))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_json_all(self, mock_class):
@@ -257,8 +255,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_call=self.status_call,
-                args_array=self.args_array5))
+                status_call=self.status_call, args_array=self.args_array5))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_json(self, mock_class):
@@ -275,8 +272,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_call=self.status_call,
-                args_array=self.args_array4))
+                status_call=self.status_call, args_array=self.args_array4))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_std_out_no_options(self, mock_class):
@@ -293,8 +289,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_call=self.status_call,
-                args_array=self.args_array3))
+                status_call=self.status_call, args_array=self.args_array3))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_std_out_one_option(self, mock_class):
@@ -311,8 +306,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_call=self.status_call,
-                args_array=self.args_array2))
+                status_call=self.status_call, args_array=self.args_array2))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_display_all(self, mock_class):
@@ -329,8 +323,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_call=self.status_call,
-                args_array=self.args_array))
+                status_call=self.status_call, args_array=self.args_array))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_display_default(self, mock_class):
@@ -347,8 +340,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.get_status(self.es,
-                status_call=self.status_call,
-                args_array={}))
+                status_call=self.status_call, args_array={}))
 
 
 if __name__ == "__main__":
