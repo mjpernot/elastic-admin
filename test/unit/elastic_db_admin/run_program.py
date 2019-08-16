@@ -143,7 +143,7 @@ class UnitTest(unittest.TestCase):
 
         mock_lock.ProgramLock = elastic_db_admin.gen_class.ProgramLock
         mock_class.return_value = "ElasticCluster"
-        mock_load = self.ct
+        mock_load.return_value = self.ct
 
         self.assertFalse(elastic_db_admin.run_program(self.args,
                                                       self.func_dict))
@@ -165,7 +165,7 @@ class UnitTest(unittest.TestCase):
 
         mock_lock.ProgramLock = elastic_db_admin.gen_class.ProgramLock
         mock_class.return_value = "ElasticCluster"
-        mock_load = self.ct
+        mock_load.return_value = self.ct
 
         self.assertFalse(elastic_db_admin.run_program(self.args,
                                                       self.func_dict))
@@ -185,7 +185,7 @@ class UnitTest(unittest.TestCase):
 
         mock_lock.ProgramLock = elastic_db_admin.gen_class.ProgramLock
         mock_class.return_value = "ElasticCluster"
-        mock_load = self.ct
+        mock_load.return_value = self.ct
 
         self.assertFalse(elastic_db_admin.run_program(self.args,
                                                       self.func_dict))
