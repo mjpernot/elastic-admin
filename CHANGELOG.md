@@ -4,10 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
-## [0.2.5] - 2019-08-15
+## [0.2.5] - 2019-08-16
 ### Fixed
+- check_status:  Fixed mutable list/dictionary argument issue.
+- run_program:  Fixed mutable list/dictionary argument issue.
 - get_status:  Replaced "gen_libs.merge_2_dicts" with "gen_libs.merge_two_dicts".
 - check_status:  Replaced "gen_libs.merge_2_dicts" with "gen_libs.merge_two_dicts".
+
+### Changed
+- main:  Refactored "if" statements.
+- run_program:  Changed variables to standard naming convention.
+- check_status:  Changed variables to standard naming convention.
+- get_status:  Changed variables to standard naming convention.
+- list_dumps:  Changed variables to standard naming convention.
+- failed_dumps:  Changed variables to standard naming convention.
+- list_master:  Changed variable to standard naming convention.
+- list_repos:  Changed variable to standard naming convention.
+- list_nodes:  Changed variable to standard naming convention.
 
 
 ## [0.2.4] - 2018-11-19
