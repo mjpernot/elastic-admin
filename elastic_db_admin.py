@@ -254,7 +254,7 @@ def get_status(es, **kwargs):
         print(data)
 
 
-def check_status(ES, **kwargs):
+def check_status(es, **kwargs):
 
     """Function:  check_status
 
@@ -262,7 +262,7 @@ def check_status(ES, **kwargs):
         Elasticsearch database cluster.
 
     Arguments:
-        (input) ES -> Elasticsearch class instance.
+        (input) es -> Elasticsearch class instance.
         (input) **kwargs:
             args_array -> Dict of command line options and values.
             check_call -> Contains class method names for the '-C' option.
@@ -292,11 +292,11 @@ def check_status(ES, **kwargs):
     cfg_cutoff_cpu = cfg.cutoff_cpu if hasattr(cfg, "cutoff_cpu") else None
     cfg_cutoff_disk = cfg.cutoff_disk if hasattr(cfg, "cutoff_disk") else None
 
-    EC = elastic_class.ElasticStatus(ES.node, ES.port, cfg_cutoff_mem,
+    ec = elastic_class.ElasticStatus(es.node, es.port, cfg_cutoff_mem,
                                      cfg_cutoff_cpu, cfg_cutoff_disk, **kwargs)
 
     if not check_list or "all" in check_list:
-        err_msg = EC.chk_all(json, cutoff_cpu=cutoff_cpu,
+        err_msg = ec.chk_all(json, cutoff_cpu=cutoff_cpu,
                              cutoff_mem=cutoff_mem, cutoff_disk=cutoff_disk)
 
         if err_msg:
@@ -305,13 +305,13 @@ def check_status(ES, **kwargs):
     else:
 
         err_flag = False
-        err_msg = EC.get_cluster(json)
+        err_msg = ec.get_cluster(json)
 
         for opt in check_list:
 
             if opt in func_call:
 
-                results = getattr(EC, func_call[opt])(json,
+                results = getattr(ec, func_call[opt])(json,
                                                       cutoff_cpu=cutoff_cpu,
                                                       cutoff_mem=cutoff_mem,
                                                       cutoff_disk=cutoff_disk)
