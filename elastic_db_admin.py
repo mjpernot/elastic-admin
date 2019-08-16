@@ -351,14 +351,14 @@ def run_program(args_array, func_dict, **kwargs):
     cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
 
     try:
-        PROG_LOCK = gen_class.ProgramLock(sys.argv, cfg.host)
+        prog_lock = gen_class.ProgramLock(sys.argv, cfg.host)
 
         # Intersect args_array & func_dict to find which functions to call.
         for opt in set(args_array.keys()) & set(func_dict.keys()):
-            ES = elastic_class.ElasticCluster(cfg.host, cfg.port, **kwargs)
-            func_dict[opt](ES, args_array=args_array, cfg=cfg, **kwargs)
+            es = elastic_class.ElasticCluster(cfg.host, cfg.port, **kwargs)
+            func_dict[opt](es, args_array=args_array, cfg=cfg, **kwargs)
 
-        del PROG_LOCK
+        del prog_lock
 
     except gen_class.SingleInstanceException:
         print("Warning:  elastic_db_admin lock in place for: %s" % (cfg.host))
