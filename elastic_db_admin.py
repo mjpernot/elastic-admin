@@ -136,19 +136,19 @@ def list_repos(es, **kwargs):
     elastic_libs.list_repos2(es.repo_dict)
 
 
-def list_master(ES, **kwargs):
+def list_master(es, **kwargs):
 
     """Function:  list_master
 
     Description:  Displays the current master node name.
 
     Arguments:
-        (input) ES -> Elasticsearch class instance.
+        (input) s-> Elasticsearch class instance.
 
     """
 
     print("\n{0:25}".format("Master Node"))
-    print("{0:25}".format(ES.master))
+    print("{0:25}".format(es.master))
 
 
 def failed_dumps(ES, **kwargs):
