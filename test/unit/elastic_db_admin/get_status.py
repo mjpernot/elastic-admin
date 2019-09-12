@@ -41,10 +41,6 @@ class ElasticStatus(object):
 
     Description:  Class representation of the ElasticStatus class.
 
-    Super-Class:  object
-
-    Sub-Classes:
-
     Methods:
         __init__ -> Initialize configuration environment.
         get_mem_status -> Stub holder for ElasticStatus.get_mem_status method.
@@ -140,10 +136,6 @@ class ElasticCluster(object):
 
     Description:  Class representation of the ElasticCluster class.
 
-    Super-Class:  object
-
-    Sub-Classes:
-
     Methods:
         __init__ -> Initialize configuration environment.
 
@@ -169,12 +161,9 @@ class UnitTest(unittest.TestCase):
 
     Description:  Class which is a representation of a unit testing.
 
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:
-
     Methods:
         setUp -> Initialization for unit testing.
+        test_empty_display_list -> Test with empty display list.
         test_incorrect_option -> Test with incorrect option.
         test_json_one_option -> Test with JSON format with one option.
         test_json_all -> Test with JSON format with all option.
@@ -204,7 +193,27 @@ class UnitTest(unittest.TestCase):
         self.args_array5 = {"-D": ["all"], "-j": True}
         self.args_array6 = {"-D": ["memory"], "-j": True}
         self.args_array7 = {"-D": ["incorrect"], "-j": True}
+        self.args_array8 = {"-D": []}
         self.status_call = {"memory": "get_mem_status"}
+
+    @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
+    def test_empty_display_list(self, mock_class):
+
+        """Function:  test_empty_display_list
+
+        Description:  Test with empty display list.
+
+        Arguments:
+
+        """
+
+        mock_class.return_value = ElasticStatus(self.es.node, self.es.port)
+
+        with gen_libs.no_std_out():
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.es, status_call=self.status_call,
+                    args_array=self.args_array8))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticStatus")
     def test_incorrect_option(self, mock_class):
