@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
-## [0.2.5] - 2019-08-16
+## [0.2.5] - 2019-09-12
 ### Fixed
 - \_get_data:  Added throwaway variables for gen_libs.merge_two_dicts call.
 - get_status:  Added throwaway variables for gen_libs.merge_two_dicts call.
