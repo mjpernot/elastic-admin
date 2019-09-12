@@ -40,10 +40,6 @@ class ElasticStatus(object):
 
     Description:  Class representation of the ElasticStatus class.
 
-    Super-Class:  object
-
-    Sub-Classes:
-
     Methods:
         __init__ -> Initialize configuration environment.
         get_mem_status -> Stub holder for ElasticStatus.get_mem_status method.
@@ -138,10 +134,6 @@ class UnitTest(unittest.TestCase):
     """Class:  UnitTest
 
     Description:  Class which is a representation of a unit testing.
-
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:
 
     Methods:
         setUp -> Initialization for unit testing.

@@ -23,9 +23,9 @@ pipeline {
                 sh """
                 virtualenv test_env
                 source test_env/bin/activate
-                pip2 install mock --user
-                pip2 install elasticsearch --user
-                pip2 install requests --user
+                pip2 install mock==2.0.0 --user
+                pip2 install elasticsearch==7.0.2 --user
+                pip2 install requests==2.22.0 --user
                 ./test/unit/elastic_db_admin/check_status.py
                 ./test/unit/elastic_db_admin/failed_dumps.py
                 ./test/unit/elastic_db_admin/get_data.py

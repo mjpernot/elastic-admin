@@ -40,10 +40,6 @@ class ElasticCluster(object):
 
     Description:  Class representation of the ElasticCluster class.
 
-    Super-Class:  object
-
-    Sub-Classes:
-
     Methods:
         __init__ -> Initialize configuration environment.
 
@@ -68,12 +64,9 @@ class UnitTest(unittest.TestCase):
 
     Description:  Class which is a representation of a unit testing.
 
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:
-
     Methods:
         setUp -> Initialization for unit testing.
+        test_empty_list_nodes -> Test with empty list for nodes.
         test_list_nodes -> Test list_nodes function.
 
     """
@@ -89,6 +82,21 @@ class UnitTest(unittest.TestCase):
         """
 
         self.es = ElasticCluster()
+
+    def test_empty_list_nodes(self):
+
+        """Function:  test_empty_list_nodes
+
+        Description:  Test with empty list for nodes.
+
+        Arguments:
+
+        """
+
+        self.es.nodes = []
+
+        with gen_libs.no_std_out():
+            self.assertFalse(elastic_db_admin.list_nodes(self.es))
 
     def test_list_nodes(self):
 
