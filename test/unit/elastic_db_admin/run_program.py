@@ -118,6 +118,30 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("elastic_db_admin.gen_libs.load_module")
     @mock.patch("elastic_db_admin.elastic_class.ElasticCluster")
+    @mock.patch("elastic_db_admin.gen_class.ProgramLock")
+    def test_raise_exception(self, mock_lock, mock_class, mock_load):
+
+        """Function:  test_raise_exception
+
+        Description:  Test with raising exception.
+
+        Arguments:
+
+        """
+
+        self.args["-F"] = True
+
+        mock_lock.side_effect = \
+            elastic_db_admin.gen_class.SingleInstanceException
+        mock_class.return_value = "ElasticCluster"
+        mock_load.return_value = self.ct
+
+        with gen_libs.no_std_out():
+            self.assertFalse(elastic_db_admin.run_program(self.args,
+                                                          self.func_dict))
+
+    @mock.patch("elastic_db_admin.gen_libs.load_module")
+    @mock.patch("elastic_db_admin.elastic_class.ElasticCluster")
     @mock.patch("elastic_db_admin.gen_class")
     def test_func_call_multi(self, mock_lock, mock_class, mock_load):
 
