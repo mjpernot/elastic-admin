@@ -117,11 +117,11 @@ class ElasticStatus(object):
         return self.all_err_msg
 
 
-class ElasticCluster(object):
+class ElasticSearch(object):
 
-    """Class:  ElasticCluster
+    """Class:  ElasticSearch
 
-    Description:  Class representation of the ElasticCluster class.
+    Description:  Class representation of the ElasticSearch class.
 
     Methods:
         __init__ -> Initialize configuration environment.
@@ -180,7 +180,7 @@ class UnitTest(unittest.TestCase):
         self.mem = 90
         self.cpu = 95
         self.disk = 80
-        self.es = ElasticCluster()
+        self.es = ElasticSearch()
         self.args_array = {"-C": ["all"]}
         self.args_array2 = {"-C": ["memory"]}
         self.args_array3 = {"-C": []}

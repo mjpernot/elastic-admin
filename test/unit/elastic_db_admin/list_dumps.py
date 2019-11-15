@@ -65,11 +65,11 @@ class ElasticDump(object):
         self.dump_list = ["dump1", "dump2"]
 
 
-class ElasticCluster(object):
+class ElasticSearch(object):
 
-    """Class:  ElasticCluster
+    """Class:  ElasticSearch
 
-    Description:  Class representation of the ElasticCluster class.
+    Description:  Class representation of the ElasticSearch class.
 
     Methods:
         __init__ -> Initialize configuration environment.
@@ -113,7 +113,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.es = ElasticCluster()
+        self.es = ElasticSearch()
         self.args_array = {"-L": "reponame"}
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticDump")

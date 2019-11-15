@@ -130,11 +130,11 @@ class ElasticStatus(object):
         return True
 
 
-class ElasticCluster(object):
+class ElasticSearch(object):
 
-    """Class:  ElasticCluster
+    """Class:  ElasticSearch
 
-    Description:  Class representation of the ElasticCluster class.
+    Description:  Class representation of the ElasticSearch class.
 
     Methods:
         __init__ -> Initialize configuration environment.
@@ -185,7 +185,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.es = ElasticCluster()
+        self.es = ElasticSearch()
         self.args_array = {"-D": ["all"]}
         self.args_array2 = {"-D": ["memory"]}
         self.args_array3 = {"-D": []}
