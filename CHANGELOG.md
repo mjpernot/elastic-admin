@@ -8,11 +8,16 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Breaking Change
 
 ### Changed
+- get_status:  Removed -j option.
+- \_get_data:  Removed -j option.
 - get_status:  Replaced ElasticStatus with ElasticSearchStatus class instance call.
 - check_status:  Replaced ElasticStatus with ElasticSearchStatus class instance call.
 - run_program:  Replaced ElasticCluster with ElasticSearch class instance call.
 - Documentation update.
 - elastic.py.TEMPLATE:  Changed host variable to cluster setting.
+
+### Removed
+- Removed -j option (JSON formatting) as it's the only format available when checking.
 
 
 ## [0.2.5] - 2019-09-12

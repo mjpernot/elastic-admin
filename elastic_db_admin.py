@@ -8,7 +8,7 @@
     Usage:
         elastic_db_admin.py -c file -d path {-L [repo_name] | -R | -M | -N |
         -D [option1 {option2 ...}] | -D [option1 {option2 ...}] |
-        -F [repo_name] {-j} {-m value | -u value} [-v | -h]
+        -F [repo_name] {-m value | -u value} [-v | -h]
 
     Arguments:
         -C [all | general | memory | node | server | shard | disk] => Check
@@ -40,7 +40,6 @@
         -N => List the nodes in the Elasticsearch cluster.
         -c file => ISSE Guard configuration file.  Required argument.
         -d dir path => Directory path for option '-c'.  Required argument.
-        -j => Display output in JSON format, if possible.
         -m value => Threshold cutoff for memory usage.  Used with '-C' option.
         -u value => Threshold cutoff for cpu usage.  Used with '-C' option.
         -p value => Threshold cutoff for disk usage.  Used with '-C' option.
@@ -220,26 +219,20 @@ def get_status(es, **kwargs):
     ec = elastic_class.ElasticSearchStatus(es.node, es.port, **kwargs)
     args_array = dict(kwargs.get("args_array"))
     display_list = list(args_array.get("-D", []))
-    json = args_array.get("-j", False)
 
     if not display_list or "all" in display_list:
-        print(ec.get_all(json))
+        print(ec.get_all())
 
     else:
-        if json:
-            data, _, _ = gen_libs.merge_two_dicts(ec.get_cluster(json),
-                                                  ec.get_nodes(json))
-
-        else:
-            data = ec.get_cluster() + "\n" + ec.get_nodes()
+        data, _, _ = gen_libs.merge_two_dicts(ec.get_cluster(), ec.get_nodes())
 
         for opt in display_list:
-            data = _get_data(json, data, ec, opt, **kwargs)
+            data = _get_data(data, ec, opt, **kwargs)
 
         print(data)
 
 
-def _get_data(json, data, ec, opt, **kwargs):
+def _get_data(data, ec, opt, **kwargs):
 
     """Function:  _get_data
 
@@ -247,7 +240,6 @@ def _get_data(json, data, ec, opt, **kwargs):
         Elasticsearch database.
 
     Arguments:
-        (input) json -> True|False - Data to be formatted as JSON.
         (input) data -> Data results.
         (input) ec -> Elasticsearch status class instance.
         (input) opt -> Method to run in class instance.
@@ -259,18 +251,11 @@ def _get_data(json, data, ec, opt, **kwargs):
 
     func_call = dict(kwargs.get("status_call"))
 
-    if json:
-        data = dict(data)
+    data = dict(data)
 
     if opt in func_call:
-        if json:
-            # Call class method using option passed and merge results
-            data, _, _ = gen_libs.merge_two_dicts(
-                data, getattr(ec, func_call[opt])(json))
-
-        else:
-            # Call method using option passed & concatenate results
-            data = data + "\n" + getattr(ec, func_call[opt])()
+        data, _, _ = gen_libs.merge_two_dicts(data,
+                                              getattr(ec, func_call[opt])())
 
     else:
         print("Warning:  Option '{%s}' is not supported" % (opt))
@@ -435,7 +420,7 @@ def main():
 
     Variables:
         check_call -> contains '-C' option values and associated
-            Elastic_Status class method names.
+            ElasticSearchStatus class method names.
         dir_chk_list -> contains options which will be directories.
         func_dict -> dictionary list for the function calls or other options.
         opt_def_dict -> contains options with their default values.
@@ -444,7 +429,7 @@ def main():
         opt_val -> List of options that allow 0 or 1 value for option.
         opt_val_list -> contains options which require values.
         status_call -> contains '-D' option values and associated
-            Elastic_Status class method names.
+            ElasticSearchStatus class method names.
 
     Arguments:
         (input) argv -> Arguments from the command line.
