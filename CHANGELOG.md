@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.2.6] - 2019-11-15
+- Breaking Change
+
+### Changed
+- run_program:  Replaced ElasticCluster with ElasticSearch class instance call.
+
+
 ## [0.2.5] - 2019-09-12
 ### Fixed
 - \_get_data:  Added throwaway variables for gen_libs.merge_two_dicts call.
