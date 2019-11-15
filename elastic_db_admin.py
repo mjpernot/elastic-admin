@@ -57,7 +57,7 @@
         database.
 
             # Elasticsearch configuration file.
-            host = "HOSTNAME"
+            host = ["HOST_NAME1", "HOST_NAME2"]
             port = PORT_NUMBER (default of Elasticsearch is 9200)
             # Threshold cutoff for Memory check in whole numbers
             cutoff_mem = 75
