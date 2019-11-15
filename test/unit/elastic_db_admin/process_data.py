@@ -69,14 +69,13 @@ class ElasticSearchStatus(object):
         self.cluster_err_msg = None
         self.mem_err_msg = None
 
-    def chk_mem(self, json, cutoff_cpu, cutoff_mem, cutoff_disk):
+    def chk_mem(self, cutoff_cpu, cutoff_mem, cutoff_disk):
 
         """Method:  chk_mem
 
         Description:  Stub holder for ElasticSearchStatus.chk_mem method.
 
         Arguments:
-            (input) json -> True|False - JSON format.
             (input) cutoff_cpu -> CPU cutoff value.
             (input) cutoff_mem -> Memory cutoff value.
             (input) cutoff_disk -> Disk cutoff value.
@@ -85,27 +84,25 @@ class ElasticSearchStatus(object):
 
         return self.mem_err_msg
 
-    def get_cluster(self, json=True):
+    def get_cluster(self):
 
         """Method:  get_cluster
 
         Description:  Stub holder for ElasticSearchStatus.get_cluster method.
 
         Arguments:
-            (input) json -> True|False - JSON format.
 
         """
 
         return self.cluster_err_msg
 
-    def chk_all(self, json, cutoff_cpu, cutoff_mem, cutoff_disk):
+    def chk_all(self, cutoff_cpu, cutoff_mem, cutoff_disk):
 
         """Method:  chk_all
 
         Description:  Stub holder for ElasticSearchStatus.chk_all method.
 
         Arguments:
-            (input) json -> True|False - JSON format.
             (input) cutoff_cpu -> CPU cutoff value.
             (input) cutoff_mem -> Memory cutoff value.
             (input) cutoff_disk -> Disk cutoff value.
@@ -123,11 +120,9 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialization for unit testing.
-        test_std_one_option_error -> Test std format with option with error.
-        test_json_one_option_error -> Test JSON format one option with error.
+        test_one_option_error -> Test with one option with error.
         test_incorrect_option -> Test with incorrect option.
-        test_json_one_option -> Test with JSON format with one option.
-        test_std_out_one_option -> Test with standard out with one option.
+        test_one_option -> Test with one option.
 
     """
 
@@ -153,36 +148,12 @@ class UnitTest(unittest.TestCase):
         self.err_msg = {}
         self.err_msg2 = ""
         self.err_msg3 = {"Error": True}
-        self.json = True
-        self.json2 = False
 
-    def test_std_one_option_error(self):
+    def test_one_option_error(self):
 
-        """Function:  test_std_one_option_error
+        """Function:  test_one_option_error
 
-        Description:  Test with std format with one option with error.
-
-        Arguments:
-
-        """
-
-        self.es.mem_err_msg = "Err: Error Message"
-        self.es.cluster_err_msg = ""
-
-        with gen_libs.no_std_out():
-            self.assertEqual(
-                elastic_db_admin._process_data(
-                    self.check_list, self.err_flag, self.err_msg2, self.es,
-                    self.json2, check_call=self.check_call,
-                    cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
-                    cutoff_disk=self.cutoff_disk),
-                (True, "\nErr: Error Message"))
-
-    def test_json_one_option_error(self):
-
-        """Function:  test_json_one_option_error
-
-        Description:  Test with JSON format with one option with error.
+        Description:  Test with one option with error.
 
         Arguments:
 
@@ -194,9 +165,8 @@ class UnitTest(unittest.TestCase):
         self.assertEqual(
             elastic_db_admin._process_data(
                 self.check_list, self.err_flag, self.err_msg3, self.es,
-                self.json, check_call=self.check_call,
-                cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
-                cutoff_disk=self.cutoff_disk),
+                check_call=self.check_call, cutoff_cpu=self.cutoff_cpu,
+                cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk),
             (True, {"Err": "Error Message", "Error": True}))
 
     def test_incorrect_option(self):
@@ -213,15 +183,15 @@ class UnitTest(unittest.TestCase):
             self.assertEqual(
                 elastic_db_admin._process_data(
                     self.check_list2, self.err_flag, self.err_msg, self.es,
-                    self.json, check_call=self.check_call,
-                    cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
-                    cutoff_disk=self.cutoff_disk), (False, {}))
+                    check_call=self.check_call, cutoff_cpu=self.cutoff_cpu,
+                    cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk),
+                (False, {}))
 
-    def test_json_one_option(self):
+    def test_one_option(self):
 
-        """Function:  test_json_one_option
+        """Function:  test_one_option
 
-        Description:  Test with JSON format with one option.
+        Description:  Test with one option.
 
         Arguments:
 
@@ -230,26 +200,9 @@ class UnitTest(unittest.TestCase):
         self.assertEqual(
             elastic_db_admin._process_data(
                 self.check_list, self.err_flag, self.err_msg, self.es,
-                self.json, check_call=self.check_call,
-                cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
-                cutoff_disk=self.cutoff_disk), (False, {}))
-
-    def test_std_out_one_option(self):
-
-        """Function:  test_std_out_one_option
-
-        Description:  Test with standard out with one option.
-
-        Arguments:
-
-        """
-
-        self.assertEqual(
-            elastic_db_admin._process_data(
-                self.check_list, self.err_flag, self.err_msg2, self.es,
-                self.json2, check_call=self.check_call,
-                cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
-                cutoff_disk=self.cutoff_disk), (False, ""))
+                check_call=self.check_call, cutoff_cpu=self.cutoff_cpu,
+                cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk),
+            (False, {}))
 
 
 if __name__ == "__main__":
