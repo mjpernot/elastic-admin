@@ -117,7 +117,7 @@ class UnitTest(unittest.TestCase):
         self.func_dict = {"-F": failed_dumps, "-L": list_dumps}
 
     @mock.patch("elastic_db_admin.gen_libs.load_module")
-    @mock.patch("elastic_db_admin.elastic_class.ElasticCluster")
+    @mock.patch("elastic_db_admin.elastic_class.ElasticSearch")
     @mock.patch("elastic_db_admin.gen_class.ProgramLock")
     def test_raise_exception(self, mock_lock, mock_class, mock_load):
 
@@ -141,7 +141,7 @@ class UnitTest(unittest.TestCase):
                                                           self.func_dict))
 
     @mock.patch("elastic_db_admin.gen_libs.load_module")
-    @mock.patch("elastic_db_admin.elastic_class.ElasticCluster")
+    @mock.patch("elastic_db_admin.elastic_class.ElasticSearch")
     @mock.patch("elastic_db_admin.gen_class")
     def test_func_call_multi(self, mock_lock, mock_class, mock_load):
 
@@ -165,7 +165,7 @@ class UnitTest(unittest.TestCase):
                                                       self.func_dict))
 
     @mock.patch("elastic_db_admin.gen_libs.load_module")
-    @mock.patch("elastic_db_admin.elastic_class.ElasticCluster")
+    @mock.patch("elastic_db_admin.elastic_class.ElasticSearch")
     @mock.patch("elastic_db_admin.gen_class")
     def test_func_call_one(self, mock_lock, mock_class, mock_load):
 
@@ -187,7 +187,7 @@ class UnitTest(unittest.TestCase):
                                                       self.func_dict))
 
     @mock.patch("elastic_db_admin.gen_libs.load_module")
-    @mock.patch("elastic_db_admin.elastic_class.ElasticCluster")
+    @mock.patch("elastic_db_admin.elastic_class.ElasticSearch")
     @mock.patch("elastic_db_admin.gen_class")
     def test_func_call_zero(self, mock_lock, mock_class, mock_load):
 
