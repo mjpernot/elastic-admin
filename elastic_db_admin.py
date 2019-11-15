@@ -281,7 +281,6 @@ def check_status(es, **kwargs):
 
     args_array = dict(kwargs.get("args_array"))
     check_list = list(args_array.get("-C", []))
-    json = args_array.get("-j", False)
     cutoff_mem = args_array.get("-m", None)
     cutoff_cpu = args_array.get("-u", None)
     cutoff_disk = args_array.get("-p", None)
@@ -305,18 +304,18 @@ def check_status(es, **kwargs):
                                            **kwargs)
 
     if not check_list or "all" in check_list:
-        err_msg = ec.chk_all(json, cutoff_cpu=cutoff_cpu,
-                             cutoff_mem=cutoff_mem, cutoff_disk=cutoff_disk)
+        err_msg = ec.chk_all(cutoff_cpu=cutoff_cpu, cutoff_mem=cutoff_mem,
+                             cutoff_disk=cutoff_disk)
 
         if err_msg:
             print(err_msg)
 
     else:
         err_flag = False
-        err_msg = ec.get_cluster(json)
+        err_msg = ec.get_cluster()
 
         err_flag, err_msg = _process_data(check_list, err_flag, err_msg, ec,
-                                          json, cutoff_cpu=cutoff_cpu,
+                                          cutoff_cpu=cutoff_cpu,
                                           cutoff_mem=cutoff_mem,
                                           cutoff_disk=cutoff_disk, **kwargs)
 
@@ -324,7 +323,7 @@ def check_status(es, **kwargs):
             print(err_msg)
 
 
-def _process_data(check_list, err_flag, err_msg, ec, json, **kwargs):
+def _process_data(check_list, err_flag, err_msg, ec, **kwargs):
 
     """Function:  _process_data
 
@@ -336,7 +335,6 @@ def _process_data(check_list, err_flag, err_msg, ec, json, **kwargs):
         (input) err_flag -> True|False - Status of results.
         (input) err_msg -> Error message(s).
         (input) ec -> Elasticsearch status class instance.
-        (input) json -> True|False - Data to be formatted as JSON.
         (input) **kwargs:
             check_call -> Contains class method names for the '-C' option.
             cutoff_cpu -> Cutoff value for CPU usage.
@@ -353,23 +351,19 @@ def _process_data(check_list, err_flag, err_msg, ec, json, **kwargs):
     cutoff_mem = kwargs.get("cutoff_mem")
     cutoff_disk = kwargs.get("cutoff_disk")
 
-    if json and err_msg:
+    if err_msg:
         err_msg = dict(err_msg)
 
     for opt in check_list:
         if opt in func_call:
-            results = getattr(ec, func_call[opt])(json, cutoff_cpu=cutoff_cpu,
+            results = getattr(ec, func_call[opt])(cutoff_cpu=cutoff_cpu,
                                                   cutoff_mem=cutoff_mem,
                                                   cutoff_disk=cutoff_disk)
 
             if results:
                 err_flag = True
 
-                if json:
-                    err_msg, _, _ = gen_libs.merge_two_dicts(err_msg, results)
-
-                else:
-                    err_msg = err_msg + "\n" + results
+                err_msg, _, _ = gen_libs.merge_two_dicts(err_msg, results)
 
         else:
             print("Warning:  Option '{%s}' is not supported" % (opt))

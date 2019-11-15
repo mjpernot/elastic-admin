@@ -8,6 +8,8 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Breaking Change
 
 ### Changed
+- check_status:  Removed -j option.
+- \_process_data:  Removed -j option.
 - get_status:  Removed -j option.
 - \_get_data:  Removed -j option.
 - get_status:  Replaced ElasticStatus with ElasticSearchStatus class instance call.
