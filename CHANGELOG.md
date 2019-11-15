@@ -8,9 +8,10 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Breaking Change
 
 ### Changed
-- elastic.py.TEMPLATE:  Changed host variable to cluster setting.
+- check_status:  Replaced ElasticStatus with ElasticSearchStatus class instance call.
 - run_program:  Replaced ElasticCluster with ElasticSearch class instance call.
 - Documentation update.
+- elastic.py.TEMPLATE:  Changed host variable to cluster setting.
 
 
 ## [0.2.5] - 2019-09-12

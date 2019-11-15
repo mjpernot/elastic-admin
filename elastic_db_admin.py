@@ -315,8 +315,9 @@ def check_status(es, **kwargs):
     cfg_cutoff_cpu = cfg.cutoff_cpu if hasattr(cfg, "cutoff_cpu") else None
     cfg_cutoff_disk = cfg.cutoff_disk if hasattr(cfg, "cutoff_disk") else None
 
-    ec = elastic_class.ElasticStatus(es.node, es.port, cfg_cutoff_mem,
-                                     cfg_cutoff_cpu, cfg_cutoff_disk, **kwargs)
+    ec = elastic_class.ElasticSearchStatus(es.node, es.port, cfg_cutoff_mem,
+                                           cfg_cutoff_cpu, cfg_cutoff_disk,
+                                           **kwargs)
 
     if not check_list or "all" in check_list:
         err_msg = ec.chk_all(json, cutoff_cpu=cutoff_cpu,
