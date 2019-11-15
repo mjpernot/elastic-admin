@@ -133,7 +133,7 @@ class UnitTest(unittest.TestCase):
 
         mock_lock.side_effect = \
             elastic_db_admin.gen_class.SingleInstanceException
-        mock_class.return_value = "ElasticCluster"
+        mock_class.return_value = "ElasticSearch"
         mock_load.return_value = self.ct
 
         with gen_libs.no_std_out():
@@ -158,7 +158,7 @@ class UnitTest(unittest.TestCase):
         self.args["-L"] = True
 
         mock_lock.ProgramLock = elastic_db_admin.gen_class.ProgramLock
-        mock_class.return_value = "ElasticCluster"
+        mock_class.return_value = "ElasticSearch"
         mock_load.return_value = self.ct
 
         self.assertFalse(elastic_db_admin.run_program(self.args,
@@ -180,7 +180,7 @@ class UnitTest(unittest.TestCase):
         self.args["-F"] = True
 
         mock_lock.ProgramLock = elastic_db_admin.gen_class.ProgramLock
-        mock_class.return_value = "ElasticCluster"
+        mock_class.return_value = "ElasticSearch"
         mock_load.return_value = self.ct
 
         self.assertFalse(elastic_db_admin.run_program(self.args,
@@ -200,7 +200,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_lock.ProgramLock = elastic_db_admin.gen_class.ProgramLock
-        mock_class.return_value = "ElasticCluster"
+        mock_class.return_value = "ElasticSearch"
         mock_load.return_value = self.ct
 
         self.assertFalse(elastic_db_admin.run_program(self.args,
