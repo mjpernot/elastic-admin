@@ -417,7 +417,7 @@ def run_program(args_array, func_dict, **kwargs):
 
         # Intersect args_array & func_dict to find which functions to call.
         for opt in set(args_array.keys()) & set(func_dict.keys()):
-            es = elastic_class.ElasticCluster(cfg.host, cfg.port, **kwargs)
+            es = elastic_class.ElasticSearch(cfg.host, cfg.port, **kwargs)
             func_dict[opt](es, args_array=args_array, cfg=cfg, **kwargs)
 
         del prog_lock
