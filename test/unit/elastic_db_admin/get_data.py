@@ -34,18 +34,18 @@ import version
 __version__ = version.__version__
 
 
-class ElasticStatus(object):
+class ElasticSearchStatus(object):
 
-    """Class:  ElasticStatus
+    """Class:  ElasticSearchStatus
 
-    Description:  Class representation of the ElasticStatus class.
+    Description:  Class representation of the ElasticSearchStatus class.
 
     Methods:
         __init__ -> Initialize configuration environment.
-        get_mem_status -> Stub holder for ElasticStatus.get_mem_status method.
-        get_nodes -> Stub holder for ElasticStatus.get_nodes method.
-        get_cluster -> Stub holder for ElasticStatus.get_cluster method.
-        get_all -> Stub holder for ElasticStatus.get_all method.
+        get_mem_status -> Holder for ElasticSearchStatus.get_mem_status method.
+        get_nodes -> Stub holder for ElasticSearchStatus.get_nodes method.
+        get_cluster -> Stub holder for ElasticSearchStatus.get_cluster method.
+        get_all -> Stub holder for ElasticSearchStatus.get_all method.
 
     """
 
@@ -68,7 +68,7 @@ class ElasticStatus(object):
 
         """Method:  get_mem_status
 
-        Description:  Stub holder for ElasticStatus.get_mem_status method.
+        Description:  Holder for ElasticSearchStatus.get_mem_status method.
 
         Arguments:
             (input) json -> True|False - JSON format.
@@ -85,7 +85,7 @@ class ElasticStatus(object):
 
         """Method:  get_nodes
 
-        Description:  Stub holder for ElasticStatus.get_nodes method.
+        Description:  Stub holder for ElasticSearchStatus.get_nodes method.
 
         Arguments:
             (input) json -> True|False - JSON format.
@@ -102,7 +102,7 @@ class ElasticStatus(object):
 
         """Method:  get_cluster
 
-        Description:  Stub holder for ElasticStatus.get_cluster method.
+        Description:  Stub holder for ElasticSearchStatus.get_cluster method.
 
         Arguments:
             (input) json -> True|False - JSON format.
@@ -119,7 +119,7 @@ class ElasticStatus(object):
 
         """Method:  get_all
 
-        Description:  Stub holder for ElasticStatus.get_all method.
+        Description:  Stub holder for ElasticSearchStatus.get_all method.
 
         Arguments:
             (input) json -> True|False - JSON format.
@@ -154,7 +154,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.es = ElasticStatus("nodename", 1234)
+        self.es = ElasticSearchStatus("nodename", 1234)
         self.status_call = {"memory": "get_mem_status"}
         self.json = True
         self.json2 = False

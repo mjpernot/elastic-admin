@@ -34,17 +34,17 @@ import version
 __version__ = version.__version__
 
 
-class ElasticStatus(object):
+class ElasticSearchStatus(object):
 
-    """Class:  ElasticStatus
+    """Class:  ElasticSearchStatus
 
-    Description:  Class representation of the ElasticStatus class.
+    Description:  Class representation of the ElasticSearchStatus class.
 
     Methods:
         __init__ -> Initialize configuration environment.
-        chk_mem -> Stub holder for ElasticStatus.chk_mem method.
-        get_cluster -> Stub holder for ElasticStatus.get_cluster method.
-        chk_all -> Stub holder for ElasticStatus.chk_all method.
+        chk_mem -> Stub holder for ElasticSearchStatus.chk_mem method.
+        get_cluster -> Stub holder for ElasticSearchStatus.get_cluster method.
+        chk_all -> Stub holder for ElasticSearchStatus.chk_all method.
 
     """
 
@@ -73,7 +73,7 @@ class ElasticStatus(object):
 
         """Method:  chk_mem
 
-        Description:  Stub holder for ElasticStatus.chk_mem method.
+        Description:  Stub holder for ElasticSearchStatus.chk_mem method.
 
         Arguments:
             (input) json -> True|False - JSON format.
@@ -89,7 +89,7 @@ class ElasticStatus(object):
 
         """Method:  get_cluster
 
-        Description:  Stub holder for ElasticStatus.get_cluster method.
+        Description:  Stub holder for ElasticSearchStatus.get_cluster method.
 
         Arguments:
             (input) json -> True|False - JSON format.
@@ -102,7 +102,7 @@ class ElasticStatus(object):
 
         """Method:  chk_all
 
-        Description:  Stub holder for ElasticStatus.chk_all method.
+        Description:  Stub holder for ElasticSearchStatus.chk_all method.
 
         Arguments:
             (input) json -> True|False - JSON format.
@@ -144,8 +144,8 @@ class UnitTest(unittest.TestCase):
         self.cutoff_cpu = 90
         self.cutoff_mem = 95
         self.cutoff_disk = 80
-        self.es = ElasticStatus("nodename", 1234, self.cutoff_cpu,
-                                self.cutoff_mem, self.cutoff_disk)
+        self.es = ElasticSearchStatus("nodename", 1234, self.cutoff_cpu,
+                                      self.cutoff_mem, self.cutoff_disk)
         self.check_call = {"memory": "chk_mem"}
         self.check_list = ["memory"]
         self.check_list2 = ["incorrect"]
