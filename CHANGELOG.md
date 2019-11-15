@@ -8,6 +8,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Breaking Change
 
 ### Changed
+- get_status:  Replaced ElasticStatus with ElasticSearchStatus class instance call.
 - check_status:  Replaced ElasticStatus with ElasticSearchStatus class instance call.
 - run_program:  Replaced ElasticCluster with ElasticSearch class instance call.
 - Documentation update.
