@@ -265,9 +265,8 @@ def _get_data(json, data, ec, opt, **kwargs):
     if opt in func_call:
         if json:
             # Call class method using option passed and merge results
-            data, _, _ = \
-                gen_libs.merge_two_dicts(data, getattr(ec,
-                                                       func_call[opt])(json))
+            data, _, _ = gen_libs.merge_two_dicts(
+                data, getattr(ec, func_call[opt])(json))
 
         else:
             # Call method using option passed & concatenate results
