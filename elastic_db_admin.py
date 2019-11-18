@@ -212,11 +212,11 @@ def list_dumps(es, **kwargs):
     print("\n{0:25}".format("List of Dumps:"))
 
     if repo:
-        prt_dumps(es, repo)
+        print_dumps(es, repo)
 
     else:
         for repo in elastic_class.get_repo_list(es):
-            prt_dumps(es, repo)
+            print_dumps(es, repo)
 
 
 def get_status(es, **kwargs):
