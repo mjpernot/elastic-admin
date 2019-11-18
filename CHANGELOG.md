@@ -7,7 +7,11 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ## [0.2.6] - 2019-11-15
 - Breaking Change
 
+### Added
+- print_dumps:  Print the dumps in the current repository.
+
 ### Changed
+- list_dumps:  Refactored the function to print dumps in current repository or all repositories.
 - check_status:  Removed -j option.
 - \_process_data:  Removed -j option.
 - get_status:  Removed -j option.
