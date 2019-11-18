@@ -35,33 +35,6 @@ import version
 __version__ = version.__version__
 
 
-class ElasticDump(object):
-
-    """Class:  ElasticDump
-
-    Description:  Class representation of the ElasticDump class.
-
-    Methods:
-        __init__ -> Initialize configuration environment.
-
-    """
-
-    def __init__(self, node, repo, port):
-
-        """Method:  __init__
-
-        Description:  Initialization instance of the class.
-
-        Arguments:
-            (input) node -> Node name.
-            (input) repo -> Repoistory name.
-            (input) port -> Port number.
-
-        """
-
-        self.repo_name = repo
-
-
 class ElasticSearch(object):
 
     """Class:  ElasticSearch
