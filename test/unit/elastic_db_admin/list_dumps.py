@@ -35,36 +35,6 @@ import version
 __version__ = version.__version__
 
 
-class ElasticDump(object):
-
-    """Class:  ElasticDump
-
-    Description:  Class representation of the ElasticDump class.
-
-    Methods:
-        __init__ -> Initialize configuration environment.
-
-    """
-
-    def __init__(self, node, repo, port):
-
-        """Method:  __init__
-
-        Description:  Initialization instance of the class.
-
-        Arguments:
-            (input) node -> Node name.
-            (input) repo -> Repoistory name.
-            (input) port -> Port number.
-
-        """
-
-        self.node = "nodename"
-        self.port = 1234
-        self.repo_name = repo
-        self.dump_list = ["dump1", "dump2"]
-
-
 class ElasticSearch(object):
 
     """Class:  ElasticSearch
@@ -98,8 +68,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialization for unit testing.
-        test_no_repo -> Test with no repo name set.
-        test_list_dumps -> Test list_dumps function.
+        test_no_repo -> Test with no repo name passed.
+        test_repo -> Test with repo name passed.
 
     """
 
@@ -116,39 +86,37 @@ class UnitTest(unittest.TestCase):
         self.es = ElasticSearch()
         self.args_array = {"-L": "reponame"}
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticDump")
-    def test_no_repo(self, mock_class):
+    @mock.patch("elastic_db_admin.elastic_class.get_repo_list")
+    @mock.patch("elastic_db_admin.print_dumps")
+    def test_no_repo(self, mock_print, mock_repo):
 
         """Function:  test_no_repo
 
-        Description:  Test with no repo name set.
+        Description:  Test with no repo name passed.
 
         Arguments:
 
         """
 
-        mock_class.return_value = ElasticDump(self.es.node, None, self.es.port)
+        mock_print.return_value = True
+        mock_repo.return_value = {"repo1": True, "repo2": True}
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.list_dumps(self.es,
                                                          args_array={}))
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticDump")
-    @mock.patch("elastic_db_admin.elastic_libs.list_dumps")
-    def test_list_dumps(self, mock_list, mock_class):
+    @mock.patch("elastic_db_admin.print_dumps")
+    def test_repo(self, mock_print):
 
-        """Function:  test_list_dumps
+        """Function:  test_repo
 
-        Description:  Test list_dumps function.
+        Description:  Test with repo name passed.
 
         Arguments:
 
         """
 
-        mock_list.return_value = True
-        mock_class.return_value = ElasticDump(self.es.node,
-                                              self.args_array["-L"],
-                                              self.es.port)
+        mock_print.return_value = True
 
         with gen_libs.no_std_out():
             self.assertFalse(
