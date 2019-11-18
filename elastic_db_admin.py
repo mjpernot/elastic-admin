@@ -30,8 +30,8 @@
                 shard => Display available, used, and failed shards.
                 disk => Display disk usage for each node in cluster.
         -L [repo_name] => List of database dumps for an Elasticsearch
-            database.  repo_name is name of repository to dump.  repo_name is
-            required if multiple repositories exist.
+            repository.  repo_name is name of repository to dump.  If no
+            repo_name is passed then all dumps in all repositories are listed.
         -F [repo_name] => List of database dumps that have failed for some
             reason.  repo_name is name of repository to dump.  repo_name is
             required if multiple repositories exist.
