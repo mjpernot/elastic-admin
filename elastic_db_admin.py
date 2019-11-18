@@ -189,7 +189,6 @@ def failed_dumps(es, **kwargs):
 
     args_array = dict(kwargs.get("args_array"))
     repo = args_array.get("-F", None)
-    failed_list = []
     print("\n{0:25}".format("List of Failed Dumps:"))
 
     if repo:
