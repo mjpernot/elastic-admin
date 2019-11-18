@@ -167,9 +167,7 @@ def print_failures(es, repo, **kwargs):
     print("Repository: {0:25}".format(repo))
 
     for dmp in ed.dump_list:
-        status, fails = _parse(dmp)
-
-        if status == "FAILED" or fails != 0:
+        if dmp[1] == "FAILED" or dmp[9] != 0:
             failed_list.append(dmp)
 
     elastic_libs.list_dumps(failed_list)
