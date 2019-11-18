@@ -8,9 +8,11 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Breaking Change
 
 ### Added
+- print_failures:  Print the failed dumps in the current repository.
 - print_dumps:  Print the dumps in the current repository.
 
 ### Changed
+- failed_dumps:  Refactored the function to print failed dumps in current repository or all repositories.
 - list_dumps:  Refactored the function to print dumps in current repository or all repositories.
 - check_status:  Removed -j option.
 - \_process_data:  Removed -j option.

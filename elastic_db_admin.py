@@ -150,6 +150,31 @@ def list_master(es, **kwargs):
     print("{0:25}".format(es.master))
 
 
+def print_failures(es, repo, **kwargs):
+
+    """Function:  print_failures
+
+    Description:  Print the failed dumps in the current repository.
+
+    Arguments:
+        (input) es -> Elasticsearch class instance.
+        (input) repo -> Repository name.
+
+    """
+
+    failed_list = []
+    ed = elastic_class.ElasticSearchDump(es.node, repo, es.port)
+    print("Repository: {0:25}".format(repo))
+
+    for dmp in ed.dump_list:
+        status, fails = _parse(dmp)
+
+        if status == "FAILED" or fails != 0:
+            failed_list.append(dmp)
+
+    elastic_libs.list_dumps(failed_list)
+
+
 def failed_dumps(es, **kwargs):
 
     """Function:  failed_dumps
@@ -165,15 +190,16 @@ def failed_dumps(es, **kwargs):
     """
 
     args_array = dict(kwargs.get("args_array"))
-    ed = elastic_class.ElasticDump(es.node, args_array.get("-F", None),
-                                   es.port, **kwargs)
+    repo = args_array.get("-F", None)
+    failed_list = []
+    print("\n{0:25}".format("List of Failed Dumps:"))
 
-    if ed.repo_name:
-        print("\n{0:25}".format("List of Failed Dumps"))
-        elastic_libs.list_dumps(es.dump_list)
+    if repo:
+        print_failures(es, repo)
 
     else:
-        print("WARNING:  Repository name not set")
+        for repo in elastic_class.get_repo_list(es):
+            print_failures(es, repo)
 
 
 def print_dumps(es, repo, **kwargs):
