@@ -33,8 +33,8 @@
             repository.  repo_name is name of repository to dump.  If no
             repo_name is passed then all dumps in all repositories are listed.
         -F [repo_name] => List of database dumps that have failed for some
-            reason.  repo_name is name of repository to dump.  repo_name is
-            required if multiple repositories exist.
+            reason.  repo_name is name of repository to dump.  If no
+            repo_name is passed then all dumps in all repositories are checked.
         -R => List of repositories in the Elasticsearch database.
         -M => List the name of the master node.
         -N => List the nodes in the Elasticsearch cluster.
