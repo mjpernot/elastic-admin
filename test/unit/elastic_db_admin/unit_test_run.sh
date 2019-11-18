@@ -15,6 +15,8 @@ test/unit/elastic_db_admin/list_dumps.py
 test/unit/elastic_db_admin/list_master.py
 test/unit/elastic_db_admin/list_nodes.py
 test/unit/elastic_db_admin/list_repos.py
+test/unit/elastic_db_admin/print_dumps.py
+test/unit/elastic_db_admin/print_failures.py
 test/unit/elastic_db_admin/process_data.py
 test/unit/elastic_db_admin/run_program.py
 test/unit/elastic_db_admin/main.py

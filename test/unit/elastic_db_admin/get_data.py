@@ -34,18 +34,18 @@ import version
 __version__ = version.__version__
 
 
-class ElasticStatus(object):
+class ElasticSearchStatus(object):
 
-    """Class:  ElasticStatus
+    """Class:  ElasticSearchStatus
 
-    Description:  Class representation of the ElasticStatus class.
+    Description:  Class representation of the ElasticSearchStatus class.
 
     Methods:
         __init__ -> Initialize configuration environment.
-        get_mem_status -> Stub holder for ElasticStatus.get_mem_status method.
-        get_nodes -> Stub holder for ElasticStatus.get_nodes method.
-        get_cluster -> Stub holder for ElasticStatus.get_cluster method.
-        get_all -> Stub holder for ElasticStatus.get_all method.
+        get_mem_status -> Holder for ElasticSearchStatus.get_mem_status method.
+        get_nodes -> Stub holder for ElasticSearchStatus.get_nodes method.
+        get_cluster -> Stub holder for ElasticSearchStatus.get_cluster method.
+        get_all -> Stub holder for ElasticSearchStatus.get_all method.
 
     """
 
@@ -64,65 +64,49 @@ class ElasticStatus(object):
         self.node = node
         self.port = port
 
-    def get_mem_status(self, json=False):
+    def get_mem_status(self):
 
         """Method:  get_mem_status
 
-        Description:  Stub holder for ElasticStatus.get_mem_status method.
+        Description:  Holder for ElasticSearchStatus.get_mem_status method.
 
         Arguments:
-            (input) json -> True|False - JSON format.
 
         """
 
-        if json:
-            return {"memory": "memory_status"}
+        return {"memory": "memory_status"}
 
-        else:
-            return "memory:  memory_status"
-
-    def get_nodes(self, json=False):
+    def get_nodes(self):
 
         """Method:  get_nodes
 
-        Description:  Stub holder for ElasticStatus.get_nodes method.
+        Description:  Stub holder for ElasticSearchStatus.get_nodes method.
 
         Arguments:
-            (input) json -> True|False - JSON format.
 
         """
 
-        if json:
-            return {"node": "node_name"}
+        return {"node": "node_name"}
 
-        else:
-            return "node:  node_name"
-
-    def get_cluster(self, json=False):
+    def get_cluster(self):
 
         """Method:  get_cluster
 
-        Description:  Stub holder for ElasticStatus.get_cluster method.
+        Description:  Stub holder for ElasticSearchStatus.get_cluster method.
 
         Arguments:
-            (input) json -> True|False - JSON format.
 
         """
 
-        if json:
-            return {"cluster": "cluster_name"}
+        return {"cluster": "cluster_name"}
 
-        else:
-            return "cluster:  cluster_name"
-
-    def get_all(self, json=False):
+    def get_all(self):
 
         """Method:  get_all
 
-        Description:  Stub holder for ElasticStatus.get_all method.
+        Description:  Stub holder for ElasticSearchStatus.get_all method.
 
         Arguments:
-            (input) json -> True|False - JSON format.
 
         """
 
@@ -138,9 +122,8 @@ class UnitTest(unittest.TestCase):
     Methods:
         setUp -> Initialization for unit testing.
         test_incorrect_option -> Test with incorrect option.
-        test_json_one_option -> Test with JSON format with one option.
-        test_json -> Test with JSON format with no options.
-        test_std_out_one_option -> Test with standard out with one option.
+        test_one_option -> Test with one option.
+        test_no_option -> Test with no options.
 
     """
 
@@ -154,12 +137,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.es = ElasticStatus("nodename", 1234)
+        self.es = ElasticSearchStatus("nodename", 1234)
         self.status_call = {"memory": "get_mem_status"}
-        self.json = True
-        self.json2 = False
         self.data = {}
-        self.data2 = ""
         self.opt = "memory"
         self.opt2 = "incorrect"
 
@@ -176,29 +156,14 @@ class UnitTest(unittest.TestCase):
         with gen_libs.no_std_out():
             self.assertEqual(
                 elastic_db_admin._get_data(
-                    self.json, self.data, self.es, self.opt2,
+                    self.data, self.es, self.opt2,
                     status_call=self.status_call), ({}))
 
-    def test_json_one_option(self):
+    def test_one_option(self):
 
-        """Function:  test_json_one_option
+        """Function:  test_one_option
 
-        Description:  Test with JSON format with one option.
-
-        Arguments:
-
-        """
-
-        self.assertEqual(
-            elastic_db_admin._get_data(
-                self.json, self.data, self.es, self.opt,
-                status_call=self.status_call), ({"memory": "memory_status"}))
-
-    def test_json(self):
-
-        """Function:  test_json
-
-        Description:  Test with JSON format with no options.
+        Description:  Test with one option.
 
         Arguments:
 
@@ -206,14 +171,14 @@ class UnitTest(unittest.TestCase):
 
         self.assertEqual(
             elastic_db_admin._get_data(
-                self.json, self.data, self.es, self.opt,
-                status_call=self.status_call), ({"memory": "memory_status"}))
+                self.data, self.es, self.opt, status_call=self.status_call),
+            ({"memory": "memory_status"}))
 
-    def test_std_out_one_option(self):
+    def test_no_option(self):
 
-        """Function:  test_std_out_one_option
+        """Function:  test_no_option
 
-        Description:  Test with standard out with one option.
+        Description:  Test with no options.
 
         Arguments:
 
@@ -221,8 +186,8 @@ class UnitTest(unittest.TestCase):
 
         self.assertEqual(
             elastic_db_admin._get_data(
-                self.json2, self.data2, self.es, self.opt,
-                status_call=self.status_call), ("\nmemory:  memory_status"))
+                self.data, self.es, self.opt, status_call=self.status_call),
+            ({"memory": "memory_status"}))
 
 
 if __name__ == "__main__":

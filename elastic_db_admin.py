@@ -8,7 +8,7 @@
     Usage:
         elastic_db_admin.py -c file -d path {-L [repo_name] | -R | -M | -N |
         -D [option1 {option2 ...}] | -D [option1 {option2 ...}] |
-        -F [repo_name] {-j} {-m value | -u value} [-v | -h]
+        -F [repo_name] {-m value | -u value} [-v | -h]
 
     Arguments:
         -C [all | general | memory | node | server | shard | disk] => Check
@@ -30,17 +30,16 @@
                 shard => Display available, used, and failed shards.
                 disk => Display disk usage for each node in cluster.
         -L [repo_name] => List of database dumps for an Elasticsearch
-            database.  repo_name is name of repository to dump.  repo_name is
-            required if multiple repositories exist.
+            repository.  repo_name is name of repository to dump.  If no
+            repo_name is passed then all dumps in all repositories are listed.
         -F [repo_name] => List of database dumps that have failed for some
-            reason.  repo_name is name of repository to dump.  repo_name is
-            required if multiple repositories exist.
+            reason.  repo_name is name of repository to dump.  If no
+            repo_name is passed then all dumps in all repositories are checked.
         -R => List of repositories in the Elasticsearch database.
         -M => List the name of the master node.
         -N => List the nodes in the Elasticsearch cluster.
         -c file => ISSE Guard configuration file.  Required argument.
         -d dir path => Directory path for option '-c'.  Required argument.
-        -j => Display output in JSON format, if possible.
         -m value => Threshold cutoff for memory usage.  Used with '-C' option.
         -u value => Threshold cutoff for cpu usage.  Used with '-C' option.
         -p value => Threshold cutoff for disk usage.  Used with '-C' option.
@@ -57,7 +56,7 @@
         database.
 
             # Elasticsearch configuration file.
-            host = "HOSTNAME"
+            host = ["HOST_NAME1", "HOST_NAME2"]
             port = PORT_NUMBER (default of Elasticsearch is 9200)
             # Threshold cutoff for Memory check in whole numbers
             cutoff_mem = 75
@@ -151,6 +150,29 @@ def list_master(es, **kwargs):
     print("{0:25}".format(es.master))
 
 
+def print_failures(es, repo, **kwargs):
+
+    """Function:  print_failures
+
+    Description:  Print the failed dumps in the current repository.
+
+    Arguments:
+        (input) es -> Elasticsearch class instance.
+        (input) repo -> Repository name.
+
+    """
+
+    failed_list = []
+    ed = elastic_class.ElasticSearchDump(es.node, repo, es.port)
+    print("Repository: {0:25}".format(repo))
+
+    for dmp in ed.dump_list:
+        if dmp[1] == "FAILED" or dmp[9] != 0:
+            failed_list.append(dmp)
+
+    elastic_libs.list_dumps(failed_list)
+
+
 def failed_dumps(es, **kwargs):
 
     """Function:  failed_dumps
@@ -166,22 +188,40 @@ def failed_dumps(es, **kwargs):
     """
 
     args_array = dict(kwargs.get("args_array"))
-    ed = elastic_class.ElasticDump(es.node, args_array.get("-F", None),
-                                   es.port, **kwargs)
+    repo = args_array.get("-F", None)
+    print("\n{0:25}".format("List of Failed Dumps:"))
 
-    if ed.repo_name:
-        print("\n{0:25}".format("List of Failed Dumps"))
-        elastic_libs.list_dumps(es.dump_list)
+    if repo:
+        print_failures(es, repo)
 
     else:
-        print("WARNING:  Repository name not set")
+        for repo in elastic_class.get_repo_list(es):
+            print_failures(es, repo)
+
+
+def print_dumps(es, repo, **kwargs):
+
+    """Function:  print_dumps
+
+    Description:  Print the dumps in the current repository.
+
+    Arguments:
+        (input) es -> Elasticsearch class instance.
+        (input) repo -> Repository name.
+
+    """
+
+    ed = elastic_class.ElasticSearchDump(es.node, repo, es.port)
+    print("Repository: {0:25}".format(repo))
+    elastic_libs.list_dumps(ed.dump_list)
 
 
 def list_dumps(es, **kwargs):
 
     """Function:  list_dumps
 
-    Description:  Lists the dumps under the current repository.
+    Description:  Lists the dumps under the current repository or list all
+        dumps in all repositories.
 
     Arguments:
         (input) es -> Elasticsearch class instance.
@@ -191,15 +231,15 @@ def list_dumps(es, **kwargs):
     """
 
     args_array = dict(kwargs.get("args_array"))
-    ed = elastic_class.ElasticDump(es.node, args_array.get("-L", None),
-                                   es.port, **kwargs)
+    repo = args_array.get("-L", None)
+    print("\n{0:25}".format("List of Dumps:"))
 
-    if ed.repo_name:
-        print("\n{0:25}".format("List of Dumps"))
-        elastic_libs.list_dumps(ed.dump_list, **kwargs)
+    if repo:
+        print_dumps(es, repo)
 
     else:
-        print("WARNING:  Repository name not set")
+        for repo in elastic_class.get_repo_list(es):
+            print_dumps(es, repo)
 
 
 def get_status(es, **kwargs):
@@ -217,29 +257,23 @@ def get_status(es, **kwargs):
 
     """
 
-    ec = elastic_class.ElasticStatus(es.node, es.port, **kwargs)
+    ec = elastic_class.ElasticSearchStatus(es.node, es.port, **kwargs)
     args_array = dict(kwargs.get("args_array"))
     display_list = list(args_array.get("-D", []))
-    json = args_array.get("-j", False)
 
     if not display_list or "all" in display_list:
-        print(ec.get_all(json))
+        print(ec.get_all())
 
     else:
-        if json:
-            data, _, _ = gen_libs.merge_two_dicts(ec.get_cluster(json),
-                                                  ec.get_nodes(json))
-
-        else:
-            data = ec.get_cluster() + "\n" + ec.get_nodes()
+        data, _, _ = gen_libs.merge_two_dicts(ec.get_cluster(), ec.get_nodes())
 
         for opt in display_list:
-            data = _get_data(json, data, ec, opt, **kwargs)
+            data = _get_data(data, ec, opt, **kwargs)
 
         print(data)
 
 
-def _get_data(json, data, ec, opt, **kwargs):
+def _get_data(data, ec, opt, **kwargs):
 
     """Function:  _get_data
 
@@ -247,7 +281,6 @@ def _get_data(json, data, ec, opt, **kwargs):
         Elasticsearch database.
 
     Arguments:
-        (input) json -> True|False - Data to be formatted as JSON.
         (input) data -> Data results.
         (input) ec -> Elasticsearch status class instance.
         (input) opt -> Method to run in class instance.
@@ -259,19 +292,11 @@ def _get_data(json, data, ec, opt, **kwargs):
 
     func_call = dict(kwargs.get("status_call"))
 
-    if json:
-        data = dict(data)
+    data = dict(data)
 
     if opt in func_call:
-        if json:
-            # Call class method using option passed and merge results
-            data, _, _ = \
-                gen_libs.merge_two_dicts(data, getattr(ec,
-                                                       func_call[opt])(json))
-
-        else:
-            # Call method using option passed & concatenate results
-            data = data + "\n" + getattr(ec, func_call[opt])()
+        data, _, _ = gen_libs.merge_two_dicts(data,
+                                              getattr(ec, func_call[opt])())
 
     else:
         print("Warning:  Option '{%s}' is not supported" % (opt))
@@ -297,7 +322,6 @@ def check_status(es, **kwargs):
 
     args_array = dict(kwargs.get("args_array"))
     check_list = list(args_array.get("-C", []))
-    json = args_array.get("-j", False)
     cutoff_mem = args_array.get("-m", None)
     cutoff_cpu = args_array.get("-u", None)
     cutoff_disk = args_array.get("-p", None)
@@ -316,22 +340,23 @@ def check_status(es, **kwargs):
     cfg_cutoff_cpu = cfg.cutoff_cpu if hasattr(cfg, "cutoff_cpu") else None
     cfg_cutoff_disk = cfg.cutoff_disk if hasattr(cfg, "cutoff_disk") else None
 
-    ec = elastic_class.ElasticStatus(es.node, es.port, cfg_cutoff_mem,
-                                     cfg_cutoff_cpu, cfg_cutoff_disk, **kwargs)
+    ec = elastic_class.ElasticSearchStatus(es.node, es.port, cfg_cutoff_mem,
+                                           cfg_cutoff_cpu, cfg_cutoff_disk,
+                                           **kwargs)
 
     if not check_list or "all" in check_list:
-        err_msg = ec.chk_all(json, cutoff_cpu=cutoff_cpu,
-                             cutoff_mem=cutoff_mem, cutoff_disk=cutoff_disk)
+        err_msg = ec.chk_all(cutoff_cpu=cutoff_cpu, cutoff_mem=cutoff_mem,
+                             cutoff_disk=cutoff_disk)
 
         if err_msg:
             print(err_msg)
 
     else:
         err_flag = False
-        err_msg = ec.get_cluster(json)
+        err_msg = ec.get_cluster()
 
         err_flag, err_msg = _process_data(check_list, err_flag, err_msg, ec,
-                                          json, cutoff_cpu=cutoff_cpu,
+                                          cutoff_cpu=cutoff_cpu,
                                           cutoff_mem=cutoff_mem,
                                           cutoff_disk=cutoff_disk, **kwargs)
 
@@ -339,7 +364,7 @@ def check_status(es, **kwargs):
             print(err_msg)
 
 
-def _process_data(check_list, err_flag, err_msg, ec, json, **kwargs):
+def _process_data(check_list, err_flag, err_msg, ec, **kwargs):
 
     """Function:  _process_data
 
@@ -351,7 +376,6 @@ def _process_data(check_list, err_flag, err_msg, ec, json, **kwargs):
         (input) err_flag -> True|False - Status of results.
         (input) err_msg -> Error message(s).
         (input) ec -> Elasticsearch status class instance.
-        (input) json -> True|False - Data to be formatted as JSON.
         (input) **kwargs:
             check_call -> Contains class method names for the '-C' option.
             cutoff_cpu -> Cutoff value for CPU usage.
@@ -368,23 +392,19 @@ def _process_data(check_list, err_flag, err_msg, ec, json, **kwargs):
     cutoff_mem = kwargs.get("cutoff_mem")
     cutoff_disk = kwargs.get("cutoff_disk")
 
-    if json and err_msg:
+    if err_msg:
         err_msg = dict(err_msg)
 
     for opt in check_list:
         if opt in func_call:
-            results = getattr(ec, func_call[opt])(json, cutoff_cpu=cutoff_cpu,
+            results = getattr(ec, func_call[opt])(cutoff_cpu=cutoff_cpu,
                                                   cutoff_mem=cutoff_mem,
                                                   cutoff_disk=cutoff_disk)
 
             if results:
                 err_flag = True
 
-                if json:
-                    err_msg, _, _ = gen_libs.merge_two_dicts(err_msg, results)
-
-                else:
-                    err_msg = err_msg + "\n" + results
+                err_msg, _, _ = gen_libs.merge_two_dicts(err_msg, results)
 
         else:
             print("Warning:  Option '{%s}' is not supported" % (opt))
@@ -417,7 +437,7 @@ def run_program(args_array, func_dict, **kwargs):
 
         # Intersect args_array & func_dict to find which functions to call.
         for opt in set(args_array.keys()) & set(func_dict.keys()):
-            es = elastic_class.ElasticCluster(cfg.host, cfg.port, **kwargs)
+            es = elastic_class.ElasticSearch(cfg.host, cfg.port, **kwargs)
             func_dict[opt](es, args_array=args_array, cfg=cfg, **kwargs)
 
         del prog_lock
@@ -435,7 +455,7 @@ def main():
 
     Variables:
         check_call -> contains '-C' option values and associated
-            Elastic_Status class method names.
+            ElasticSearchStatus class method names.
         dir_chk_list -> contains options which will be directories.
         func_dict -> dictionary list for the function calls or other options.
         opt_def_dict -> contains options with their default values.
@@ -444,7 +464,7 @@ def main():
         opt_val -> List of options that allow 0 or 1 value for option.
         opt_val_list -> contains options which require values.
         status_call -> contains '-D' option values and associated
-            Elastic_Status class method names.
+            ElasticSearchStatus class method names.
 
     Arguments:
         (input) argv -> Arguments from the command line.
