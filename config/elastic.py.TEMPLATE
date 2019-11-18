@@ -2,7 +2,7 @@
 # # Classification (U)
 # # Unclassified until filled.
 
-host = "{HOST_NAME}"
+host = ["HOST_NAME1", "HOST_NAME2"]
 port = 9200
 # Threshold cutoff for Memory check in whole numbers
 cutoff_mem = 75
