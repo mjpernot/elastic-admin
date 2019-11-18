@@ -85,7 +85,7 @@ class ElasticSearch(object):
 
         self.node = "nodename"
         self.port = 1234
-        self.dump_list = ["dump1", "dump2"]
+        self.dump_list = None
 
 
 class UnitTest(unittest.TestCase):
@@ -97,7 +97,7 @@ class UnitTest(unittest.TestCase):
     Methods:
         setUp -> Initialization for unit testing.
         test_no_repo -> Test with no repo name set.
-        test_failed_dumps -> Test failed_dumps function.
+        test_repo -> Test with repo name set.
 
     """
 
@@ -114,8 +114,9 @@ class UnitTest(unittest.TestCase):
         self.es = ElasticSearch()
         self.args_array = {"-F": "reponame"}
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticDump")
-    def test_no_repo(self, mock_class):
+    @mock.patch("elastic_db_admin.elastic_class.get_repo_list")
+    @mock.patch("elastic_db_admin.print_failures")
+    def test_no_repo(self, mock_print, mock_repo):
 
         """Function:  test_no_repo
 
@@ -125,28 +126,25 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticDump(self.es.node, None, self.es.port)
+        mock_print.return_value = True
+        mock_repo.return_value = ["repo1", "repo2"]
 
         with gen_libs.no_std_out():
             self.assertFalse(
                 elastic_db_admin.failed_dumps(self.es, args_array={}))
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticDump")
-    @mock.patch("elastic_db_admin.elastic_libs.list_dumps")
-    def test_failed_dumps(self, mock_list, mock_class):
+    @mock.patch("elastic_db_admin.print_failures")
+    def test_repo(self, mock_print):
 
-        """Function:  test_failed_dumps
+        """Function:  test_repo
 
-        Description:  Test failed_dumps function.
+        Description:  Test with repo name set.
 
         Arguments:
 
         """
 
-        mock_list.return_value = True
-        mock_class.return_value = ElasticDump(self.es.node,
-                                              self.args_array["-F"],
-                                              self.es.port)
+        mock_print.return_value = True
 
         with gen_libs.no_std_out():
             self.assertFalse(
