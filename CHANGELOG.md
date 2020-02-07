@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [0.2.7] - 20200207
 ### Fixed
+- failed_dumps:  Fixed incorrect parameter passing of class.
 - print_dumps:  Set paramters as keyword arguments.
 - list_dumps:  Fixed incorrect parameter passing of class.
 - run_program: Replaced ElasticSearch with ElasticSearchStatus class.
