@@ -238,7 +238,7 @@ def list_dumps(es, **kwargs):
         print_dumps(es, repo)
 
     else:
-        for repo in elastic_class.get_repo_list(es):
+        for repo in elastic_class.get_repo_list(es.es):
             print_dumps(es, repo)
 
 
