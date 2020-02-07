@@ -195,7 +195,7 @@ def failed_dumps(es, **kwargs):
         print_failures(es, repo)
 
     else:
-        for repo in elastic_class.get_repo_list(es):
+        for repo in elastic_class.get_repo_list(es.es):
             print_failures(es, repo)
 
 
