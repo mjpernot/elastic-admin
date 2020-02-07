@@ -257,7 +257,7 @@ def get_status(es, **kwargs):
 
     """
 
-    ec = elastic_class.ElasticSearchStatus(es.node, es.port, **kwargs)
+    ec = elastic_class.ElasticSearchStatus(es.hosts, es.port, **kwargs)
     args_array = dict(kwargs.get("args_array"))
     display_list = list(args_array.get("-D", []))
 
