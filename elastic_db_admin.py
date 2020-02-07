@@ -163,7 +163,7 @@ def print_failures(es, repo, **kwargs):
     """
 
     failed_list = []
-    ed = elastic_class.ElasticSearchDump(es.node, repo, es.port)
+    ed = elastic_class.ElasticSearchDump(es.hosts, repo, es.port)
     print("Repository: {0:25}".format(repo))
 
     for dmp in ed.dump_list:
