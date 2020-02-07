@@ -211,7 +211,7 @@ def print_dumps(es, repo, **kwargs):
 
     """
 
-    ed = elastic_class.ElasticSearchDump(es.node, repo, es.port)
+    ed = elastic_class.ElasticSearchDump(es.hosts, repo, es.port)
     print("Repository: {0:25}".format(repo))
     elastic_libs.list_dumps(ed.dump_list)
 
