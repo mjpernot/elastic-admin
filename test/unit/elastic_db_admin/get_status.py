@@ -50,19 +50,19 @@ class ElasticSearchStatus(object):
 
     """
 
-    def __init__(self, node, port):
+    def __init__(self, hosts, port):
 
         """Method:  __init__
 
         Description:  Initialization instance of the class.
 
         Arguments:
-            (input) node -> Node name.
+            (input) hosts -> Host name.
             (input) port -> Port number.
 
         """
 
-        self.node = node
+        self.hosts = hosts
         self.port = port
 
     def get_mem_status(self):
@@ -135,7 +135,7 @@ class ElasticSearch(object):
 
         """
 
-        self.node = "nodename"
+        self.hosts = ["nodename1", "nodename2"]
         self.port = 1234
 
 
@@ -189,7 +189,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.es.node,
+        mock_class.return_value = ElasticSearchStatus(self.es.hosts,
                                                       self.es.port)
 
         with gen_libs.no_std_out():
@@ -209,7 +209,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.es.node,
+        mock_class.return_value = ElasticSearchStatus(self.es.hosts,
                                                       self.es.port)
 
         with gen_libs.no_std_out():
@@ -229,7 +229,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.es.node,
+        mock_class.return_value = ElasticSearchStatus(self.es.hosts,
                                                       self.es.port)
 
         with gen_libs.no_std_out():
@@ -249,7 +249,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.es.node,
+        mock_class.return_value = ElasticSearchStatus(self.es.hosts,
                                                       self.es.port)
 
         with gen_libs.no_std_out():
@@ -269,7 +269,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.es.node,
+        mock_class.return_value = ElasticSearchStatus(self.es.hosts,
                                                       self.es.port)
 
         with gen_libs.no_std_out():
@@ -289,7 +289,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.es.node,
+        mock_class.return_value = ElasticSearchStatus(self.es.hosts,
                                                       self.es.port)
 
         with gen_libs.no_std_out():
@@ -309,7 +309,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.es.node,
+        mock_class.return_value = ElasticSearchStatus(self.es.hosts,
                                                       self.es.port)
 
         with gen_libs.no_std_out():

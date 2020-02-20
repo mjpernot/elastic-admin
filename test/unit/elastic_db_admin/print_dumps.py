@@ -46,20 +46,20 @@ class ElasticSearchDump(object):
 
     """
 
-    def __init__(self, node, repo, port):
+    def __init__(self, hosts, repo, port):
 
         """Method:  __init__
 
         Description:  Initialization instance of the class.
 
         Arguments:
-            (input) node -> Node name.
+            (input) hosts -> Host name.
             (input) repo -> Repoistory name.
             (input) port -> Port number.
 
         """
 
-        self.node = "nodename"
+        self.hosts = hosts
         self.port = 1234
         self.repo_name = repo
         self.dump_list = ["dump1", "dump2"]
@@ -86,7 +86,7 @@ class ElasticSearch(object):
 
         """
 
-        self.node = "nodename"
+        self.hosts = ["nodename1", "nodename2"]
         self.port = 1234
 
 
@@ -129,7 +129,7 @@ class UnitTest(unittest.TestCase):
 
         mock_list.return_value = True
         mock_class.return_value = ElasticSearchDump(
-            self.es.node, self.reponame, self.es.port)
+            self.es.hosts, self.reponame, self.es.port)
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.print_dumps(self.es,
