@@ -50,14 +50,14 @@ class ElasticSearchStatus(object):
 
     """
 
-    def __init__(self, node, port, mem, cpu, disk):
+    def __init__(self, hosts, port, mem, cpu, disk):
 
         """Method:  __init__
 
         Description:  Initialization instance of the class.
 
         Arguments:
-            (input) node -> Node name.
+            (input) hosts -> Hosts name.
             (input) port -> Port number.
             (input) mem -> Memory cutoff.
             (input) cpu -> Cpu cutoff.
@@ -65,7 +65,7 @@ class ElasticSearchStatus(object):
 
         """
 
-        self.node = node
+        self.hosts = hosts
         self.port = port
         self.all_err_msg = None
         self.cluster_err_msg = None
@@ -135,7 +135,7 @@ class ElasticSearch(object):
 
         """
 
-        self.node = "nodename"
+        self.hosts = ["nodename1", "nodename2"]
         self.port = 1234
 
 
@@ -201,7 +201,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_class.return_value = ElasticSearchStatus(
-            self.es.node, self.es.port, self.mem, self.cpu, self.disk)
+            self.es.hosts, self.es.port, self.mem, self.cpu, self.disk)
 
         self.assertFalse(
             elastic_db_admin.check_status(
@@ -219,7 +219,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        es = ElasticSearchStatus(self.es.node, self.es.port, self.mem,
+        es = ElasticSearchStatus(self.es.hosts, self.es.port, self.mem,
                                  self.cpu, self.disk)
         es.mem_err_msg = {"Err": "Error Message"}
         es.cluster_err_msg = {}
@@ -243,7 +243,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_class.return_value = ElasticSearchStatus(
-            self.es.node, self.es.port, self.mem, self.cpu, self.disk)
+            self.es.hosts, self.es.port, self.mem, self.cpu, self.disk)
 
         with gen_libs.no_std_out():
             self.assertFalse(
@@ -263,7 +263,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_class.return_value = ElasticSearchStatus(
-            self.es.node, self.es.port, self.mem, self.cpu, self.disk)
+            self.es.hosts, self.es.port, self.mem, self.cpu, self.disk)
 
         self.assertFalse(
             elastic_db_admin.check_status(
@@ -282,7 +282,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_class.return_value = ElasticSearchStatus(
-            self.es.node, self.es.port, self.mem, self.cpu, self.disk)
+            self.es.hosts, self.es.port, self.mem, self.cpu, self.disk)
 
         self.assertFalse(
             elastic_db_admin.check_status(
@@ -301,7 +301,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_class.return_value = ElasticSearchStatus(
-            self.es.node, self.es.port, self.mem, self.cpu, self.disk)
+            self.es.hosts, self.es.port, self.mem, self.cpu, self.disk)
 
         self.assertFalse(
             elastic_db_admin.check_status(
@@ -318,7 +318,7 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-        es = ElasticSearchStatus(self.es.node, self.es.port, self.mem,
+        es = ElasticSearchStatus(self.es.hosts, self.es.port, self.mem,
                                  self.cpu, self.disk)
         es.all_err_msg = "Error Message"
         mock_class.return_value = es
@@ -341,7 +341,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_class.return_value = ElasticSearchStatus(
-            self.es.node, self.es.port, self.mem, self.cpu, self.disk)
+            self.es.hosts, self.es.port, self.mem, self.cpu, self.disk)
 
         self.assertFalse(
             elastic_db_admin.check_status(
@@ -360,7 +360,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_class.return_value = ElasticSearchStatus(
-            self.es.node, self.es.port, self.mem, self.cpu, self.disk)
+            self.es.hosts, self.es.port, self.mem, self.cpu, self.disk)
 
         self.assertFalse(
             elastic_db_admin.check_status(
