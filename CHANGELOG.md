@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.2.7] - 20200207
+### Fixed
+- failed_dumps:  Fixed incorrect parameter passing of class.
+- print_dumps:  Set paramters as keyword arguments.
+- list_dumps:  Fixed incorrect parameter passing of class.
+- run_program: Replaced ElasticSearch with ElasticSearchStatus class.
+- check_status:  Fixed incorrect reference to class attribute.
+- get_status:  Fixed incorrect reference to class attribute.
+- print_dumps:  Fixed incorrect reference to class attribute.
+- print_failures:  Fixed incorrect reference to class attribute.
+
+
 ## [0.2.6] - 2019-11-15
 - Breaking Change
 

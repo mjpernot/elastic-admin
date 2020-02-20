@@ -56,7 +56,8 @@ class ElasticSearch(object):
 
         """
 
-        self.node = "nodename"
+        self.es = "Elasticsearch class instance"
+        self.hosts = ["nodename1", "nodename2"]
         self.port = 1234
         self.dump_list = None
 

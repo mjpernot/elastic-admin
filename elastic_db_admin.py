@@ -163,7 +163,7 @@ def print_failures(es, repo, **kwargs):
     """
 
     failed_list = []
-    ed = elastic_class.ElasticSearchDump(es.node, repo, es.port)
+    ed = elastic_class.ElasticSearchDump(es.hosts, repo, es.port)
     print("Repository: {0:25}".format(repo))
 
     for dmp in ed.dump_list:
@@ -195,7 +195,7 @@ def failed_dumps(es, **kwargs):
         print_failures(es, repo)
 
     else:
-        for repo in elastic_class.get_repo_list(es):
+        for repo in elastic_class.get_repo_list(es.es):
             print_failures(es, repo)
 
 
@@ -211,7 +211,7 @@ def print_dumps(es, repo, **kwargs):
 
     """
 
-    ed = elastic_class.ElasticSearchDump(es.node, repo, es.port)
+    ed = elastic_class.ElasticSearchDump(es.hosts, repo=repo, port=es.port)
     print("Repository: {0:25}".format(repo))
     elastic_libs.list_dumps(ed.dump_list)
 
@@ -238,7 +238,7 @@ def list_dumps(es, **kwargs):
         print_dumps(es, repo)
 
     else:
-        for repo in elastic_class.get_repo_list(es):
+        for repo in elastic_class.get_repo_list(es.es):
             print_dumps(es, repo)
 
 
@@ -257,7 +257,7 @@ def get_status(es, **kwargs):
 
     """
 
-    ec = elastic_class.ElasticSearchStatus(es.node, es.port, **kwargs)
+    ec = elastic_class.ElasticSearchStatus(es.hosts, es.port, **kwargs)
     args_array = dict(kwargs.get("args_array"))
     display_list = list(args_array.get("-D", []))
 
@@ -340,7 +340,7 @@ def check_status(es, **kwargs):
     cfg_cutoff_cpu = cfg.cutoff_cpu if hasattr(cfg, "cutoff_cpu") else None
     cfg_cutoff_disk = cfg.cutoff_disk if hasattr(cfg, "cutoff_disk") else None
 
-    ec = elastic_class.ElasticSearchStatus(es.node, es.port, cfg_cutoff_mem,
+    ec = elastic_class.ElasticSearchStatus(es.hosts, es.port, cfg_cutoff_mem,
                                            cfg_cutoff_cpu, cfg_cutoff_disk,
                                            **kwargs)
 
@@ -437,7 +437,8 @@ def run_program(args_array, func_dict, **kwargs):
 
         # Intersect args_array & func_dict to find which functions to call.
         for opt in set(args_array.keys()) & set(func_dict.keys()):
-            es = elastic_class.ElasticSearch(cfg.host, cfg.port, **kwargs)
+            es = elastic_class.ElasticSearchStatus(cfg.host, cfg.port,
+                                                   **kwargs)
             func_dict[opt](es, args_array=args_array, cfg=cfg, **kwargs)
 
         del prog_lock
