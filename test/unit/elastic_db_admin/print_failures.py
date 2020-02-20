@@ -117,7 +117,6 @@ class UnitTest(unittest.TestCase):
         self.es = ElasticSearch()
         self.reponame = "reponame"
 
-
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchDump")
     @mock.patch("elastic_db_admin.elastic_libs.list_dumps")
     def test_print_failures(self, mock_list, mock_class):
