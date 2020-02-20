@@ -53,7 +53,7 @@ class ElasticSearchDump(object):
         Description:  Initialization instance of the class.
 
         Arguments:
-            (input) node -> Node name.
+            (input) hosts -> Host name.
             (input) repo -> Repoistory name.
             (input) port -> Port number.
 
