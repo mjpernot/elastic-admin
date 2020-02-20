@@ -147,6 +147,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialization for unit testing.
+        test_cutoff_args -> Test passing in cutoff arguments.
         test_one_option_cfg -> Test config settings.
         test_one_option_error -> Test one option with error.
         test_incorrect_option -> Test with incorrect option.
@@ -188,6 +189,25 @@ class UnitTest(unittest.TestCase):
         self.cfg = cfg("75", "70", "65")
         cfg2 = collections.namedtuple("Cfg", "test")
         self.cfg2 = cfg2("test")
+
+    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
+    def test_cutoff_args(self, mock_class):
+
+        """Function:  test_cutoff_args
+
+        Description:  Test passing in cutoff arguments.
+
+        Arguments:
+
+        """
+
+        mock_class.return_value = ElasticSearchStatus(
+            self.es.hosts, self.es.port, self.mem, self.cpu, self.disk)
+
+        self.assertFalse(
+            elastic_db_admin.check_status(
+                self.es, check_call=self.check_call,
+                args_array=self.args_array8, cfg=self.cfg))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
     def test_one_option_cfg(self, mock_class):
