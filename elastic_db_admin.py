@@ -238,12 +238,17 @@ def list_dumps(els, **kwargs):
 
     args_array = dict(kwargs.get("args_array"))
     repo = args_array.get("-L", None)
-    print("\n{0:25}".format("List of Dumps:"))
 
-    if repo:
+    if repo and repo not in els.repo_dict:
+        print("Warning:  Repository '%s' does not exist." % (repo))
+
+    elif repo:
+        print("\n{0:25}".format("List of Dumps:"))
         print_dumps(els, repo)
 
     else:
+        print("\n{0:25}".format("List of Dumps:"))
+
         for repo in elastic_class.get_repo_list(els.els):
             print_dumps(els, repo)
 

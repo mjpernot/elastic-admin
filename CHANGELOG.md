@@ -5,6 +5,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [0.2.8] - 20200623
+### Fixed:
+- list_dumps:  Handle a repository that does not exist.
+
 ### Changed
 - run_program:  Changed variable names to standard naming convention.
 - \_process_data:  Changed variable names to standard naming convention.
