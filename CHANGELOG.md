@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.2.8] - 20200623
+### Changed
+- Documentation updates.
+
+
 ## [0.2.7] - 20200207
 ### Fixed
 - failed_dumps:  Fixed incorrect parameter passing of class.

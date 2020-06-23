@@ -6,9 +6,14 @@
     Description:  Runs administration tasks on an Elasticsearch database.
 
     Usage:
-        elastic_db_admin.py -c file -d path {-L [repo_name] | -R | -M | -N |
-        -D [option1 {option2 ...}] | -D [option1 {option2 ...}] |
-        -F [repo_name] {-m value | -u value} [-v | -h]
+        elastic_db_admin.py -c file -d path
+            {-D [all | general | memory | node | server | shard | disk] |
+            -C [all | general | memory | node | server | shard | disk]
+                {-m value | -u value | -p value} |
+            -L [repo_name] |
+            -R | -M | -N |
+            -F [repo_name]}
+            [-v | -h]
 
     Arguments:
         -C [all | general | memory | node | server | shard | disk] => Check
@@ -51,13 +56,14 @@
             in the configuration file, if set.
 
     Notes:
-        Elasticsearch configuration file format (elastic.py).  The
-        configuration file format for the Elasticsearch connection to a
+        Elasticsearch configuration file format (config/elastic.py.TEMPLATE).
+        The configuration file format for the Elasticsearch connection to a
         database.
 
             # Elasticsearch configuration file.
             host = ["HOST_NAME1", "HOST_NAME2"]
-            port = PORT_NUMBER (default of Elasticsearch is 9200)
+            # Default port for Elasticsearch is 9200.
+            port = 9200
             # Threshold cutoff for Memory check in whole numbers
             cutoff_mem = 75
             # Threshold cutoff for CPU usage check in whole numbers
