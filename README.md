@@ -2,7 +2,7 @@
 # Classification (U)
 
 # Description:
-  This project is used to adminstrate an Elasticsearch database.  This includes monitoring and checking the status of an Elasticsearch database, monitoring the master and other nodes in Elasticsearch cluster, and monitoring database dump status.
+  Used to adminstrate an Elasticsearch database.  This includes monitoring and checking the status of an Elasticsearch database, monitoring the master and other nodes in Elasticsearch cluster, and monitoring database dump status.
 
 
 ###  This README file is broken down into the following sections:
@@ -25,8 +25,6 @@
 # Prerequisites:
 
   * List of Linux packages that need to be installed on the server.
-    - python-libs
-    - python-devel
     - git
     - python-pip
 
@@ -65,7 +63,6 @@ Install supporting classes and libraries.
 pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
 pip install -r requirements-elastic-lib.txt --target elastic_lib --trusted-host pypi.appdev.proj.coe.ic.gov
 pip install -r requirements-python-lib.txt --target elastic_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
-pip install -r requirements-requests-lib.txt --target elastic_lib/requests_lib --trusted-host pypi.appdev.proj.coe.ic.gov
 ```
 
 # Configuration:
@@ -78,9 +75,9 @@ cd config
 cp elastic.py.TEMPLATE elastic.py
 ```
 
-Make the appropriate change to the environment.
-  * Make the appropriate changes to connect to Elasticsearch.
-    - host = "HOSTNAME"
+Make the appropriate change to the Elasticsearch environment.
+  * Change these entries in the elastic.py file.  List all the servers in the Elasticsearch cluster.
+    - host = ["HOST_NAME1", "HOST_NAME2"]
 
 ```
 vim elastic.py
@@ -100,10 +97,7 @@ chmod 600 elastic.py
 
 # Testing:
 
-
 # Unit Testing:
-
-### Description: Testing consists of unit testing for the functions in the elastic_db_admin.py program.
 
 ### Installation:
 
@@ -133,38 +127,20 @@ Install supporting classes and libraries.
 pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
 pip install -r requirements-elastic-lib.txt --target elastic_lib --trusted-host pypi.appdev.proj.coe.ic.gov
 pip install -r requirements-python-lib.txt --target elastic_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
-pip install -r requirements-requests-lib.txt --target elastic_lib/requests_lib --trusted-host pypi.appdev.proj.coe.ic.gov
 ```
 
 
-# Unit test runs for elastic_db_admin.py:
+### Testing:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
 ```
 cd {Python_Project}/elastic-admin
-test/unit/elastic_db_admin/check_status.py
-test/unit/elastic_db_admin/failed_dumps.py
-test/unit/elastic_db_admin/get_data.py
-test/unit/elastic_db_admin/get_status.py
-test/unit/elastic_db_admin/help_message.py
-test/unit/elastic_db_admin/list_dumps.py
-test/unit/elastic_db_admin/list_master.py
-test/unit/elastic_db_admin/list_nodes.py
-test/unit/elastic_db_admin/list_repos.py
-test/unit/elastic_db_admin/print_dumps.py
-test/unit/elastic_db_admin/print_failures.py
-test/unit/elastic_db_admin/process_data.py
-test/unit/elastic_db_admin/run_program.py
-test/unit/elastic_db_admin/main.py
-```
-
-### All unit testing
-```
 test/unit/elastic_db_admin/unit_test_run.sh
 ```
 
-### Code coverage program
+### Code coverage:
 ```
+cd {Python_Project}/elastic-admin
 test/unit/elastic_db_admin/code_coverage.sh
 ```
 
