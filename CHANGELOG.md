@@ -6,6 +6,18 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [0.2.8] - 20200623
 ### Changed
+- run_program:  Changed variable names to standard naming convention.
+- \_process_data:  Changed variable names to standard naming convention.
+- check_status:  Changed variable names to standard naming convention.
+- \_get_data:  Changed variable names to standard naming convention.
+- get_status:  Changed variable names to standard naming convention.
+- list_dumps:  Changed variable names to standard naming convention.
+- print_dumps:  Changed variable names to standard naming convention.
+- failed_dumps:  Changed variable names to standard naming convention.
+- print_failures:  Changed variable names to standard naming convention.
+- list_master:  Changed variable names to standard naming convention.
+- list_repos:  Changed variable names to standard naming convention.
+- list_nodes:  Changed variable names to standard naming convention.
 - Documentation updates.
 
 
