@@ -81,7 +81,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.es = ElasticSearch()
+        self.els = ElasticSearch()
 
     def test_empty_list_nodes(self):
 
@@ -93,10 +93,10 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.es.nodes = []
+        self.els.nodes = []
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.list_nodes(self.es))
+            self.assertFalse(elastic_db_admin.list_nodes(self.els))
 
     def test_list_nodes(self):
 
@@ -109,7 +109,7 @@ class UnitTest(unittest.TestCase):
         """
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.list_nodes(self.es))
+            self.assertFalse(elastic_db_admin.list_nodes(self.els))
 
 
 if __name__ == "__main__":
