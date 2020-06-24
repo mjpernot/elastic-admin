@@ -35,32 +35,42 @@ import version
 __version__ = version.__version__
 
 
-def failed_dumps(es, **kwargs):
+def failed_dumps(els, **kwargs):
 
     """Function:  failed_dumps
 
     Description:  This is a function stub for elastic_db_admin.failed_dumps.
 
     Arguments:
-        es -> Stub argument holder.
+        els -> Stub argument holder.
 
     """
 
-    pass
+    status = True
+
+    if els and dict(kwargs.get("args_array")):
+        status = True
+
+    return status
 
 
-def list_dumps(es, **kwargs):
+def list_dumps(els, **kwargs):
 
     """Function:  list_repos
 
     Description:  This is a function stub for elastic_db_admin.list_dumps.
 
     Arguments:
-        es -> Stub argument holder.
+        els -> Stub argument holder.
 
     """
 
-    pass
+    status = True
+
+    if els and dict(kwargs.get("args_array")):
+        status = True
+
+    return status
 
 
 class ProgramLock(object):
@@ -139,7 +149,7 @@ class UnitTest(unittest.TestCase):
                 self.host = ["SERVER_NAME"]
                 self.port = 9200
 
-        self.ct = CfgTest()
+        self.cfg = CfgTest()
 
         self.args = {"-c": "config_file", "-d": "config_dir", "-M": True}
         self.func_dict = {"-F": failed_dumps, "-L": list_dumps}
@@ -163,7 +173,7 @@ class UnitTest(unittest.TestCase):
         mock_lock.side_effect = \
             elastic_db_admin.gen_class.SingleInstanceException
         mock_class.return_value = "ElasticSearch"
-        mock_load.return_value = self.ct
+        mock_load.return_value = self.cfg
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.run_program(self.args,
@@ -188,7 +198,7 @@ class UnitTest(unittest.TestCase):
 
         mock_lock.return_value = self.proglock
         mock_class.return_value = "ElasticSearch"
-        mock_load.return_value = self.ct
+        mock_load.return_value = self.cfg
 
         self.assertFalse(elastic_db_admin.run_program(self.args,
                                                       self.func_dict))
@@ -210,7 +220,7 @@ class UnitTest(unittest.TestCase):
 
         mock_lock.return_value = self.proglock
         mock_class.return_value = "ElasticSearch"
-        mock_load.return_value = self.ct
+        mock_load.return_value = self.cfg
 
         self.assertFalse(elastic_db_admin.run_program(self.args,
                                                       self.func_dict))
@@ -230,7 +240,7 @@ class UnitTest(unittest.TestCase):
 
         mock_lock.return_value = self.proglock
         mock_class.return_value = "ElasticSearch"
-        mock_load.return_value = self.ct
+        mock_load.return_value = self.cfg
 
         self.assertFalse(elastic_db_admin.run_program(self.args,
                                                       self.func_dict))
