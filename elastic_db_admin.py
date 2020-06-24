@@ -122,8 +122,8 @@ def list_nodes(els, **kwargs):
 
     print("\n{0:25}".format("List of Nodes"))
 
-    for x in els.nodes:
-        print("{0:25}".format(x))
+    for item in els.nodes:
+        print("{0:25}".format(item))
 
 
 def list_repos(els, **kwargs):
