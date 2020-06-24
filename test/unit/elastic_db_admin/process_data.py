@@ -68,6 +68,9 @@ class ElasticSearchStatus(object):
         self.all_err_msg = None
         self.cluster_err_msg = None
         self.mem_err_msg = None
+        self.cutoff_cpu = cpu
+        self.cutoff_mem = mem
+        self.cutoff_disk = disk
 
     def chk_mem(self, cutoff_cpu, cutoff_mem, cutoff_disk):
 
@@ -81,6 +84,10 @@ class ElasticSearchStatus(object):
             (input) cutoff_disk -> Disk cutoff value.
 
         """
+
+        self.cutoff_cpu = cutoff_cpu
+        self.cutoff_mem = cutoff_mem
+        self.cutoff_disk = cutoff_disk
 
         return self.mem_err_msg
 
@@ -108,6 +115,10 @@ class ElasticSearchStatus(object):
             (input) cutoff_disk -> Disk cutoff value.
 
         """
+
+        self.cutoff_cpu = cutoff_cpu
+        self.cutoff_mem = cutoff_mem
+        self.cutoff_disk = cutoff_disk
 
         return self.all_err_msg
 
@@ -139,8 +150,8 @@ class UnitTest(unittest.TestCase):
         self.cutoff_cpu = 90
         self.cutoff_mem = 95
         self.cutoff_disk = 80
-        self.es = ElasticSearchStatus("nodename", 1234, self.cutoff_cpu,
-                                      self.cutoff_mem, self.cutoff_disk)
+        self.els = ElasticSearchStatus("nodename", 1234, self.cutoff_cpu,
+                                       self.cutoff_mem, self.cutoff_disk)
         self.check_call = {"memory": "chk_mem"}
         self.check_list = ["memory"]
         self.check_list2 = ["incorrect"]
@@ -159,12 +170,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.es.mem_err_msg = {"Err": "Error Message"}
-        self.es.cluster_err_msg = {}
+        self.els.mem_err_msg = {"Err": "Error Message"}
+        self.els.cluster_err_msg = {}
 
         self.assertEqual(
             elastic_db_admin._process_data(
-                self.check_list, self.err_flag, self.err_msg3, self.es,
+                self.check_list, self.err_flag, self.err_msg3, self.els,
                 check_call=self.check_call, cutoff_cpu=self.cutoff_cpu,
                 cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk),
             (True, {"Err": "Error Message", "Error": True}))
@@ -182,7 +193,7 @@ class UnitTest(unittest.TestCase):
         with gen_libs.no_std_out():
             self.assertEqual(
                 elastic_db_admin._process_data(
-                    self.check_list2, self.err_flag, self.err_msg, self.es,
+                    self.check_list2, self.err_flag, self.err_msg, self.els,
                     check_call=self.check_call, cutoff_cpu=self.cutoff_cpu,
                     cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk),
                 (False, {}))
@@ -199,7 +210,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertEqual(
             elastic_db_admin._process_data(
-                self.check_list, self.err_flag, self.err_msg, self.es,
+                self.check_list, self.err_flag, self.err_msg, self.els,
                 check_call=self.check_call, cutoff_cpu=self.cutoff_cpu,
                 cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk),
             (False, {}))
