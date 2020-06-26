@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [0.2.8] - 20200623
 ### Fixed:
+- main:  Fixed handling command line arguments from SonarQube scan finding.
 - list_dumps:  Handle a repository that does not exist.
 
 ### Changed
