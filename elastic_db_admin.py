@@ -94,6 +94,9 @@ import version
 
 __version__ = version.__version__
 
+# Global variables
+PRT_TEMPLATE = "\n{0:25}"
+
 
 def help_message(**kwargs):
 
@@ -120,7 +123,9 @@ def list_nodes(els, **kwargs):
 
     """
 
-    print("\n{0:25}".format("List of Nodes"))
+    global PRT_TEMPLATE
+
+    print(PRT_TEMPLATE.format("List of Nodes"))
 
     for item in els.nodes:
         print("{0:25}".format(item))
@@ -137,7 +142,9 @@ def list_repos(els, **kwargs):
 
     """
 
-    print("\n{0:25}".format("List of Repositories"))
+    global PRT_TEMPLATE
+
+    print(PRT_TEMPLATE.format("List of Repositories"))
     elastic_libs.list_repos2(els.repo_dict)
 
 
@@ -152,7 +159,9 @@ def list_master(els, **kwargs):
 
     """
 
-    print("\n{0:25}".format("Master Node"))
+    global PRT_TEMPLATE
+
+    print(PRT_TEMPLATE.format("Master Node"))
     print("{0:25}".format(els.master))
 
 
@@ -193,9 +202,11 @@ def failed_dumps(els, **kwargs):
 
     """
 
+    global PRT_TEMPLATE
+
     args_array = dict(kwargs.get("args_array"))
     repo = args_array.get("-F", None)
-    print("\n{0:25}".format("List of Failed Dumps:"))
+    print(PRT_TEMPLATE.format("List of Failed Dumps:"))
 
     if repo:
         print_failures(els, repo)
@@ -236,6 +247,8 @@ def list_dumps(els, **kwargs):
 
     """
 
+    global PRT_TEMPLATE
+
     args_array = dict(kwargs.get("args_array"))
     repo = args_array.get("-L", None)
 
@@ -243,11 +256,11 @@ def list_dumps(els, **kwargs):
         print("Warning:  Repository '%s' does not exist." % (repo))
 
     elif repo:
-        print("\n{0:25}".format("List of Dumps:"))
+        print(PRT_TEMPLATE.format("List of Dumps:"))
         print_dumps(els, repo)
 
     else:
-        print("\n{0:25}".format("List of Dumps:"))
+        print(PRT_TEMPLATE.format("List of Dumps:"))
 
         for repo in elastic_class.get_repo_list(els.els):
             print_dumps(els, repo)

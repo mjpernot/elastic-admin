@@ -10,7 +10,15 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - main:  Fixed handling command line arguments from SonarQube scan finding.
 - list_dumps:  Handle a repository that does not exist.
 
+### Added
+- Added global variable print template.
+
 ### Changed
+- list_dumps:  Added print template.
+- failed_dumps:  Added print template.
+- list_master:  Added print template.
+- list_repos:  Added print template.
+- list_nodes:  Added print template.
 - run_program:  Changed variable names to standard naming convention.
 - \_process_data:  Changed variable names to standard naming convention.
 - check_status:  Changed variable names to standard naming convention.
