@@ -4,6 +4,36 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.2.8] - 20200623
+### Fixed:
+- run_program:  Fixed handling command line arguments from SonarQube scan finding.
+- main:  Fixed handling command line arguments from SonarQube scan finding.
+- list_dumps:  Handle a repository that does not exist.
+
+### Added
+- Added global variable print template.
+
+### Changed
+- list_dumps:  Added print template.
+- failed_dumps:  Added print template.
+- list_master:  Added print template.
+- list_repos:  Added print template.
+- list_nodes:  Added print template.
+- run_program:  Changed variable names to standard naming convention.
+- \_process_data:  Changed variable names to standard naming convention.
+- check_status:  Changed variable names to standard naming convention.
+- \_get_data:  Changed variable names to standard naming convention.
+- get_status:  Changed variable names to standard naming convention.
+- list_dumps:  Changed variable names to standard naming convention.
+- print_dumps:  Changed variable names to standard naming convention.
+- failed_dumps:  Changed variable names to standard naming convention.
+- print_failures:  Changed variable names to standard naming convention.
+- list_master:  Changed variable names to standard naming convention.
+- list_repos:  Changed variable names to standard naming convention.
+- list_nodes:  Changed variable names to standard naming convention.
+- Documentation updates.
+
+
 ## [0.2.7] - 20200207
 ### Fixed
 - failed_dumps:  Fixed incorrect parameter passing of class.

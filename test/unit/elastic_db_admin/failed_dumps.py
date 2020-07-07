@@ -56,9 +56,9 @@ class ElasticSearch(object):
 
         """
 
-        self.es = "Elasticsearch class instance"
+        self.els = "Elasticsearch class instance"
         self.hosts = ["nodename1", "nodename2"]
-        self.port = 1234
+        self.port = 9200
         self.dump_list = None
 
 
@@ -85,7 +85,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.es = ElasticSearch()
+        self.els = ElasticSearch()
         self.args_array = {"-F": "reponame"}
 
     @mock.patch("elastic_db_admin.elastic_class.get_repo_list")
@@ -105,7 +105,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(
-                elastic_db_admin.failed_dumps(self.es, args_array={}))
+                elastic_db_admin.failed_dumps(self.els, args_array={}))
 
     @mock.patch("elastic_db_admin.print_failures")
     def test_repo(self, mock_print):
@@ -122,7 +122,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(
-                elastic_db_admin.failed_dumps(self.es,
+                elastic_db_admin.failed_dumps(self.els,
                                               args_array=self.args_array))
 
 

@@ -24,8 +24,8 @@ else:
     import unittest
 
 # Third-party
-import mock
 import collections
+import mock
 
 # Local
 sys.path.append(os.getcwd())
@@ -70,6 +70,9 @@ class ElasticSearchStatus(object):
         self.all_err_msg = None
         self.cluster_err_msg = None
         self.mem_err_msg = None
+        self.cutoff_cpu = cpu
+        self.cutoff_mem = mem
+        self.cutoff_disk = disk
 
     def chk_mem(self, cutoff_cpu, cutoff_mem, cutoff_disk):
 
@@ -83,6 +86,10 @@ class ElasticSearchStatus(object):
             (input) cutoff_disk -> Disk cutoff value.
 
         """
+
+        self.cutoff_cpu = cutoff_cpu
+        self.cutoff_mem = cutoff_mem
+        self.cutoff_disk = cutoff_disk
 
         return self.mem_err_msg
 
@@ -111,6 +118,10 @@ class ElasticSearchStatus(object):
 
         """
 
+        self.cutoff_cpu = cutoff_cpu
+        self.cutoff_mem = cutoff_mem
+        self.cutoff_disk = cutoff_disk
+
         return self.all_err_msg
 
 
@@ -136,7 +147,7 @@ class ElasticSearch(object):
         """
 
         self.hosts = ["nodename1", "nodename2"]
-        self.port = 1234
+        self.port = 9200
 
 
 class UnitTest(unittest.TestCase):
@@ -173,7 +184,7 @@ class UnitTest(unittest.TestCase):
         self.mem = 90
         self.cpu = 95
         self.disk = 80
-        self.es = ElasticSearch()
+        self.els = ElasticSearch()
         self.args_array = {"-C": ["all"]}
         self.args_array2 = {"-C": ["memory"]}
         self.args_array3 = {"-C": []}
@@ -202,11 +213,11 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_class.return_value = ElasticSearchStatus(
-            self.es.hosts, self.es.port, self.mem, self.cpu, self.disk)
+            self.els.hosts, self.els.port, self.mem, self.cpu, self.disk)
 
         self.assertFalse(
             elastic_db_admin.check_status(
-                self.es, check_call=self.check_call,
+                self.els, check_call=self.check_call,
                 args_array=self.args_array8, cfg=self.cfg))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -221,11 +232,11 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_class.return_value = ElasticSearchStatus(
-            self.es.hosts, self.es.port, self.mem, self.cpu, self.disk)
+            self.els.hosts, self.els.port, self.mem, self.cpu, self.disk)
 
         self.assertFalse(
             elastic_db_admin.check_status(
-                self.es, check_call=self.check_call,
+                self.els, check_call=self.check_call,
                 args_array=self.args_array6, cfg=self.cfg))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -239,16 +250,16 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        es = ElasticSearchStatus(self.es.hosts, self.es.port, self.mem,
-                                 self.cpu, self.disk)
-        es.mem_err_msg = {"Err": "Error Message"}
-        es.cluster_err_msg = {}
-        mock_class.return_value = es
+        els = ElasticSearchStatus(self.els.hosts, self.els.port, self.mem,
+                                  self.cpu, self.disk)
+        els.mem_err_msg = {"Err": "Error Message"}
+        els.cluster_err_msg = {}
+        mock_class.return_value = els
 
         with gen_libs.no_std_out():
             self.assertFalse(
                 elastic_db_admin.check_status(
-                    self.es, check_call=self.check_call,
+                    self.els, check_call=self.check_call,
                     args_array=self.args_array6, cfg=self.cfg2))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -263,12 +274,12 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_class.return_value = ElasticSearchStatus(
-            self.es.hosts, self.es.port, self.mem, self.cpu, self.disk)
+            self.els.hosts, self.els.port, self.mem, self.cpu, self.disk)
 
         with gen_libs.no_std_out():
             self.assertFalse(
                 elastic_db_admin.check_status(
-                    self.es, check_call=self.check_call,
+                    self.els, check_call=self.check_call,
                     args_array=self.args_array7, cfg=self.cfg2))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -283,11 +294,11 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_class.return_value = ElasticSearchStatus(
-            self.es.hosts, self.es.port, self.mem, self.cpu, self.disk)
+            self.els.hosts, self.els.port, self.mem, self.cpu, self.disk)
 
         self.assertFalse(
             elastic_db_admin.check_status(
-                self.es, check_call=self.check_call,
+                self.els, check_call=self.check_call,
                 args_array=self.args_array6, cfg=self.cfg2))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -302,11 +313,11 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_class.return_value = ElasticSearchStatus(
-            self.es.hosts, self.es.port, self.mem, self.cpu, self.disk)
+            self.els.hosts, self.els.port, self.mem, self.cpu, self.disk)
 
         self.assertFalse(
             elastic_db_admin.check_status(
-                self.es, check_call=self.check_call,
+                self.els, check_call=self.check_call,
                 args_array=self.args_array5, cfg=self.cfg2))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -321,11 +332,11 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_class.return_value = ElasticSearchStatus(
-            self.es.hosts, self.es.port, self.mem, self.cpu, self.disk)
+            self.els.hosts, self.els.port, self.mem, self.cpu, self.disk)
 
         self.assertFalse(
             elastic_db_admin.check_status(
-                self.es, check_call=self.check_call,
+                self.els, check_call=self.check_call,
                 args_array=self.args_array4, cfg=self.cfg2))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -338,15 +349,15 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-        es = ElasticSearchStatus(self.es.hosts, self.es.port, self.mem,
-                                 self.cpu, self.disk)
-        es.all_err_msg = "Error Message"
-        mock_class.return_value = es
+        els = ElasticSearchStatus(self.els.hosts, self.els.port, self.mem,
+                                  self.cpu, self.disk)
+        els.all_err_msg = "Error Message"
+        mock_class.return_value = els
 
         with gen_libs.no_std_out():
             self.assertFalse(
                 elastic_db_admin.check_status(
-                    self.es, check_call=self.check_call,
+                    self.els, check_call=self.check_call,
                     args_array=self.args_array, cfg=self.cfg2))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -361,11 +372,11 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_class.return_value = ElasticSearchStatus(
-            self.es.hosts, self.es.port, self.mem, self.cpu, self.disk)
+            self.els.hosts, self.els.port, self.mem, self.cpu, self.disk)
 
         self.assertFalse(
             elastic_db_admin.check_status(
-                self.es, check_call=self.check_call,
+                self.els, check_call=self.check_call,
                 args_array=self.args_array, cfg=self.cfg2))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -380,11 +391,11 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_class.return_value = ElasticSearchStatus(
-            self.es.hosts, self.es.port, self.mem, self.cpu, self.disk)
+            self.els.hosts, self.els.port, self.mem, self.cpu, self.disk)
 
         self.assertFalse(
             elastic_db_admin.check_status(
-                self.es, check_call=self.check_call, args_array={},
+                self.els, check_call=self.check_call, args_array={},
                 cfg=self.cfg2))
 
 

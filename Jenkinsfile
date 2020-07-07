@@ -17,15 +17,13 @@ pipeline {
                 dir ('elastic_lib/lib') {
                     git branch: "master", credentialsId: "2cfb403c-be21-4fac-94d7-c8cd5c531feb", url: "https://gitlab.code.dicelab.net/JAC-IDM/python-lib.git"
                 }
-                dir ('elastic_lib/requests_lib') {
-                    git branch: "master", credentialsId: "2cfb403c-be21-4fac-94d7-c8cd5c531feb", url: "https://gitlab.code.dicelab.net/JAC-IDM/requests-lib.git"
-                }
                 sh """
                 virtualenv test_env
                 source test_env/bin/activate
                 pip2 install mock==2.0.0 --user
                 pip2 install elasticsearch==7.0.2 --user
-                pip2 install requests==2.22.0 --user
+                pip2 install requests==2.19.1 --user
+                pip2 install urllib3==1.24.3 --user
                 ./test/unit/elastic_db_admin/check_status.py
                 ./test/unit/elastic_db_admin/failed_dumps.py
                 ./test/unit/elastic_db_admin/get_data.py
@@ -63,32 +61,32 @@ pipeline {
             steps {
                 script {
                     server = Artifactory.server('Artifactory')
-                    server.credentialsId = 'svc-highpoint-artifactory'
+                    server.credentialsId = 'art-svc-highpoint-dev'
                     uploadSpec = """{
                         "files": [
                             {
                                 "pattern": "./*.py",
                                 "recursive": false,
                                 "excludePatterns": [],
-                                "target": "generic-local/highpoint/elastic-admin/"
+                                "target": "pypi-proj-local/highpoint/elastic-admin/"
                             },
                             {
                                 "pattern": "./*.txt",
                                 "recursive": false,
                                 "excludePatterns": [],
-                                "target": "generic-local/highpoint/elastic-admin/"
+                                "target": "pypi-proj-local/highpoint/elastic-admin/"
                             },
                             {
                                 "pattern": "./*.md",
                                 "recursive": false,
                                 "excludePatterns": [],
-                                "target": "generic-local/highpoint/elastic-admin/"
+                                "target": "pypi-proj-local/highpoint/elastic-admin/"
                             },
                             {
                                 "pattern": "*.TEMPLATE",
                                 "recursive": true,
                                 "excludePatterns": [],
-                                "target": "generic-local/highpoint/elastic-admin/config/"
+                                "target": "pypi-proj-local/highpoint/elastic-admin/config/"
                             }
                         ]
                     }"""

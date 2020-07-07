@@ -137,7 +137,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.es = ElasticSearchStatus("nodename", 1234)
+        self.els = ElasticSearchStatus("nodename", 1234)
         self.status_call = {"memory": "get_mem_status"}
         self.data = {}
         self.opt = "memory"
@@ -156,7 +156,7 @@ class UnitTest(unittest.TestCase):
         with gen_libs.no_std_out():
             self.assertEqual(
                 elastic_db_admin._get_data(
-                    self.data, self.es, self.opt2,
+                    self.data, self.els, self.opt2,
                     status_call=self.status_call), ({}))
 
     def test_one_option(self):
@@ -171,7 +171,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertEqual(
             elastic_db_admin._get_data(
-                self.data, self.es, self.opt, status_call=self.status_call),
+                self.data, self.els, self.opt, status_call=self.status_call),
             ({"memory": "memory_status"}))
 
     def test_no_option(self):
@@ -186,7 +186,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertEqual(
             elastic_db_admin._get_data(
-                self.data, self.es, self.opt, status_call=self.status_call),
+                self.data, self.els, self.opt, status_call=self.status_call),
             ({"memory": "memory_status"}))
 
 

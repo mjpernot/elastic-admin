@@ -60,7 +60,7 @@ class ElasticSearchDump(object):
         """
 
         self.hosts = hosts
-        self.port = 1234
+        self.port = port
         self.repo_name = repo
         self.dump_list = ["dump1", "dump2"]
 
@@ -87,7 +87,7 @@ class ElasticSearch(object):
         """
 
         self.hosts = ["nodename1", "nodename2"]
-        self.port = 1234
+        self.port = 9200
 
 
 class UnitTest(unittest.TestCase):
@@ -112,7 +112,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.es = ElasticSearch()
+        self.els = ElasticSearch()
         self.reponame = "reponame"
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchDump")
@@ -129,10 +129,10 @@ class UnitTest(unittest.TestCase):
 
         mock_list.return_value = True
         mock_class.return_value = ElasticSearchDump(
-            self.es.hosts, self.reponame, self.es.port)
+            self.els.hosts, self.reponame, self.els.port)
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.print_dumps(self.es,
+            self.assertFalse(elastic_db_admin.print_dumps(self.els,
                                                           self.reponame))
 
 
