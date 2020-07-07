@@ -136,7 +136,7 @@ class ElasticSearch(object):
         """
 
         self.hosts = ["nodename1", "nodename2"]
-        self.port = 1234
+        self.port = 9200
 
 
 class UnitTest(unittest.TestCase):
@@ -167,7 +167,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.es = ElasticSearch()
+        self.els = ElasticSearch()
         self.args_array = {"-D": ["all"]}
         self.args_array2 = {"-D": ["memory"]}
         self.args_array3 = {"-D": []}
@@ -189,13 +189,13 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.es.hosts,
-                                                      self.es.port)
+        mock_class.return_value = ElasticSearchStatus(self.els.hosts,
+                                                      self.els.port)
 
         with gen_libs.no_std_out():
             self.assertFalse(
                 elastic_db_admin.get_status(
-                    self.es, status_call=self.status_call,
+                    self.els, status_call=self.status_call,
                     args_array=self.args_array8))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -209,13 +209,13 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.es.hosts,
-                                                      self.es.port)
+        mock_class.return_value = ElasticSearchStatus(self.els.hosts,
+                                                      self.els.port)
 
         with gen_libs.no_std_out():
             self.assertFalse(
                 elastic_db_admin.get_status(
-                    self.es, status_call=self.status_call,
+                    self.els, status_call=self.status_call,
                     args_array=self.args_array7))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -229,13 +229,13 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.es.hosts,
-                                                      self.es.port)
+        mock_class.return_value = ElasticSearchStatus(self.els.hosts,
+                                                      self.els.port)
 
         with gen_libs.no_std_out():
             self.assertFalse(
                 elastic_db_admin.get_status(
-                    self.es, status_call=self.status_call,
+                    self.els, status_call=self.status_call,
                     args_array=self.args_array6))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -249,13 +249,13 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.es.hosts,
-                                                      self.es.port)
+        mock_class.return_value = ElasticSearchStatus(self.els.hosts,
+                                                      self.els.port)
 
         with gen_libs.no_std_out():
             self.assertFalse(
                 elastic_db_admin.get_status(
-                    self.es, status_call=self.status_call,
+                    self.els, status_call=self.status_call,
                     args_array=self.args_array5))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -269,13 +269,13 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.es.hosts,
-                                                      self.es.port)
+        mock_class.return_value = ElasticSearchStatus(self.els.hosts,
+                                                      self.els.port)
 
         with gen_libs.no_std_out():
             self.assertFalse(
                 elastic_db_admin.get_status(
-                    self.es, status_call=self.status_call,
+                    self.els, status_call=self.status_call,
                     args_array=self.args_array4))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -289,13 +289,13 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.es.hosts,
-                                                      self.es.port)
+        mock_class.return_value = ElasticSearchStatus(self.els.hosts,
+                                                      self.els.port)
 
         with gen_libs.no_std_out():
             self.assertFalse(
                 elastic_db_admin.get_status(
-                    self.es, status_call=self.status_call,
+                    self.els, status_call=self.status_call,
                     args_array=self.args_array))
 
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -309,13 +309,13 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.es.hosts,
-                                                      self.es.port)
+        mock_class.return_value = ElasticSearchStatus(self.els.hosts,
+                                                      self.els.port)
 
         with gen_libs.no_std_out():
             self.assertFalse(
                 elastic_db_admin.get_status(
-                    self.es, status_call=self.status_call, args_array={}))
+                    self.els, status_call=self.status_call, args_array={}))
 
 
 if __name__ == "__main__":

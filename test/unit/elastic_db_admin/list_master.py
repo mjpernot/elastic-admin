@@ -81,7 +81,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.es = ElasticSearch()
+        self.els = ElasticSearch()
 
     @mock.patch("elastic_db_admin.elastic_libs.list_repos2")
     def test_list_master(self, mock_lib):
@@ -97,7 +97,7 @@ class UnitTest(unittest.TestCase):
         mock_lib.return_value = True
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.list_master(self.es))
+            self.assertFalse(elastic_db_admin.list_master(self.els))
 
 
 if __name__ == "__main__":

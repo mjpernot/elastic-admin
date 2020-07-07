@@ -56,9 +56,10 @@ class ElasticSearch(object):
 
         """
 
-        self.es = "Elasticsearch class instance"
+        self.els = "Elasticsearch class instance"
         self.hosts = ["nodename1", "nodename2"]
-        self.port = 1234
+        self.port = 9200
+        self.repo_dict = {"reponame": "Repo", "reponame2": "Repo"}
 
 
 class UnitTest(unittest.TestCase):
@@ -69,6 +70,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialization for unit testing.
+        test_repo_incorrect -> Test with incorrect repo name.
         test_no_repo -> Test with no repo name passed.
         test_repo -> Test with repo name passed.
 
@@ -84,8 +86,24 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.es = ElasticSearch()
+        self.els = ElasticSearch()
         self.args_array = {"-L": "reponame"}
+        self.args_array2 = {"-L": "reponame3"}
+
+    def test_repo_incorrect(self):
+
+        """Function:  test_repo_incorrect
+
+        Description:  Test with incorrect repo name.
+
+        Arguments:
+
+        """
+
+        with gen_libs.no_std_out():
+            self.assertFalse(
+                elastic_db_admin.list_dumps(self.els,
+                                            args_array=self.args_array2))
 
     @mock.patch("elastic_db_admin.elastic_class.get_repo_list")
     @mock.patch("elastic_db_admin.print_dumps")
@@ -103,7 +121,7 @@ class UnitTest(unittest.TestCase):
         mock_repo.return_value = {"repo1": True, "repo2": True}
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.list_dumps(self.es,
+            self.assertFalse(elastic_db_admin.list_dumps(self.els,
                                                          args_array={}))
 
     @mock.patch("elastic_db_admin.print_dumps")
@@ -121,7 +139,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(
-                elastic_db_admin.list_dumps(self.es,
+                elastic_db_admin.list_dumps(self.els,
                                             args_array=self.args_array))
 
 

@@ -30,7 +30,6 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import elastic_db_admin
-import lib.gen_libs as gen_libs
 import version
 
 # Version
