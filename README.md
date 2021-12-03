@@ -29,17 +29,14 @@
     - python-pip
 
   * Local class/library dependencies within the program structure.
-    - lib/gen_class
-    - lib/arg_parser
-    - lib/gen_libs
-    - elastic_lib/elastic_class
-    - elastic_lib/elastic_libs
+    - python-lib
+    - elastic-lib
 
 
 # Installation:
 
 Install these programs using git.
-  * Replace **{Python_Project}** with the baseline path of the python program.
+  * From here on out, any reference to **{Python_Project}** or **PYTHON_PROJECT** replace with the baseline path of the python program.
 
 ```
 umask 022
@@ -62,24 +59,31 @@ Install supporting classes and libraries.
 ```
 pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
 pip install -r requirements-elastic-lib.txt --target elastic_lib --trusted-host pypi.appdev.proj.coe.ic.gov
-pip install -r requirements-python-lib.txt --target elastic_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-elastic-python-lib.txt --target elastic_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
 ```
 
 # Configuration:
 
 Create configuration file.
-  * Replace **{Python_Project}** with the baseline path of the python program.
+
+Make the appropriate changes to the Elasticsearch environment.
+  * Change these entries in the elasticsearch set up:
+    - host = ["HOST_NAME1", "HOST_NAME2"]
+
+  * If login credentials are required:
+    - user = None
+    - japd = None
+
+  * If SSL connections are being used:
+    - ssl_client_ca = None
+
+  * Change these entries only if required and you know what you are doing:
+    - port = 9200
+    - scheme = "https"
 
 ```
 cd config
 cp elastic.py.TEMPLATE elastic.py
-```
-
-Make the appropriate change to the Elasticsearch environment.
-  * Change these entries in the elastic.py file.  List all the servers in the Elasticsearch cluster.
-    - host = ["HOST_NAME1", "HOST_NAME2"]
-
-```
 vim elastic.py
 chmod 600 elastic.py
 ```
@@ -88,7 +92,6 @@ chmod 600 elastic.py
 # Program Help Function:
 
   The program has a -h (Help option) that will show display an usage message.  The help message will usually consist of a description, usage, arugments to the program, example, notes about the program, and any known bugs not yet fixed.  To run the help command:
-  * Replace **{Python_Project}** with the baseline path of the python program.
 
 ```
 {Python_Project}/elastic-admin/elastic_db_admin.py -h
@@ -101,37 +104,9 @@ chmod 600 elastic.py
 
 ### Installation:
 
-Install these programs using git
-  * Replace **{Python_Project}** with the baseline path of the python program.
-  * Replace **{Branch_Name}** with the name of the Git branch being tested.  See Git Merge Request.
-
-```
-umask 022
-cd {Python_Project}
-git clone --branch {Branch_Name} git@sc.appdev.proj.coe.ic.gov:JAC-DSXD/elastic-admin.git
-```
-
-Install/upgrade system modules.
-
-```
-cd elastic-admin
-sudo bash
-umask 022
-pip install -r requirements.txt --upgrade --trusted-host pypi.appdev.proj.coe.ic.gov
-exit
-```
-
-Install supporting classes and libraries.
-
-```
-pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
-pip install -r requirements-elastic-lib.txt --target elastic_lib --trusted-host pypi.appdev.proj.coe.ic.gov
-pip install -r requirements-python-lib.txt --target elastic_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
-```
-
+Install the project using the procedures in the Installation section.
 
 ### Testing:
-  * Replace **{Python_Project}** with the baseline path of the python program.
 
 ```
 cd {Python_Project}/elastic-admin
