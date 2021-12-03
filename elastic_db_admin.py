@@ -114,7 +114,7 @@ __version__ = version.__version__
 PRT_TEMPLATE = "\n{0:25}"
 
 
-def help_message(**kwargs):
+def help_message():
 
     """Function:  help_message
 
@@ -181,7 +181,7 @@ def list_master(els, **kwargs):
     print("{0:25}".format(els.master))
 
 
-def print_failures(els, repo, **kwargs):
+def print_failures(els, repo):
 
     """Function:  print_failures
 
@@ -232,7 +232,7 @@ def failed_dumps(els, **kwargs):
             print_failures(els, repo)
 
 
-def print_dumps(els, repo, **kwargs):
+def print_dumps(els, repo):
 
     """Function:  print_dumps
 

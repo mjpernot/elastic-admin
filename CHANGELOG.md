@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [0.2.9] - 2021-12-03
 ### Changed
+- Removed non-required \*\*kwargs from function parameter list.
 - Documentation updates.
 
 
