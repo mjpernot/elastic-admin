@@ -8,23 +8,19 @@
     Usage:
         elastic_db_admin.py -c file -d path
             {-D [all | general | memory | node | server | shard | disk] |
-            -C [all | general | memory | node | server | shard | disk]
+             -C [all | general | memory | node | server | shard | disk]
                 {-m value | -u value | -p value} |
-            -L [repo_name] |
-            -R | -M | -N |
-            -F [repo_name]}
+             -L [repo_name] |
+             -F [repo_name] |
+             -R |
+             -M |
+             -N}
             [-v | -h]
 
     Arguments:
-        -C [all | general | memory | node | server | shard | disk] => Check
-            for problems for the one or more options selected.
-                all => Check status on all options.
-                general => Check general cluster status information.
-                memory => Check for memory usage threshold.
-                node => Check for failed nodes.
-                server => Check for CPU usage threshold.
-                shard => Check for failed shards.
-                disk => Check on disk usage.
+        -c file => ISSE Guard configuration file.  Required argument.
+        -d dir path => Directory path for option '-c'.  Required argument.
+
         -D [all | general | memory | node | server | shard | disk] => Display
             the current status for the one or more options selected.
                 all => Display status on all options.
@@ -34,20 +30,34 @@
                 server => Display available and active CPUs and uptime.
                 shard => Display available, used, and failed shards.
                 disk => Display disk usage for each node in cluster.
+
+        -C [all | general | memory | node | server | shard | disk] => Check
+            for problems for the one or more options selected.
+                all => Check status on all options.
+                general => Check general cluster status information.
+                memory => Check for memory usage threshold.
+                node => Check for failed nodes.
+                server => Check for CPU usage threshold.
+                shard => Check for failed shards.
+                disk => Check on disk usage.
+            -m value => Threshold cutoff for memory usage.
+            -u value => Threshold cutoff for cpu usage.
+            -p value => Threshold cutoff for disk usage.
+
         -L [repo_name] => List of database dumps for an Elasticsearch
             repository.  repo_name is name of repository to dump.  If no
             repo_name is passed then all dumps in all repositories are listed.
+
         -F [repo_name] => List of database dumps that have failed for some
             reason.  repo_name is name of repository to dump.  If no
             repo_name is passed then all dumps in all repositories are checked.
+
         -R => List of repositories in the Elasticsearch database.
+
         -M => List the name of the master node.
+
         -N => List the nodes in the Elasticsearch cluster.
-        -c file => ISSE Guard configuration file.  Required argument.
-        -d dir path => Directory path for option '-c'.  Required argument.
-        -m value => Threshold cutoff for memory usage.  Used with '-C' option.
-        -u value => Threshold cutoff for cpu usage.  Used with '-C' option.
-        -p value => Threshold cutoff for disk usage.  Used with '-C' option.
+
         -v => Display version of this program.
         -h => Help and usage message.
 
@@ -60,15 +70,21 @@
         The configuration file format for the Elasticsearch connection to a
         database.
 
-            # Elasticsearch configuration file.
-            host = ["HOST_NAME1", "HOST_NAME2"]
-            # Default port for Elasticsearch is 9200.
+            # Elasticsearch configuration file
+            name = ["HOST_NAME1", "HOST_NAME2"]
             port = 9200
-            # Threshold cutoff for Memory check in whole numbers
+
+            # Login credentials
+            user = None
+            japd = None
+
+            # SSL connection
+            ssl_client_ca = None
+            scheme = "https"
+
+            # Threshold cutoffs
             cutoff_mem = 75
-            # Threshold cutoff for CPU usage check in whole numbers
             cutoff_cpu = 75
-            # Threshold cutoff for Disk usage check in whole numbers
             cutoff_disk = 75
 
         Configuration modules -> Name is runtime dependent as it can be used to

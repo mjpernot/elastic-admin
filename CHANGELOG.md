@@ -5,6 +5,8 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [0.2.9] - 2021-12-03
+### Changed
+- Documentation updates.
 
 
 ## [0.2.8] - 2020-06-23
@@ -17,36 +19,17 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Added global variable print template.
 
 ### Changed
-- list_dumps:  Added print template.
-- failed_dumps:  Added print template.
-- list_master:  Added print template.
-- list_repos:  Added print template.
-- list_nodes:  Added print template.
-- run_program:  Changed variable names to standard naming convention.
-- \_process_data:  Changed variable names to standard naming convention.
-- check_status:  Changed variable names to standard naming convention.
-- \_get_data:  Changed variable names to standard naming convention.
-- get_status:  Changed variable names to standard naming convention.
-- list_dumps:  Changed variable names to standard naming convention.
-- print_dumps:  Changed variable names to standard naming convention.
-- failed_dumps:  Changed variable names to standard naming convention.
-- print_failures:  Changed variable names to standard naming convention.
-- list_master:  Changed variable names to standard naming convention.
-- list_repos:  Changed variable names to standard naming convention.
-- list_nodes:  Changed variable names to standard naming convention.
+- Added print template to a number of functions.
+- Changed variable names to standard naming convention in a number of functions.
 - Documentation updates.
 
 
 ## [0.2.7] - 2020-02-07
 ### Fixed
-- failed_dumps:  Fixed incorrect parameter passing of class.
+- failed_dumps, list_dumps:  Fixed incorrect parameter passing of class.
 - print_dumps:  Set paramters as keyword arguments.
-- list_dumps:  Fixed incorrect parameter passing of class.
 - run_program: Replaced ElasticSearch with ElasticSearchStatus class.
-- check_status:  Fixed incorrect reference to class attribute.
-- get_status:  Fixed incorrect reference to class attribute.
-- print_dumps:  Fixed incorrect reference to class attribute.
-- print_failures:  Fixed incorrect reference to class attribute.
+- check_status, get_status, print_dumps, print_failures:  Fixed incorrect reference to class attribute.
 
 
 ## [0.2.6] - 2019-11-15
@@ -59,44 +42,25 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ### Changed
 - failed_dumps:  Refactored the function to print failed dumps in current repository or all repositories.
 - list_dumps:  Refactored the function to print dumps in current repository or all repositories.
-- check_status:  Removed -j option.
-- \_process_data:  Removed -j option.
-- get_status:  Removed -j option.
-- \_get_data:  Removed -j option.
-- get_status:  Replaced ElasticStatus with ElasticSearchStatus class instance call.
-- check_status:  Replaced ElasticStatus with ElasticSearchStatus class instance call.
-- run_program:  Replaced ElasticCluster with ElasticSearch class instance call.
-- Documentation update.
+- check_status, \_process_data, get_status, \_get_data:  Removed -j option.
+- get_status, check_status, run_program:  Replaced ElasticStatus with ElasticSearchStatus class instance call.
 - elastic.py.TEMPLATE:  Changed host variable to cluster setting.
+- Documentation update.
 
 ### Removed
-- Removed -j option (JSON formatting) as it's the only format available when checking.
+- Removed -j option (JSON formatting) as it is the only format available when checking.
 
 
 ## [0.2.5] - 2019-09-12
 ### Fixed
-- \_get_data:  Added throwaway variables for gen_libs.merge_two_dicts call.
-- get_status:  Added throwaway variables for gen_libs.merge_two_dicts call.
-- \_process_data:  Added throwaway variables for gen_libs.merge_two_dicts call.
-- failed_dumps:  Fixed mutable list/dictionary argument issue.
-- list_dumps:  Fixed mutable list/dictionary argument issue.
-- check_status:  Fixed mutable list/dictionary argument issue.
-- run_program:  Fixed mutable list/dictionary argument issue.
-- get_status:  Replaced "gen_libs.merge_2_dicts" with "gen_libs.merge_two_dicts".
-- check_status:  Replaced "gen_libs.merge_2_dicts" with "gen_libs.merge_two_dicts".
+- \_get_data, get_status, \_process_data:  Added throwaway variables for gen_libs.merge_two_dicts call.
+- failed_dumps, list_dumps, check_status, run_program:  Fixed mutable list/dictionary argument issue.
+- get_status, check_status:  Replaced "gen_libs.merge_2_dicts" with "gen_libs.merge_two_dicts".
 
 ### Changed
-- check_status:  Reduced code complexity in function by calling private function.
-- get_status:  Reduced code complexity in function by calling private function.
+- check_status, get_status:  Reduced code complexity in function by calling private function.
 - main:  Refactored "if" statements.
-- run_program:  Changed variables to standard naming convention.
-- check_status:  Changed variables to standard naming convention.
-- get_status:  Changed variables to standard naming convention.
-- list_dumps:  Changed variables to standard naming convention.
-- failed_dumps:  Changed variables to standard naming convention.
-- list_master:  Changed variable to standard naming convention.
-- list_repos:  Changed variable to standard naming convention.
-- list_nodes:  Changed variable to standard naming convention.
+- run_program:  Changed variables to standard naming convention in a number of functions.
 
 ### Added
 - \_process_data:  Private function for check_status().  Process data from database.
@@ -107,8 +71,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ### Updated
 - list_repos:  Replaced "elastic_libs.list_repos" with "elastic_libs.list_repos2" call.
 - failed_dumps:  Replaced "elastic_libs.list_dump_format" with "elastic_libs.list_dumps" call.
-- get_status:  Changed mutable assignment to copying the list passed.
-- check_status:  Changed mutable assignment to copying the list passed.
+- get_status, check_status:  Changed mutable assignment to copying the list passed.
 - Documentation updates.
 
 
@@ -181,10 +144,10 @@ Breaking Change
 
 ## [0.0.2] - 2017-09-19
 ### Added
-- List_Nodes function.
-- List_Master function.
-- List_Repos function.
-- Failed_Dumps function.
+- List_Nodes function
+- List_Master function
+- List_Repos function
+- Failed_Dumps function
 
 ### Removed
 - main:  Remove -F, -L, and -R options from XOR function.
