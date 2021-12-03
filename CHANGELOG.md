@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
-## [0.2.8] - 20200623
+## [0.2.9] - 2021-12-03
+
+
+## [0.2.8] - 2020-06-23
 ### Fixed:
 - run_program:  Fixed handling command line arguments from SonarQube scan finding.
 - main:  Fixed handling command line arguments from SonarQube scan finding.
@@ -34,7 +37,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Documentation updates.
 
 
-## [0.2.7] - 20200207
+## [0.2.7] - 2020-02-07
 ### Fixed
 - failed_dumps:  Fixed incorrect parameter passing of class.
 - print_dumps:  Set paramters as keyword arguments.
