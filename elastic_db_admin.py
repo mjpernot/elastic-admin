@@ -136,6 +136,11 @@ def list_nodes(els, **kwargs):
 
     Arguments:
         (input) els -> Elasticsearch class instance.
+        (input) **kwargs:
+            args_array -> Dict of command line options and values.
+            status_call -> Contains class method names for the '-D' option.
+            check_call -> Contains class method names for the '-C' option.
+            cfg -> Configuration variables from configuration file.
 
     """
 
@@ -155,6 +160,11 @@ def list_repos(els, **kwargs):
 
     Arguments:
         (input) els -> Elasticsearch class instance.
+        (input) **kwargs:
+            args_array -> Dict of command line options and values.
+            status_call -> Contains class method names for the '-D' option.
+            check_call -> Contains class method names for the '-C' option.
+            cfg -> Configuration variables from configuration file.
 
     """
 
@@ -172,6 +182,11 @@ def list_master(els, **kwargs):
 
     Arguments:
         (input) els-> Elasticsearch class instance.
+        (input) **kwargs:
+            args_array -> Dict of command line options and values.
+            status_call -> Contains class method names for the '-D' option.
+            check_call -> Contains class method names for the '-C' option.
+            cfg -> Configuration variables from configuration file.
 
     """
 
@@ -215,6 +230,9 @@ def failed_dumps(els, **kwargs):
         (input) els -> Elasticsearch class instance.
         (input) **kwargs:
             args_array -> Dict of command line options and values.
+            status_call -> Contains class method names for the '-D' option.
+            check_call -> Contains class method names for the '-C' option.
+            cfg -> Configuration variables from configuration file.
 
     """
 
@@ -260,6 +278,9 @@ def list_dumps(els, **kwargs):
         (input) els -> Elasticsearch class instance.
         (input) **kwargs:
             args_array -> Dict of command line options and values.
+            status_call -> Contains class method names for the '-D' option.
+            check_call -> Contains class method names for the '-C' option.
+            cfg -> Configuration variables from configuration file.
 
     """
 
@@ -294,6 +315,8 @@ def get_status(els, **kwargs):
         (input) **kwargs:
             args_array -> Dict of command line options and values.
             status_call -> Contains class method names for the '-D' option.
+            check_call -> Contains class method names for the '-C' option.
+            cfg -> Configuration variables from configuration file.
 
     """
 
@@ -356,6 +379,7 @@ def check_status(els, **kwargs):
         (input) **kwargs:
             args_array -> Dict of command line options and values.
             check_call -> Contains class method names for the '-C' option.
+            status_call -> Contains class method names for the '-D' option.
             cfg -> Configuration variables from configuration file.
 
     """
