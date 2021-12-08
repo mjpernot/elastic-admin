@@ -43,36 +43,31 @@ class ElasticSearchStatus(object):
     Description:  Class representation of the ElasticSearchStatus class.
 
     Methods:
-        __init__ -> Initialize configuration environment.
-        chk_mem -> Stub holder for ElasticSearchStatus.chk_mem method.
-        get_cluster -> Stub holder for ElasticSearchStatus.get_cluster method.
-        chk_all -> Stub holder for ElasticSearchStatus.chk_all method.
+        __init__
+        chk_mem
+        get_cluster
+        chk_all
 
     """
 
-    def __init__(self, hosts, port, mem, cpu, disk):
+    def __init__(self):
 
         """Method:  __init__
 
         Description:  Initialization instance of the class.
 
         Arguments:
-            (input) hosts -> Hosts name.
-            (input) port -> Port number.
-            (input) mem -> Memory cutoff.
-            (input) cpu -> Cpu cutoff.
-            (input) disk -> Disk cutoff.
 
         """
 
-        self.hosts = hosts
-        self.port = port
+        self.hosts = ["hosts"]
+        self.port = 9200
         self.all_err_msg = None
         self.cluster_err_msg = None
         self.mem_err_msg = None
-        self.cutoff_cpu = cpu
-        self.cutoff_mem = mem
-        self.cutoff_disk = disk
+        self.cutoff_cpu = 95
+        self.cutoff_mem = 90
+        self.cutoff_disk = 75
 
     def chk_mem(self, cutoff_cpu, cutoff_mem, cutoff_disk):
 
@@ -81,9 +76,6 @@ class ElasticSearchStatus(object):
         Description:  Stub holder for ElasticSearchStatus.chk_mem method.
 
         Arguments:
-            (input) cutoff_cpu -> CPU cutoff value.
-            (input) cutoff_mem -> Memory cutoff value.
-            (input) cutoff_disk -> Disk cutoff value.
 
         """
 
@@ -103,7 +95,7 @@ class ElasticSearchStatus(object):
 
         """
 
-        return self.cluster_err_msg
+        return {"Cluster": "cluster_name"}
 
     def chk_all(self, cutoff_cpu, cutoff_mem, cutoff_disk):
 
@@ -112,9 +104,6 @@ class ElasticSearchStatus(object):
         Description:  Stub holder for ElasticSearchStatus.chk_all method.
 
         Arguments:
-            (input) cutoff_cpu -> CPU cutoff value.
-            (input) cutoff_mem -> Memory cutoff value.
-            (input) cutoff_disk -> Disk cutoff value.
 
         """
 
@@ -125,31 +114,6 @@ class ElasticSearchStatus(object):
         return self.all_err_msg
 
 
-class ElasticSearch(object):
-
-    """Class:  ElasticSearch
-
-    Description:  Class representation of the ElasticSearch class.
-
-    Methods:
-        __init__ -> Initialize configuration environment.
-
-    """
-
-    def __init__(self):
-
-        """Method:  __init__
-
-        Description:  Initialization instance of the class.
-
-        Arguments:
-
-        """
-
-        self.hosts = ["nodename1", "nodename2"]
-        self.port = 9200
-
-
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -157,17 +121,17 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialization for unit testing.
-        test_cutoff_args -> Test passing in cutoff arguments.
-        test_one_option_cfg -> Test config settings.
-        test_one_option_error -> Test one option with error.
-        test_incorrect_option -> Test with incorrect option.
-        test_one_option -> Test with one option.
-        test_all -> Test with all option.
-        test_no_options -> Test with no options.
-        test_all_with_error -> Test with all option and with error.
-        test_all_no_error -> Test with all option and no errors.
-        test_default_no_error -> Test with default option and no errors.
+        setUp
+        test_cutoff_args
+        test_one_option_cfg
+        test_one_option_error
+        test_incorrect_option
+        test_one_option
+        test_all
+        test_no_options
+        test_all_with_error
+        test_all_no_error
+        test_default_no_error
 
     """
 
@@ -184,7 +148,7 @@ class UnitTest(unittest.TestCase):
         self.mem = 90
         self.cpu = 95
         self.disk = 80
-        self.els = ElasticSearch()
+        self.els = ElasticSearchStatus()
         self.args_array = {"-C": ["all"]}
         self.args_array2 = {"-C": ["memory"]}
         self.args_array3 = {"-C": []}
@@ -201,8 +165,7 @@ class UnitTest(unittest.TestCase):
         cfg2 = collections.namedtuple("Cfg", "test")
         self.cfg2 = cfg2("test")
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
-    def test_cutoff_args(self, mock_class):
+    def test_cutoff_args(self):
 
         """Function:  test_cutoff_args
 
@@ -212,16 +175,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(
-            self.els.hosts, self.els.port, self.mem, self.cpu, self.disk)
-
         self.assertFalse(
             elastic_db_admin.check_status(
                 self.els, check_call=self.check_call,
                 args_array=self.args_array8, cfg=self.cfg))
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
-    def test_one_option_cfg(self, mock_class):
+    def test_one_option_cfg(self):
 
         """Function:  test_one_option_cfg
 
@@ -231,16 +190,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(
-            self.els.hosts, self.els.port, self.mem, self.cpu, self.disk)
-
         self.assertFalse(
             elastic_db_admin.check_status(
                 self.els, check_call=self.check_call,
                 args_array=self.args_array6, cfg=self.cfg))
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
-    def test_one_option_error(self, mock_class):
+    def test_one_option_error(self):
 
         """Function:  test_one_option_error
 
@@ -250,11 +205,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        els = ElasticSearchStatus(self.els.hosts, self.els.port, self.mem,
-                                  self.cpu, self.disk)
-        els.mem_err_msg = {"Err": "Error Message"}
-        els.cluster_err_msg = {}
-        mock_class.return_value = els
+        self.els.mem_err_msg = {"Err": "Error Message"}
+        self.els.cluster_err_msg = {}
 
         with gen_libs.no_std_out():
             self.assertFalse(
@@ -262,8 +214,7 @@ class UnitTest(unittest.TestCase):
                     self.els, check_call=self.check_call,
                     args_array=self.args_array6, cfg=self.cfg2))
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
-    def test_incorrect_option(self, mock_class):
+    def test_incorrect_option(self):
 
         """Function:  test_incorrect_option
 
@@ -273,17 +224,13 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(
-            self.els.hosts, self.els.port, self.mem, self.cpu, self.disk)
-
         with gen_libs.no_std_out():
             self.assertFalse(
                 elastic_db_admin.check_status(
                     self.els, check_call=self.check_call,
                     args_array=self.args_array7, cfg=self.cfg2))
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
-    def test_one_option(self, mock_class):
+    def test_one_option(self):
 
         """Function:  test_one_option
 
@@ -293,16 +240,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(
-            self.els.hosts, self.els.port, self.mem, self.cpu, self.disk)
-
         self.assertFalse(
             elastic_db_admin.check_status(
                 self.els, check_call=self.check_call,
                 args_array=self.args_array6, cfg=self.cfg2))
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
-    def test_all(self, mock_class):
+    def test_all(self):
 
         """Function:  test_all
 
@@ -312,16 +255,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(
-            self.els.hosts, self.els.port, self.mem, self.cpu, self.disk)
-
         self.assertFalse(
             elastic_db_admin.check_status(
                 self.els, check_call=self.check_call,
                 args_array=self.args_array5, cfg=self.cfg2))
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
-    def test_no_options(self, mock_class):
+    def test_no_options(self):
 
         """Function:  test_no_options
 
@@ -331,16 +270,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(
-            self.els.hosts, self.els.port, self.mem, self.cpu, self.disk)
-
         self.assertFalse(
             elastic_db_admin.check_status(
                 self.els, check_call=self.check_call,
                 args_array=self.args_array4, cfg=self.cfg2))
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
-    def test_all_with_error(self, mock_class):
+    def test_all_with_error(self):
 
         """Function:  test_all_with_error
 
@@ -349,10 +284,8 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-        els = ElasticSearchStatus(self.els.hosts, self.els.port, self.mem,
-                                  self.cpu, self.disk)
-        els.all_err_msg = "Error Message"
-        mock_class.return_value = els
+
+        self.els.all_err_msg = "Error Message"
 
         with gen_libs.no_std_out():
             self.assertFalse(
@@ -360,8 +293,7 @@ class UnitTest(unittest.TestCase):
                     self.els, check_call=self.check_call,
                     args_array=self.args_array, cfg=self.cfg2))
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
-    def test_all_no_error(self, mock_class):
+    def test_all_no_error(self):
 
         """Function:  test_all_no_error
 
@@ -371,16 +303,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(
-            self.els.hosts, self.els.port, self.mem, self.cpu, self.disk)
-
         self.assertFalse(
             elastic_db_admin.check_status(
                 self.els, check_call=self.check_call,
                 args_array=self.args_array, cfg=self.cfg2))
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
-    def test_default_no_error(self, mock_class):
+    def test_default_no_error(self):
 
         """Function:  test_default_no_error
 
@@ -389,9 +317,6 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-
-        mock_class.return_value = ElasticSearchStatus(
-            self.els.hosts, self.els.port, self.mem, self.cpu, self.disk)
 
         self.assertFalse(
             elastic_db_admin.check_status(
