@@ -320,24 +320,23 @@ def get_status(els, **kwargs):
 
     """
 
-    elc = elastic_class.ElasticSearchStatus(els.hosts, els.port, **kwargs)
     args_array = dict(kwargs.get("args_array"))
     display_list = list(args_array.get("-D", []))
 
     if not display_list or "all" in display_list:
-        print(elc.get_all())
+        print(els.get_all())
 
     else:
-        data, _, _ = gen_libs.merge_two_dicts(elc.get_cluster(),
-                                              elc.get_nodes())
+        data, _, _ = gen_libs.merge_two_dicts(
+            els.get_cluster(), els.get_nodes())
 
         for opt in display_list:
-            data = _get_data(data, elc, opt, **kwargs)
+            data = _get_data(data, els, opt, **kwargs)
 
         print(data)
 
 
-def _get_data(data, elc, opt, **kwargs):
+def _get_data(data, els, opt, **kwargs):
 
     """Function:  _get_data
 
@@ -346,10 +345,13 @@ def _get_data(data, elc, opt, **kwargs):
 
     Arguments:
         (input) data -> Data results.
-        (input) elc -> Elasticsearch status class instance.
+        (input) els -> Elasticsearch status class instance.
         (input) opt -> Method to run in class instance.
         (input) **kwargs:
             status_call -> Contains class method names for the '-D' option.
+            args_array -> Dict of command line options and values.
+            check_call -> Contains class method names for the '-C' option.
+            cfg -> Configuration variables from configuration file.
         (output) data -> Modified data results.
 
     """
@@ -358,8 +360,8 @@ def _get_data(data, elc, opt, **kwargs):
     data = dict(data)
 
     if opt in func_call:
-        data, _, _ = gen_libs.merge_two_dicts(data,
-                                              getattr(elc, func_call[opt])())
+        data, _, _ = gen_libs.merge_two_dicts(
+            data, getattr(els, func_call[opt])())
 
     else:
         print("Warning:  Option '{%s}' is not supported" % (opt))
@@ -387,8 +389,9 @@ def check_status(els, **kwargs):
     args_array = dict(kwargs.get("args_array"))
     check_list = list(args_array.get("-C", []))
     cfg = kwargs.get("cfg")
-
     cutoff_mem = args_array.get("-m", None)
+    cutoff_cpu = args_array.get("-u", None)
+    cutoff_disk = args_array.get("-p", None)
 
     if cutoff_mem:
         els.cutoff_mem = int(cutoff_mem)
@@ -397,16 +400,12 @@ def check_status(els, **kwargs):
         els.cutoff_mem = cfg.cutoff_mem if hasattr(
             cfg, "cutoff_mem") else els.cutoff_mem
 
-    cutoff_cpu = args_array.get("-u", None)
-
     if cutoff_cpu:
         els.cutoff_cpu = int(cutoff_cpu)
 
     else:
         els.cutoff_cpu = cfg.cutoff_cpu if hasattr(
             cfg, "cutoff_cpu") else els.cutoff_cpu
-
-    cutoff_disk = args_array.get("-p", None)
 
     if cutoff_disk:
         els.cutoff_disk = int(cutoff_disk)
@@ -426,7 +425,6 @@ def check_status(els, **kwargs):
     else:
         err_flag = False
         err_msg = els.get_cluster()
-
         err_flag, err_msg = _process_data(
             check_list, err_flag, err_msg, els, cutoff_cpu=els.cutoff_cpu,
             cutoff_mem=els.cutoff_mem, cutoff_disk=els.cutoff_disk, **kwargs)
