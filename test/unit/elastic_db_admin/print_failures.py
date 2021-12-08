@@ -42,7 +42,7 @@ class ElasticSearchDump(object):
     Description:  Class representation of the ElasticSearchDump class.
 
     Methods:
-        __init__ -> Initialize configuration environment.
+        __init__
 
     """
 
@@ -53,9 +53,6 @@ class ElasticSearchDump(object):
         Description:  Initialization instance of the class.
 
         Arguments:
-            (input) hosts -> Host name.
-            (input) repo -> Repoistory name.
-            (input) port -> Port number.
 
         """
 
@@ -74,7 +71,7 @@ class ElasticSearch(object):
     Description:  Class representation of the ElasticSearch class.
 
     Methods:
-        __init__ -> Initialize configuration environment.
+        __init__
 
     """
 
@@ -99,8 +96,8 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialization for unit testing.
-        test_print_failures -> Test print_failures function.
+        setUp
+        test_print_failures
 
     """
 
