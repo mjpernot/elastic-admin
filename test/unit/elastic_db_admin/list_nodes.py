@@ -41,7 +41,7 @@ class ElasticSearch(object):
     Description:  Class representation of the ElasticSearch class.
 
     Methods:
-        __init__ -> Initialize configuration environment.
+        __init__
 
     """
 
@@ -65,9 +65,9 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialization for unit testing.
-        test_empty_list_nodes -> Test with empty list for nodes.
-        test_list_nodes -> Test list_nodes function.
+        setUp
+        test_empty_list_nodes
+        test_list_nodes
 
     """
 
