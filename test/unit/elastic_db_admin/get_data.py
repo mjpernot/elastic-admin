@@ -41,11 +41,11 @@ class ElasticSearchStatus(object):
     Description:  Class representation of the ElasticSearchStatus class.
 
     Methods:
-        __init__ -> Initialize configuration environment.
-        get_mem_status -> Holder for ElasticSearchStatus.get_mem_status method.
-        get_nodes -> Stub holder for ElasticSearchStatus.get_nodes method.
-        get_cluster -> Stub holder for ElasticSearchStatus.get_cluster method.
-        get_all -> Stub holder for ElasticSearchStatus.get_all method.
+        __init__
+        get_mem_status
+        get_nodes
+        get_cluster
+        get_all
 
     """
 
@@ -56,8 +56,6 @@ class ElasticSearchStatus(object):
         Description:  Initialization instance of the class.
 
         Arguments:
-            (input) node -> Node name.
-            (input) port -> Port number.
 
         """
 
@@ -120,10 +118,10 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialization for unit testing.
-        test_incorrect_option -> Test with incorrect option.
-        test_one_option -> Test with one option.
-        test_no_option -> Test with no options.
+        setUp
+        test_incorrect_option
+        test_one_option
+        test_no_option
 
     """
 
