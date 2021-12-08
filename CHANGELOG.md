@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [0.2.9] - 2021-12-03
 ### Changed
+- check_status:  Refactored function.
 - run_program:  Added connect call, check for elasticsearch connection status, and set login credentials and SSL connection settings.
 - config/elastic.py.TEMPLATE:  Added login credentials and SSL entries.
 - Removed non-required \*\*kwargs from function parameter list.

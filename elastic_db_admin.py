@@ -386,43 +386,50 @@ def check_status(els, **kwargs):
 
     args_array = dict(kwargs.get("args_array"))
     check_list = list(args_array.get("-C", []))
-    cutoff_mem = args_array.get("-m", None)
-    cutoff_cpu = args_array.get("-u", None)
-    cutoff_disk = args_array.get("-p", None)
     cfg = kwargs.get("cfg")
 
+    cutoff_mem = args_array.get("-m", None)
+
     if cutoff_mem:
-        cutoff_mem = int(cutoff_mem)
+        els.cutoff_mem = int(cutoff_mem)
+
+    else:
+        els.cutoff_mem = cfg.cutoff_mem if hasattr(
+            cfg, "cutoff_mem") else els.cutoff_mem
+
+    cutoff_cpu = args_array.get("-u", None)
 
     if cutoff_cpu:
-        cutoff_cpu = int(cutoff_cpu)
+        els.cutoff_cpu = int(cutoff_cpu)
+
+    else:
+        els.cutoff_cpu = cfg.cutoff_cpu if hasattr(
+            cfg, "cutoff_cpu") else els.cutoff_cpu
+
+    cutoff_disk = args_array.get("-p", None)
 
     if cutoff_disk:
-        cutoff_disk = int(cutoff_disk)
+        els.cutoff_disk = int(cutoff_disk)
 
-    cfg_cutoff_mem = cfg.cutoff_mem if hasattr(cfg, "cutoff_mem") else None
-    cfg_cutoff_cpu = cfg.cutoff_cpu if hasattr(cfg, "cutoff_cpu") else None
-    cfg_cutoff_disk = cfg.cutoff_disk if hasattr(cfg, "cutoff_disk") else None
-
-    esc = elastic_class.ElasticSearchStatus(
-        els.hosts, els.port, cfg_cutoff_mem, cfg_cutoff_cpu, cfg_cutoff_disk,
-        **kwargs)
+    else:
+        els.cutoff_disk = cfg.cutoff_disk if hasattr(
+            cfg, "cutoff_disk") else els.cutoff_disk
 
     if not check_list or "all" in check_list:
-        err_msg = esc.chk_all(cutoff_cpu=cutoff_cpu, cutoff_mem=cutoff_mem,
-                              cutoff_disk=cutoff_disk)
+        data_msg = els.chk_all(
+            cutoff_cpu=els.cutoff_cpu, cutoff_mem=els.cutoff_mem,
+            cutoff_disk=els.cutoff_disk)
 
-        if err_msg:
-            print(err_msg)
+        if data_msg:
+            print(data_msg)
 
     else:
         err_flag = False
-        err_msg = esc.get_cluster()
+        err_msg = els.get_cluster()
 
-        err_flag, err_msg = _process_data(check_list, err_flag, err_msg, esc,
-                                          cutoff_cpu=cutoff_cpu,
-                                          cutoff_mem=cutoff_mem,
-                                          cutoff_disk=cutoff_disk, **kwargs)
+        err_flag, err_msg = _process_data(
+            check_list, err_flag, err_msg, els, cutoff_cpu=els.cutoff_cpu,
+            cutoff_mem=els.cutoff_mem, cutoff_disk=els.cutoff_disk, **kwargs)
 
         if err_flag:
             print(err_msg)
@@ -445,6 +452,9 @@ def _process_data(check_list, err_flag, err_msg, esc, **kwargs):
             cutoff_cpu -> Cutoff value for CPU usage.
             cutoff_mem -> Cutoff value for Memory usage.
             cutoff_disk -> Cutoff value for Disk usage.
+            args_array -> Dict of command line options and values.
+            status_call -> Contains class method names for the '-D' option.
+            cfg -> Configuration variables from configuration file.
         (output) err_flag -> True|False - Status of results.
         (output) err_msg -> Error message(s).
 
