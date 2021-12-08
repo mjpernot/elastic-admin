@@ -208,11 +208,22 @@ def print_failures(els, repo):
 
     """
 
+    # Old Code - Begin
     failed_list = []
     esd = elastic_class.ElasticSearchDump(els.hosts, repo, els.port)
     print("Repository: {0:25}".format(repo))
 
     for dmp in esd.dump_list:
+        if dmp[1] == "FAILED" or dmp[9] != 0:
+            failed_list.append(dmp)
+
+    elastic_libs.list_dumps(failed_list)
+    # Old Code - End
+
+    failed_list = []
+    print("Repository: {0:25}".format(repo))
+
+    for dmp in elastic_class.get_dump_list(els, repo=repo):
         if dmp[1] == "FAILED" or dmp[9] != 0:
             failed_list.append(dmp)
 
