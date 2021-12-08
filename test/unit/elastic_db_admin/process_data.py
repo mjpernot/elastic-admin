@@ -41,10 +41,10 @@ class ElasticSearchStatus(object):
     Description:  Class representation of the ElasticSearchStatus class.
 
     Methods:
-        __init__ -> Initialize configuration environment.
-        chk_mem -> Stub holder for ElasticSearchStatus.chk_mem method.
-        get_cluster -> Stub holder for ElasticSearchStatus.get_cluster method.
-        chk_all -> Stub holder for ElasticSearchStatus.chk_all method.
+        __init__
+        chk_mem
+        get_cluster
+        chk_all
 
     """
 
@@ -55,11 +55,6 @@ class ElasticSearchStatus(object):
         Description:  Initialization instance of the class.
 
         Arguments:
-            (input) node -> Node name.
-            (input) port -> Port number.
-            (input) mem -> Memory cutoff.
-            (input) cpu -> Cpu cutoff.
-            (input) disk -> Disk cutoff.
 
         """
 
@@ -79,9 +74,6 @@ class ElasticSearchStatus(object):
         Description:  Stub holder for ElasticSearchStatus.chk_mem method.
 
         Arguments:
-            (input) cutoff_cpu -> CPU cutoff value.
-            (input) cutoff_mem -> Memory cutoff value.
-            (input) cutoff_disk -> Disk cutoff value.
 
         """
 
@@ -110,9 +102,6 @@ class ElasticSearchStatus(object):
         Description:  Stub holder for ElasticSearchStatus.chk_all method.
 
         Arguments:
-            (input) cutoff_cpu -> CPU cutoff value.
-            (input) cutoff_mem -> Memory cutoff value.
-            (input) cutoff_disk -> Disk cutoff value.
 
         """
 
@@ -130,10 +119,10 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialization for unit testing.
-        test_one_option_error -> Test with one option with error.
-        test_incorrect_option -> Test with incorrect option.
-        test_one_option -> Test with one option.
+        setUp
+        test_one_option_error
+        test_incorrect_option
+        test_one_option
 
     """
 
