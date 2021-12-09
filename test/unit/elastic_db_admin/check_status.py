@@ -284,7 +284,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.els.all_err_msg = "Error Message"
+        self.els.all_err_msg = {"Key": "Error Message"}
 
         with gen_libs.no_std_out():
             self.assertFalse(
