@@ -99,6 +99,7 @@
 
 # Standard
 import sys
+import datetime
 
 # Local
 import lib.arg_parser as arg_parser
@@ -341,7 +342,7 @@ def get_status(els, **kwargs):
     display_list = list(args_array.get("-D", []))
 
     if not display_list or "all" in display_list:
-        print(els.get_all())
+        data = els.get_all()
 
     else:
         data, _, _ = gen_libs.merge_two_dicts(
@@ -350,7 +351,10 @@ def get_status(els, **kwargs):
         for opt in display_list:
             data = _get_data(data, els, opt, **kwargs)
 
-        print(data)
+    data["AsOf"] = datetime.datetime.strftime(
+        datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
+
+    print(data)
 
 
 def _get_data(data, els, opt, **kwargs):

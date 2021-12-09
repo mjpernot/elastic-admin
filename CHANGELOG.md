@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [0.2.9] - 2021-12-03
 ### Changed
+- get_status:  Added datetime to data set.
 - print_failures, print_dumps:  Removed ElasticSearchDump instance call and used the existing ElasticSearchStatus instance.
 - get_status:  Remove ElasticSearchStatus instance call and used the passed in ElasticSearchStatus instance.
 - check_status:  Refactored function.
