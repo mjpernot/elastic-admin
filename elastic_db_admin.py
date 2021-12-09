@@ -273,9 +273,15 @@ def print_dumps(els, repo):
 
     """
 
+    # Old Code - Begin
     esd = elastic_class.ElasticSearchDump(els.hosts, repo=repo, port=els.port)
     print("Repository: {0:25}".format(repo))
     elastic_libs.list_dumps(esd.dump_list)
+    # Old Code - End
+
+    print("Repository: {0:25}".format(repo))
+    elastic_libs.list_dumps(elastic_class.get_dump_list(els, repo=repo))
+    
 
 
 def list_dumps(els, **kwargs):
