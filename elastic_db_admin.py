@@ -568,16 +568,17 @@ def main():
         line arguments and values.
 
     Variables:
-        check_call -> contains '-C' option values and associated
-            ElasticSearchStatus class method names.
         dir_chk_list -> contains options which will be directories.
         func_dict -> dictionary list for the function calls or other options.
+        opt_con_req_list -> contains the options that require other options.
         opt_def_dict -> contains options with their default values.
         opt_multi_list -> contains the options that will have multiple values.
         opt_req_list -> contains options that are required for the program.
         opt_val -> List of options that allow 0 or 1 value for option.
         opt_val_list -> contains options which require values.
         status_call -> contains '-D' option values and associated
+            ElasticSearchStatus class method names.
+        check_call -> contains '-C' option values and associated
             ElasticSearchStatus class method names.
 
     Arguments:
@@ -590,8 +591,9 @@ def main():
     func_dict = {"-F": failed_dumps, "-L": list_dumps, "-M": list_master,
                  "-R": list_repos, "-N": list_nodes, "-D": get_status,
                  "-C": check_status}
+    opt_con_req_list = {"-s": ["-t"]}
     opt_def_dict = {"-D": [], "-C": []}
-    opt_multi_list = ["-D", "-C"]
+    opt_multi_list = ["-D", "-C", "-t", "-s"]
     opt_req_list = ["-c", "-d"]
     opt_val = ["-F", "-L"]
     opt_val_list = ["-c", "-d", "-m", "-u", "-p"]
@@ -609,7 +611,8 @@ def main():
 
     if not gen_libs.help_func(args_array, __version__, help_message) \
        and not arg_parser.arg_require(args_array, opt_req_list) \
-       and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
+       and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list) \
+       and arg_parser.arg_cond_req(args_array, opt_con_req_list):
         run_program(args_array, func_dict, status_call=status_call,
                     check_call=check_call)
 

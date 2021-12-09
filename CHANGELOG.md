@@ -12,6 +12,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Added JSON flattening mode capability.
 
 ### Changed
+- main:  Set up option settings for email, out file, standard out suppression, and JSON flattening.
 - get_status:  Added datetime to data set.
 - print_failures, print_dumps:  Removed ElasticSearchDump instance call and used the existing ElasticSearchStatus instance.
 - get_status:  Remove ElasticSearchStatus instance call and used the passed in ElasticSearchStatus instance.
