@@ -7,7 +7,9 @@
 
     Usage:
         elastic_db_admin.py -c file -d path
-            {-D [all | general | memory | node | server | shard | disk] |
+            {-D [all | general | memory | node | server | shard | disk]
+                [-t email_addr [email_addr ...] -s subject_line]
+                [-o dir_path/file [-a]] [-f] ]-z]|
              -C [all | general | memory | node | server | shard | disk]
                 {-m value | -u value | -p value} |
              -L [repo_name] |
@@ -18,7 +20,7 @@
             [-v | -h]
 
     Arguments:
-        -c file => ISSE Guard configuration file.  Required argument.
+        -c file => Elasticsearch configuration file.  Required argument.
         -d dir path => Directory path for option '-c'.  Required argument.
 
         -D [all | general | memory | node | server | shard | disk] => Display
@@ -30,6 +32,14 @@
                 server => Display available and active CPUs and uptime.
                 shard => Display available, used, and failed shards.
                 disk => Display disk usage for each node in cluster.
+            -t email_addr [email_addr ...] => Enables emailing out all output.
+                    Sends the output to one or more email addresses.
+                -s Subject Line => Subject line of email.  If none is provided
+                    then a default one will be used.
+            -o directory_path/file => Directory path and file name for output.
+                -a => Append output to the file.  By default will overwrite.
+            -f => Flatten JSON data structure.
+            -z => Suppress standard out.
 
         -C [all | general | memory | node | server | shard | disk] => Check
             for problems for the one or more options selected.

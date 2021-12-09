@@ -5,6 +5,12 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [0.2.9] - 2021-12-03
+- Added login credentials and SSL capability.
+- Added email capability.
+- Added output file capability.
+- Added standard out suppression.
+- Added JSON flattening mode capability.
+
 ### Changed
 - get_status:  Added datetime to data set.
 - print_failures, print_dumps:  Removed ElasticSearchDump instance call and used the existing ElasticSearchStatus instance.
