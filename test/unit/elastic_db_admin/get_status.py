@@ -109,7 +109,7 @@ class ElasticSearchStatus(object):
 
         """
 
-        return True
+        return {}
 
 
 class UnitTest(unittest.TestCase):
