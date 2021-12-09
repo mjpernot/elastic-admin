@@ -9,7 +9,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - get_status:  Added datetime to data set.
 - print_failures, print_dumps:  Removed ElasticSearchDump instance call and used the existing ElasticSearchStatus instance.
 - get_status:  Remove ElasticSearchStatus instance call and used the passed in ElasticSearchStatus instance.
-- check_status:  Refactored function.
+- check_status, \_process_data:  Refactored function.
 - run_program:  Added connect call, check for elasticsearch connection status, and set login credentials and SSL connection settings.
 - config/elastic.py.TEMPLATE:  Added login credentials and SSL entries.
 - Removed non-required \*\*kwargs from function parameter list.

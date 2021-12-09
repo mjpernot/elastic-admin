@@ -436,25 +436,29 @@ def check_status(els, **kwargs):
             cfg, "cutoff_disk") else els.cutoff_disk
 
     if not check_list or "all" in check_list:
-        data_msg = els.chk_all(
+        data = els.chk_all(
             cutoff_cpu=els.cutoff_cpu, cutoff_mem=els.cutoff_mem,
             cutoff_disk=els.cutoff_disk)
 
-        if data_msg:
-            print(data_msg)
+        if data:
+            data["AsOf"] = datetime.datetime.strftime(
+                datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
 
     else:
-        err_flag = False
-        err_msg = els.get_cluster()
-        err_flag, err_msg = _process_data(
-            check_list, err_flag, err_msg, els, cutoff_cpu=els.cutoff_cpu,
+        data = _process_data(
+            check_list, els, cutoff_cpu=els.cutoff_cpu,
             cutoff_mem=els.cutoff_mem, cutoff_disk=els.cutoff_disk, **kwargs)
 
-        if err_flag:
-            print(err_msg)
+        if data:
+            data["AsOf"] = datetime.datetime.strftime(
+                datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
+            data, _, _ = gen_libs.merge_two_dicts(data, els.get_cluster())
+
+    if data:
+        print(data)
 
 
-def _process_data(check_list, err_flag, err_msg, esc, **kwargs):
+def _process_data(check_list, esc, **kwargs):
 
     """Function:  _process_data
 
@@ -463,8 +467,6 @@ def _process_data(check_list, err_flag, err_msg, esc, **kwargs):
 
     Arguments:
         (input) check_list -> Contains class method names for the '-C' option.
-        (input) err_flag -> True|False - Status of results.
-        (input) err_msg -> Error message(s).
         (input) esc -> Elasticsearch status class instance.
         (input) **kwargs:
             check_call -> Contains class method names for the '-C' option.
@@ -484,9 +486,7 @@ def _process_data(check_list, err_flag, err_msg, esc, **kwargs):
     cutoff_cpu = kwargs.get("cutoff_cpu")
     cutoff_mem = kwargs.get("cutoff_mem")
     cutoff_disk = kwargs.get("cutoff_disk")
-
-    if err_msg:
-        err_msg = dict(err_msg)
+    data = {}
 
     for opt in check_list:
         if opt in func_call:
@@ -495,14 +495,12 @@ def _process_data(check_list, err_flag, err_msg, esc, **kwargs):
                 cutoff_disk=cutoff_disk)
 
             if results:
-                err_flag = True
-
-                err_msg, _, _ = gen_libs.merge_two_dicts(err_msg, results)
+                data, _, _ = gen_libs.merge_two_dicts(data, results)
 
         else:
             print("Warning:  Option '{%s}' is not supported" % (opt))
 
-    return err_flag, err_msg
+    return data
 
 
 def run_program(args_array, func_dict, **kwargs):
