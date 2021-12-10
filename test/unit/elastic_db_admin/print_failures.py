@@ -59,9 +59,6 @@ class ElasticSearchDump(object):
         self.hosts = hosts
         self.port = port
         self.repo_name = repo
-        self.dump_list = [
-            ("dump1", "SUCCESS", None, None, None, None, None, None, None, 0),
-            ("dump1", "FAILED", None, None, None, None, None, None, None, 1)]
 
 
 class ElasticSearch(object):
@@ -97,6 +94,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
+        test_all_failures
+        test_no_failures
         test_print_failures
 
     """
@@ -113,10 +112,57 @@ class UnitTest(unittest.TestCase):
 
         self.els = ElasticSearch()
         self.reponame = "reponame"
+        self.dump_list = [
+            ("dump1", "SUCCESS", None, None, None, None, None, None, None, 0),
+            ("dump1", "FAILED", None, None, None, None, None, None, None, 1)]
+        self.dump_list2 = [
+            ("dump1", "SUCCESS", None, None, None, None, None, None, None, 0),
+            ("dump1", "SUCCESS", None, None, None, None, None, None, None, 1)]
+        self.dump_list3 = [
+            ("dump1", "FAILED", None, None, None, None, None, None, None, 0),
+            ("dump1", "FAILED", None, None, None, None, None, None, None, 1)]
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchDump")
+    @mock.patch("elastic_db_admin.elastic_class.get_dump_list")
     @mock.patch("elastic_db_admin.elastic_libs.list_dumps")
-    def test_print_failures(self, mock_list, mock_class):
+    def test_all_failures(self, mock_list, mock_dumps):
+
+        """Function:  test_all_failures
+
+        Description:  Test with all failed dumps.
+
+        Arguments:
+
+        """
+
+        mock_list.return_value = True
+        mock_dumps.return_value = self.dump_list3
+
+        with gen_libs.no_std_out():
+            self.assertFalse(
+                elastic_db_admin.print_failures(self.els, self.reponame))
+
+    @mock.patch("elastic_db_admin.elastic_class.get_dump_list")
+    @mock.patch("elastic_db_admin.elastic_libs.list_dumps")
+    def test_no_failures(self, mock_list, mock_dumps):
+
+        """Function:  test_no_failures
+
+        Description:  Test with no failed dumps.
+
+        Arguments:
+
+        """
+
+        mock_list.return_value = True
+        mock_dumps.return_value = self.dump_list2
+
+        with gen_libs.no_std_out():
+            self.assertFalse(
+                elastic_db_admin.print_failures(self.els, self.reponame))
+
+    @mock.patch("elastic_db_admin.elastic_class.get_dump_list")
+    @mock.patch("elastic_db_admin.elastic_libs.list_dumps")
+    def test_print_failures(self, mock_list, mock_dumps):
 
         """Function:  test_print_failures
 
@@ -127,12 +173,11 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_list.return_value = True
-        mock_class.return_value = ElasticSearchDump(
-            self.els.hosts, self.reponame, self.els.port)
+        mock_dumps.return_value = self.dump_list
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.print_failures(self.els,
-                                                             self.reponame))
+            self.assertFalse(
+                elastic_db_admin.print_failures(self.els, self.reponame))
 
 
 if __name__ == "__main__":
