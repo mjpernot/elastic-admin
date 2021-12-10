@@ -489,7 +489,7 @@ def check_status(els, **kwargs):
             data, _, _ = gen_libs.merge_two_dicts(data, els.get_nodes())
 
     if data:
-        print(data)
+        data_out(data, args_array)
 
 
 def _process_data(check_list, esc, **kwargs):

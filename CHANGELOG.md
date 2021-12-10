@@ -19,7 +19,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - main:  Set up option settings for email, out file, standard out suppression, and JSON flattening.
 - print_failures, print_dumps:  Removed ElasticSearchDump instance call and used the existing ElasticSearchStatus instance.
 - get_status:  Remove ElasticSearchStatus instance call and used the passed in ElasticSearchStatus instance, added datetime to data set and replaced print with call to data_out.
-- check_status:  Refactored function and added list of nodes to data set.
+- check_status:  Refactored function, added list of nodes to data set and replaced print with call to data_out.
 - \_process_data:  Refactored function.
 - run_program:  Added connect call, check for elasticsearch connection status, and set login credentials and SSL connection settings.
 - config/elastic.py.TEMPLATE:  Added login credentials and SSL entries.
