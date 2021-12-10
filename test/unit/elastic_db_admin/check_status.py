@@ -25,6 +25,7 @@ else:
 
 # Third-party
 import collections
+import mock
 
 # Local
 sys.path.append(os.getcwd())
@@ -207,6 +208,7 @@ class UnitTest(unittest.TestCase):
                 self.els, check_call=self.check_call,
                 args_array=self.args_array6, cfg=self.cfg))
 
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_one_option_error(self):
 
         """Function:  test_one_option_error
@@ -220,12 +222,12 @@ class UnitTest(unittest.TestCase):
         self.els.mem_err_msg = {"Err": "Error Message"}
         self.els.cluster_err_msg = {}
 
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.check_status(
-                    self.els, check_call=self.check_call,
-                    args_array=self.args_array6, cfg=self.cfg2))
+        self.assertFalse(
+            elastic_db_admin.check_status(
+                self.els, check_call=self.check_call,
+                args_array=self.args_array6, cfg=self.cfg2))
 
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_incorrect_option(self):
 
         """Function:  test_incorrect_option
@@ -287,6 +289,7 @@ class UnitTest(unittest.TestCase):
                 self.els, check_call=self.check_call,
                 args_array=self.args_array4, cfg=self.cfg2))
 
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_all_with_error(self):
 
         """Function:  test_all_with_error
@@ -299,11 +302,10 @@ class UnitTest(unittest.TestCase):
 
         self.els.all_err_msg = {"Key": "Error Message"}
 
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.check_status(
-                    self.els, check_call=self.check_call,
-                    args_array=self.args_array, cfg=self.cfg2))
+        self.assertFalse(
+            elastic_db_admin.check_status(
+                self.els, check_call=self.check_call,
+                args_array=self.args_array, cfg=self.cfg2))
 
     def test_all_no_error(self):
 
