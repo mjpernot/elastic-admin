@@ -35,38 +35,11 @@ import version
 __version__ = version.__version__
 
 
-class ElasticSearchDump(object):
+class ElasticSearchStatus(object):
 
-    """Class:  ElasticSearchDump
+    """Class:  ElasticSearchStatus
 
-    Description:  Class representation of the ElasticSearchDump class.
-
-    Methods:
-        __init__
-
-    """
-
-    def __init__(self, hosts, repo, port):
-
-        """Method:  __init__
-
-        Description:  Initialization instance of the class.
-
-        Arguments:
-
-        """
-
-        self.hosts = hosts
-        self.port = port
-        self.repo_name = repo
-        self.dump_list = ["dump1", "dump2"]
-
-
-class ElasticSearch(object):
-
-    """Class:  ElasticSearch
-
-    Description:  Class representation of the ElasticSearch class.
+    Description:  Class representation of the ElasticSearchStatus class.
 
     Methods:
         __init__
@@ -109,12 +82,13 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.els = ElasticSearch()
+        self.els = ElasticSearchStatus()
         self.reponame = "reponame"
+        self.dump_list = ["dump1", "dump2"]
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchDump")
+    @mock.patch("elastic_db_admin.elastic_class.get_dump_list")
     @mock.patch("elastic_db_admin.elastic_libs.list_dumps")
-    def test_print_dumps(self, mock_list, mock_class):
+    def test_print_dumps(self, mock_list, mock_dumps):
 
         """Function:  test_print_dumps
 
@@ -125,12 +99,11 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_list.return_value = True
-        mock_class.return_value = ElasticSearchDump(
-            self.els.hosts, self.reponame, self.els.port)
+        mock_dumps.return_value = self.dump_list
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.print_dumps(self.els,
-                                                          self.reponame))
+            self.assertFalse(
+                elastic_db_admin.print_dumps(self.els, self.reponame))
 
 
 if __name__ == "__main__":
