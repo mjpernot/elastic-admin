@@ -25,6 +25,7 @@ pipeline {
                 pip2 install requests==2.19.1 --user
                 pip2 install urllib3==1.24.3 --user
                 ./test/unit/elastic_db_admin/check_status.py
+                ./test/unit/elastic_db_admin/data_out.py
                 ./test/unit/elastic_db_admin/failed_dumps.py
                 ./test/unit/elastic_db_admin/get_data.py
                 ./test/unit/elastic_db_admin/get_status.py
