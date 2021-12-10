@@ -384,7 +384,7 @@ def get_status(els, **kwargs):
 
     data["AsOf"] = datetime.datetime.strftime(
         datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
-
+    data["HostName"] = socket.gethostname()
     data_out(data, args_array)
 
 
