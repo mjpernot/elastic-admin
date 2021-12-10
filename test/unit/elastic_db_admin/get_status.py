@@ -151,6 +151,7 @@ class UnitTest(unittest.TestCase):
         self.args_array8 = {"-D": []}
         self.status_call = {"memory": "get_mem_status"}
 
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_empty_display_list(self):
 
         """Function:  test_empty_display_list
@@ -161,12 +162,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.get_status(
-                    self.els, status_call=self.status_call,
-                    args_array=self.args_array8))
+        self.assertFalse(
+            elastic_db_admin.get_status(
+                self.els, status_call=self.status_call,
+                args_array=self.args_array8))
 
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_incorrect_option(self):
 
         """Function:  test_incorrect_option
@@ -183,6 +184,7 @@ class UnitTest(unittest.TestCase):
                     self.els, status_call=self.status_call,
                     args_array=self.args_array7))
 
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_one_option(self):
 
         """Function:  test_one_option
@@ -193,12 +195,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.get_status(
-                    self.els, status_call=self.status_call,
-                    args_array=self.args_array6))
+        self.assertFalse(
+            elastic_db_admin.get_status(
+                self.els, status_call=self.status_call,
+                args_array=self.args_array6))
 
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_all(self):
 
         """Function:  test_all
@@ -209,12 +211,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.get_status(
-                    self.els, status_call=self.status_call,
-                    args_array=self.args_array5))
+        self.assertFalse(
+            elastic_db_admin.get_status(
+                self.els, status_call=self.status_call,
+                args_array=self.args_array5))
 
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_no_options(self):
 
         """Function:  test_no_options
@@ -225,12 +227,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.get_status(
-                    self.els, status_call=self.status_call,
-                    args_array=self.args_array4))
+        self.assertFalse(
+            elastic_db_admin.get_status(
+                self.els, status_call=self.status_call,
+                args_array=self.args_array4))
 
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_display_all(self):
 
         """Function:  test_display_all
@@ -241,12 +243,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.get_status(
-                    self.els, status_call=self.status_call,
-                    args_array=self.args_array))
+        self.assertFalse(
+            elastic_db_admin.get_status(
+                self.els, status_call=self.status_call,
+                args_array=self.args_array))
 
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_display_default(self):
 
         """Function:  test_display_default
@@ -257,10 +259,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.get_status(
-                    self.els, status_call=self.status_call, args_array={}))
+        self.assertFalse(
+            elastic_db_admin.get_status(
+                self.els, status_call=self.status_call, args_array={}))
 
 
 if __name__ == "__main__":
