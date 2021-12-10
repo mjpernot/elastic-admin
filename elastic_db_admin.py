@@ -110,6 +110,7 @@
 # Standard
 import sys
 import datetime
+import socket
 
 # Third Party
 import json
@@ -483,6 +484,7 @@ def check_status(els, **kwargs):
         if data:
             data["AsOf"] = datetime.datetime.strftime(
                 datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
+            data["HostName"] = socket.gethostname()
             data, _, _ = gen_libs.merge_two_dicts(data, els.get_cluster())
             data, _, _ = gen_libs.merge_two_dicts(data, els.get_nodes())
 

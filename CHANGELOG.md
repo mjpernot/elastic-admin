@@ -15,6 +15,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - data_out: Determine where the data will be sent to such as email, file, or standard out.
 
 ### Changed
+- check_status:  Added hostname to the data set.
 - main:  Set up option settings for email, out file, standard out suppression, and JSON flattening.
 - print_failures, print_dumps:  Removed ElasticSearchDump instance call and used the existing ElasticSearchStatus instance.
 - get_status:  Remove ElasticSearchStatus instance call and used the passed in ElasticSearchStatus instance, added datetime to data set and replaced print with call to data_out.
