@@ -44,6 +44,7 @@ class ElasticSearchStatus(object):
     Methods:
         __init__
         chk_mem
+        get_nodes
         get_cluster
         chk_all
 
@@ -83,6 +84,18 @@ class ElasticSearchStatus(object):
         self.cutoff_disk = cutoff_disk
 
         return self.mem_err_msg
+
+    def get_nodes(self):
+
+        """Method:  get_nodes
+
+        Description:  Stub holder for ElasticSearchStatus.get_nodes method.
+
+        Arguments:
+
+        """
+
+        return {"node": "node_name"}
 
     def get_cluster(self):
 
