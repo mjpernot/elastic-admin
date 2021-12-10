@@ -16,10 +16,10 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ### Changed
 - main:  Set up option settings for email, out file, standard out suppression, and JSON flattening.
-- get_status:  Added datetime to data set.
 - print_failures, print_dumps:  Removed ElasticSearchDump instance call and used the existing ElasticSearchStatus instance.
-- get_status:  Remove ElasticSearchStatus instance call and used the passed in ElasticSearchStatus instance.
-- check_status, \_process_data:  Refactored function.
+- get_status:  Remove ElasticSearchStatus instance call and used the passed in ElasticSearchStatus instance, added datetime to data set and replaced print with call to data_out.
+- check_status:  Refactored function and added list of nodes to data set.
+- \_process_data:  Refactored function.
 - run_program:  Added connect call, check for elasticsearch connection status, and set login credentials and SSL connection settings.
 - config/elastic.py.TEMPLATE:  Added login credentials and SSL entries.
 - Removed non-required \*\*kwargs from function parameter list.

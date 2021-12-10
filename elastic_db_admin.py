@@ -384,7 +384,7 @@ def get_status(els, **kwargs):
     data["AsOf"] = datetime.datetime.strftime(
         datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
 
-    print(data)
+    data_out(data, args_array)
 
 
 def _get_data(data, els, opt, **kwargs):
@@ -473,6 +473,7 @@ def check_status(els, **kwargs):
         if data:
             data["AsOf"] = datetime.datetime.strftime(
                 datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
+            data, _, _ = gen_libs.merge_two_dicts(data, els.get_nodes())
 
     else:
         data = _process_data(
@@ -483,6 +484,7 @@ def check_status(els, **kwargs):
             data["AsOf"] = datetime.datetime.strftime(
                 datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
             data, _, _ = gen_libs.merge_two_dicts(data, els.get_cluster())
+            data, _, _ = gen_libs.merge_two_dicts(data, els.get_nodes())
 
     if data:
         print(data)
