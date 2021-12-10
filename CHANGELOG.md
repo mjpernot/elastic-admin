@@ -11,6 +11,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Added standard out suppression.
 - Added JSON flattening mode capability.
 
+### Added
+- data_out: Determine where the data will be sent to such as email, file, or standard out.
+
 ### Changed
 - main:  Set up option settings for email, out file, standard out suppression, and JSON flattening.
 - get_status:  Added datetime to data set.

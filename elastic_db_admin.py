@@ -9,7 +9,7 @@
         elastic_db_admin.py -c file -d path
             {-D [all | general | memory | node | server | shard | disk]
                 [-t email_addr [email_addr ...] -s subject_line]
-                [-o dir_path/file [-a]] [-f] ]-z]|
+                [-o dir_path/file [-a]] [-j] ]-z]|
              -C [all | general | memory | node | server | shard | disk]
                 {-m value | -u value | -p value} |
              -L [repo_name] |
@@ -38,7 +38,7 @@
                     then a default one will be used.
             -o directory_path/file => Directory path and file name for output.
                 -a => Append output to the file.  By default will overwrite.
-            -f => Flatten JSON data structure.
+            -j => Flatten JSON data structure.
             -z => Suppress standard out.
 
         -C [all | general | memory | node | server | shard | disk] => Check
@@ -111,6 +111,9 @@
 import sys
 import datetime
 
+# Third Party
+import json
+
 # Local
 import lib.arg_parser as arg_parser
 import lib.gen_libs as gen_libs
@@ -123,6 +126,7 @@ __version__ = version.__version__
 
 # Global variables
 PRT_TEMPLATE = "\n{0:25}"
+SUBJ_LINE = "Elasticsearch_DB_Admin"
 
 
 def help_message():
@@ -219,18 +223,6 @@ def print_failures(els, repo):
 
     """
 
-    # Old Code - Begin
-    failed_list = []
-    esd = elastic_class.ElasticSearchDump(els.hosts, repo, els.port)
-    print("Repository: {0:25}".format(repo))
-
-    for dmp in esd.dump_list:
-        if dmp[1] == "FAILED" or dmp[9] != 0:
-            failed_list.append(dmp)
-
-    elastic_libs.list_dumps(failed_list)
-    # Old Code - End
-
     failed_list = []
     print("Repository: {0:25}".format(repo))
 
@@ -284,15 +276,8 @@ def print_dumps(els, repo):
 
     """
 
-    # Old Code - Begin
-    esd = elastic_class.ElasticSearchDump(els.hosts, repo=repo, port=els.port)
-    print("Repository: {0:25}".format(repo))
-    elastic_libs.list_dumps(esd.dump_list)
-    # Old Code - End
-
     print("Repository: {0:25}".format(repo))
     elastic_libs.list_dumps(elastic_class.get_dump_list(els, repo=repo))
-    
 
 
 def list_dumps(els, **kwargs):
@@ -329,6 +314,41 @@ def list_dumps(els, **kwargs):
 
         for repo in elastic_class.get_repo_list(els.els):
             print_dumps(els, repo)
+
+
+def data_out(data, args_array):
+
+    """Function:  data_out
+
+    Description:  Determine where the data will be sent to such as email, file,
+        standard out and in the type of format it will be displayed.
+
+    Arguments:
+        (input) data -> Data to be sent out.
+        (input) args_array -> Dict of command line options and values.
+
+    """
+
+    global SUBJ_LINE
+
+    args_array = dict(args_array)
+    data = dict(data)
+    mode = "a" if args_array.get("-a") else "w"
+    indent = 4 if args_array.get("-j") else None
+    mail = gen_class.setup_mail(
+        args_array.get("-t"),
+        subj=args_array.get("-s", SUBJ_LINE)) if args_array.get("-t") else None
+    ofile = args_array["-o"] if args_array.get("-o") else None
+
+    if mail:
+        mail.add_2_msg(json.dumps(data, indent=indent))
+        mail.send_mail()
+
+    if ofile:
+        gen_libs.write_file(ofile, mode, json.dumps(data, indent=indent))
+
+    if not args_array.get("-z", False):
+        print(json.dumps(data, indent=indent))
 
 
 def get_status(els, **kwargs):
