@@ -129,7 +129,8 @@ class ElasticSearchStatus(object):
 
     """Class:  ElasticSearchStatus
 
-    Description:  Class stub holder for elastic_class.ElasticSearchStatus class.
+    Description:  Class stub holder for elastic_class.ElasticSearchStatus
+        class.
 
     Methods:
         __init__
