@@ -276,7 +276,7 @@ def print_dumps(els, repo):
     """
 
     print("Repository: {0:25}".format(repo))
-    elastic_libs.list_dumps(elastic_class.get_dump_list(els, repo=repo))
+    elastic_libs.list_dumps(elastic_class.get_dump_list(els, repo=repo)[0])
 
 
 def list_dumps(els, **kwargs):
