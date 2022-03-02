@@ -224,7 +224,6 @@ def print_failures(els, repo):
 
     """
 
-    failed_list = []
     print("Repository: {0:25}".format(repo))
 
     elastic_libs.list_dumps(
