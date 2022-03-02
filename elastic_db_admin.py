@@ -227,10 +227,6 @@ def print_failures(els, repo):
     failed_list = []
     print("Repository: {0:25}".format(repo))
 
-    data = [dmp for dmp in elastic_class.get_dump_list(els, repo=repo)[0]
-         if dmp["state"] != "SUCCESS"]
-    print(data)
-
     elastic_libs.list_dumps(
         [dmp for dmp in elastic_class.get_dump_list(els, repo=repo)[0]
          if dmp["state"] != "SUCCESS"])
