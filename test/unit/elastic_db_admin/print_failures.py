@@ -94,6 +94,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
+        test_other_failures
         test_all_failures
         test_no_failures
         test_print_failures
@@ -112,15 +113,37 @@ class UnitTest(unittest.TestCase):
 
         self.els = ElasticSearch()
         self.reponame = "reponame"
-        self.dump_list = [
-            ("dump1", "SUCCESS", None, None, None, None, None, None, None, 0),
-            ("dump1", "FAILED", None, None, None, None, None, None, None, 1)]
-        self.dump_list2 = [
-            ("dump1", "SUCCESS", None, None, None, None, None, None, None, 0),
-            ("dump1", "SUCCESS", None, None, None, None, None, None, None, 1)]
-        self.dump_list3 = [
-            ("dump1", "FAILED", None, None, None, None, None, None, None, 0),
-            ("dump1", "FAILED", None, None, None, None, None, None, None, 1)]
+        self.dump_list = (
+            [{"snapshot": "dump1", "state": "SUCCESS"},
+             {"snapshot": "dump2", "state": "FAILED"}], True, None)
+        self.dump_list2 = (
+            [{"snapshot": "dump1", "state": "SUCCESS"},
+             {"snapshot": "dump2", "state": "SUCCESS"}], True, None)
+        self.dump_list3 = (
+            [{"snapshot": "dump1", "state": "FAILED"},
+             {"snapshot": "dump2", "state": "FAILED"}], True, None)
+        self.dump_list4 = (
+            [{"snapshot": "dump1", "state": "INCOMPATIBLE"},
+             {"snapshot": "dump2", "state": "SUCCESS"}], True, None)
+
+    @mock.patch("elastic_db_admin.elastic_class.get_dump_list")
+    @mock.patch("elastic_db_admin.elastic_libs.list_dumps")
+    def test_other_failures(self, mock_list, mock_dumps):
+
+        """Function:  test_other_failures
+
+        Description:  Test with other types of states.
+
+        Arguments:
+
+        """
+
+        mock_list.return_value = True
+        mock_dumps.return_value = self.dump_list4
+
+        with gen_libs.no_std_out():
+            self.assertFalse(
+                elastic_db_admin.print_failures(self.els, self.reponame))
 
     @mock.patch("elastic_db_admin.elastic_class.get_dump_list")
     @mock.patch("elastic_db_admin.elastic_libs.list_dumps")

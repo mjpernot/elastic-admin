@@ -224,14 +224,11 @@ def print_failures(els, repo):
 
     """
 
-    failed_list = []
     print("Repository: {0:25}".format(repo))
 
-    for dmp in elastic_class.get_dump_list(els, repo=repo):
-        if dmp[1] == "FAILED" or dmp[9] != 0:
-            failed_list.append(dmp)
-
-    elastic_libs.list_dumps(failed_list)
+    elastic_libs.list_dumps(
+        [dmp for dmp in elastic_class.get_dump_list(els, repo=repo)[0]
+         if dmp["state"] != "SUCCESS"])
 
 
 def failed_dumps(els, **kwargs):
@@ -278,7 +275,7 @@ def print_dumps(els, repo):
     """
 
     print("Repository: {0:25}".format(repo))
-    elastic_libs.list_dumps(elastic_class.get_dump_list(els, repo=repo))
+    elastic_libs.list_dumps(elastic_class.get_dump_list(els, repo=repo)[0])
 
 
 def list_dumps(els, **kwargs):

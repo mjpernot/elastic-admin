@@ -15,6 +15,8 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - data_out: Determine where the data will be sent to such as email, file, or standard out.
 
 ### Changed
+- print_dumps: Pulled only the database dump list from the elastic_class.get_dump_list call.
+- print_failure: Refactored function, also included all states of dumps other then success.
 - check_status, get_status:  Added hostname to the data set.
 - main:  Set up option settings for email, out file, standard out suppression, and JSON flattening.
 - print_failures, print_dumps:  Removed ElasticSearchDump instance call and used the existing ElasticSearchStatus instance.

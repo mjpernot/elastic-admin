@@ -84,7 +84,9 @@ class UnitTest(unittest.TestCase):
 
         self.els = ElasticSearchStatus()
         self.reponame = "reponame"
-        self.dump_list = ["dump1", "dump2"]
+        self.dump_list = (
+            [{"snapshot": "Test_Dump_Name_1"},
+             {"snapshot": "Test_Dump_Name_2"}], True, None)
 
     @mock.patch("elastic_db_admin.elastic_class.get_dump_list")
     @mock.patch("elastic_db_admin.elastic_libs.list_dumps")
