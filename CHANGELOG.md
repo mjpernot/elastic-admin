@@ -5,11 +5,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [0.2.9] - 2021-12-03
+- Updated to work in Elasticsearch 7.17.0
+- Updated elastic-lib to v4.0.0
 - Added login credentials and SSL capability.
-- Added email capability.
-- Added output file capability.
-- Added standard out suppression.
-- Added JSON flattening mode capability.
 
 ### Added
 - data_out: Determine where the data will be sent to such as email, file, or standard out.
