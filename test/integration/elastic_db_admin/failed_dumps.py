@@ -29,6 +29,7 @@ else:
 sys.path.append(os.getcwd())
 import elastic_db_admin
 import lib.gen_libs as gen_libs
+import elastic_lib.elastic_class as elastic_class
 import version
 
 __version__ = version.__version__
