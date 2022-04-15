@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # Classification (U)
 
-"""Program:  print_dumps.py
+"""Program:  get_data.py
 
-    Description:  Integration testing of print_dumps in elastic_db_admin.py.
+    Description:  Integration testing of _get_data in elastic_db_admin.py.
 
     Usage:
-        test/integration/elastic_db_admin/print_dumps.py
+        test/integration/elastic_db_admin/get_data.py
 
     Arguments:
 
@@ -43,7 +43,9 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
-        test_print_dumps
+        test_incorrect_option
+        test_one_option
+        test_no_option
 
     """
 
@@ -71,21 +73,57 @@ class UnitTest(unittest.TestCase):
             self.cfg.host, port=self.cfg.port, user=self.user, japd=self.japd,
             ca_cert=self.ca_cert, scheme=self.scheme)
         self.els.connect()
-        self.reponame = "WhatNameToUse"
 
-    def test_print_dumps(self):
+        self.status_call = {"memory": "get_mem_status"}
+        self.data = {}
+        self.opt = "memory"
+        self.opt2 = "incorrect"
 
-        """Function:  test_print_dumps
+    def test_incorrect_option(self):
 
-        Description:  Test print_dumps function.
+        """Function:  test_incorrect_option
+
+        Description:  Test with incorrect option.
 
         Arguments:
 
         """
 
         with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.print_dumps(self.els, self.reponame))
+            self.assertEqual(
+                elastic_db_admin._get_data(
+                    self.data, self.els, self.opt2,
+                    status_call=self.status_call), ({}))
+
+    def test_one_option(self):
+
+        """Function:  test_one_option
+
+        Description:  Test with one option.
+
+        Arguments:
+
+        """
+
+        data = elastic_db_admin._get_data(
+            self.data, self.els, self.opt, status_call=self.status_call)
+
+        self.assertTrue("memory" in data)
+
+    def test_no_option(self):
+
+        """Function:  test_no_option
+
+        Description:  Test with no options.
+
+        Arguments:
+
+        """
+
+        data = elastic_db_admin._get_data(
+            self.data, self.els, self.opt, status_call=self.status_call)
+
+        self.assertTrue("memory" in data)
 
 
 if __name__ == "__main__":

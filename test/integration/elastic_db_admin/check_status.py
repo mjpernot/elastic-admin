@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # Classification (U)
 
-"""Program:  get_status.py
+"""Program:  check_status.py
 
-    Description:  Integration testing of get_status in elastic_db_admin.py.
+    Description:  Integration testing of check_status in elastic_db_admin.py.
 
     Usage:
-        test/integration/elastic_db_admin/get_status.py
+        test/integration/elastic_db_admin/check_status.py
 
     Arguments:
 
@@ -43,13 +43,14 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
-        test_empty_display_list
+        test_cutoff_args
+        test_one_option_cfg
         test_incorrect_option
         test_one_option
         test_all
         test_no_options
-        test_display_all
-        test_display_default
+        test_all_no_error
+        test_default_no_error
         tearDown
 
     """
@@ -81,32 +82,54 @@ class UnitTest(unittest.TestCase):
             ca_cert=self.ca_cert, scheme=self.scheme)
         self.els.connect()
 
-        self.args_array = {"-D": ["all"], "-o": self.t_file, "-z": True}
-        self.args_array2 = {"-D": ["memory"], "-o": self.t_file, "-z": True}
-        self.args_array3 = {"-D": [], "-o": self.t_file, "-z": True}
+        self.mem = 100
+        self.cpu = 100
+        self.disk = 100
+        self.args_array = {"-C": ["all"], "-o": self.t_file, "-z": True}
+        self.args_array2 = {"-C": ["memory"], "-o": self.t_file, "-z": True}
+        self.args_array3 = {"-C": [], "-o": self.t_file, "-z": True}
         self.args_array4 = {
-            "-D": [], "-j": True, "-o": self.t_file, "-z": True}
+            "-C": [], "-j": True, "-o": self.t_file, "-z": True}
         self.args_array5 = {
-            "-D": ["all"], "-j": True, "-o": self.t_file, "-z": True}
+            "-C": ["all"], "-j": True, "-o": self.t_file, "-z": True}
         self.args_array6 = {
-            "-D": ["memory"], "-j": True, "-o": self.t_file, "-z": True}
+            "-C": ["memory"], "-j": True, "-o": self.t_file, "-z": True}
         self.args_array7 = {
-            "-D": ["incorrect"], "-j": True, "-o": self.t_file, "-z": True}
-        self.args_array8 = {"-D": [], "-o": self.t_file, "-z": True}
-        self.status_call = {"memory": "get_mem_status"}
+            "-C": ["incorrect"], "-j": True, "-o": self.t_file, "-z": True}
+        self.args_array8 = {
+            "-C": ["memory"], "-j": True, "-m": self.mem, "-u": self.cpu,
+            "-p": self.disk, "-o": self.t_file, "-z": True}
+        self.check_call = {"memory": "chk_mem"}
 
-    def test_empty_display_list(self):
+    def test_cutoff_args(self):
 
-        """Function:  test_empty_display_list
+        """Function:  test_cutoff_args
 
-        Description:  Test with empty display list.
+        Description:  Test passing in cutoff arguments.
 
         Arguments:
 
         """
 
-        elastic_db_admin.get_status(self.els, status_call=self.status_call,
-                                    args_array=self.args_array8)
+        elastic_db_admin.check_status(
+            self.els, check_call=self.check_call,
+            args_array=self.args_array8, cfg=self.cfg)
+
+        self.assertFalse(os.path.isfile(self.t_file))
+
+    def test_one_option_cfg(self):
+
+        """Function:  test_one_option_cfg
+
+        Description:  Test config settings.
+
+        Arguments:
+
+        """
+
+        elastic_db_admin.check_status(
+            self.els, check_call=self.check_call,
+            args_array=self.args_array6, cfg=self.cfg)
 
         self.assertFalse(os.path.isfile(self.t_file))
 
@@ -121,9 +144,9 @@ class UnitTest(unittest.TestCase):
         """
 
         with gen_libs.no_std_out():
-            elastic_db_admin.get_status(
-                self.els, status_call=self.status_call,
-                args_array=self.args_array7)
+            elastic_db_admin.check_status(
+                self.els, check_call=self.check_call,
+                args_array=self.args_array7, cfg=self.cfg2)
 
         self.assertFalse(os.path.isfile(self.t_file))
 
@@ -137,11 +160,11 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        elastic_db_admin.get_status(
-            self.els, status_call=self.status_call,
-            args_array=self.args_array6)
+        elastic_db_admin.check_status(
+            self.els, check_call=self.check_call,
+            args_array=self.args_array6, cfg=self.cfg2)
 
-        self.assertTrue(os.path.isfile(self.t_file))
+        self.assertFalse(os.path.isfile(self.t_file))
 
     def test_all(self):
 
@@ -153,11 +176,11 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        elastic_db_admin.get_status(
-            self.els, status_call=self.status_call,
-            args_array=self.args_array5)
+        elastic_db_admin.check_status(
+            self.els, check_call=self.check_call,
+            args_array=self.args_array5, cfg=self.cfg2)
 
-        self.assertTrue(os.path.isfile(self.t_file))
+        self.assertFalse(os.path.isfile(self.t_file))
 
     def test_no_options(self):
 
@@ -169,15 +192,15 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        elastic_db_admin.get_status(
-            self.els, status_call=self.status_call,
-            args_array=self.args_array4)
+        elastic_db_admin.check_status(
+            self.els, check_call=self.check_call,
+            args_array=self.args_array4, cfg=self.cfg2)
 
         self.assertFalse(os.path.isfile(self.t_file))
 
-    def test_display_all(self):
+    def test_all_no_error(self):
 
-        """Function:  test_display_all
+        """Function:  test_all_no_error
 
         Description:  Test with display all option.
 
@@ -185,25 +208,26 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        elastic_db_admin.get_status(
-            self.els, status_call=self.status_call,
-            args_array=self.args_array)
+        elastic_db_admin.check_status(
+            self.els, check_call=self.check_call,
+            args_array=self.args_array, cfg=self.cfg2)
 
-        self.assertTrue(os.path.isfile(self.t_file))
+        self.assertFalse(os.path.isfile(self.t_file))
 
-    def test_display_default(self):
+    def test_default_no_error(self):
 
-        """Function:  test_display_default
+        """Function:  test_default_no_error
 
-        Description:  Test with display default option.
+        Description:  Test with default option and no errors.
 
         Arguments:
 
         """
 
-        self.assertFalse(
-            elastic_db_admin.get_status(
-                self.els, status_call=self.status_call, args_array={}))
+        elastic_db_admin.check_status(
+            self.els, check_call=self.check_call, args_array={}, cfg=self.cfg2)
+
+        self.assertFalse(os.path.isfile(self.t_file))
 
     def tearDown(self):
 

@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # Classification (U)
 
-"""Program:  print_dumps.py
+"""Program:  process_data.py
 
-    Description:  Integration testing of print_dumps in elastic_db_admin.py.
+    Description:  Integration testing of _process_data in elastic_db_admin.py.
 
     Usage:
-        test/integration/elastic_db_admin/print_dumps.py
+        test/integration/elastic_db_admin/process_data.py
 
     Arguments:
 
@@ -43,7 +43,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
-        test_print_dumps
+        test_incorrect_option
+        test_one_option
 
     """
 
@@ -56,6 +57,10 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
+
+        self.cutoff_cpu = 90
+        self.cutoff_mem = 95
+        self.cutoff_disk = 80
 
         self.base_dir = "test/integration/elastic_db_admin"
         self.test_path = os.path.join(os.getcwd(), self.base_dir)
@@ -71,21 +76,43 @@ class UnitTest(unittest.TestCase):
             self.cfg.host, port=self.cfg.port, user=self.user, japd=self.japd,
             ca_cert=self.ca_cert, scheme=self.scheme)
         self.els.connect()
-        self.reponame = "WhatNameToUse"
 
-    def test_print_dumps(self):
+        self.check_call = {"memory": "chk_mem"}
+        self.check_list = ["memory"]
+        self.check_list2 = ["incorrect"]
 
-        """Function:  test_print_dumps
+    def test_incorrect_option(self):
 
-        Description:  Test print_dumps function.
+        """Function:  test_incorrect_option
+
+        Description:  Test with incorrect option.
 
         Arguments:
 
         """
 
         with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.print_dumps(self.els, self.reponame))
+            self.assertEqual(
+                elastic_db_admin._process_data(
+                    self.check_list2, self.els, check_call=self.check_call,
+                    cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
+                    cutoff_disk=self.cutoff_disk), {})
+
+    def test_one_option(self):
+
+        """Function:  test_one_option
+
+        Description:  Test with one option.
+
+        Arguments:
+
+        """
+
+        self.assertEqual(
+            elastic_db_admin._process_data(
+                self.check_list, self.els, check_call=self.check_call,
+                cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
+                cutoff_disk=self.cutoff_disk), {})
 
 
 if __name__ == "__main__":

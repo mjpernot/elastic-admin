@@ -23,3 +23,10 @@ ssl_client_ca = None
 # Do not change unless you know what you are doing.
 scheme = "https"
 
+# Note:  These are in whole numbers only.
+# # Threshold cutoff for Memory check
+# cutoff_mem = 75
+# # Threshold cutoff for CPU usage check
+# cutoff_cpu = 70
+# # Threshold cutoff for Disk usage check
+# cutoff_disk = 65
