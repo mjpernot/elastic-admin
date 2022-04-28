@@ -13,6 +13,7 @@
   * Program Help Function
   * Testing
     - Unit
+    - Integration
 
 
 # Features:
@@ -117,5 +118,55 @@ test/unit/elastic_db_admin/unit_test_run.sh
 ```
 cd {Python_Project}/elastic-admin
 test/unit/elastic_db_admin/code_coverage.sh
+```
+
+
+# Integration Testing:
+
+### Installation:
+
+Install the project using the procedures in the Installation section.
+
+### Configuration:
+
+Make the appropriate changes to the Elasticsearch environment.
+  * Change these entries in the elasticsearch set up:
+    - host = ["HOST_NAME1", "HOST_NAME2"]
+
+  * If login credentials are required:
+    - user = None
+    - japd = None
+
+  * If SSL connections are being used:
+    - ssl_client_ca = None
+
+  * Change these entries only if required and you know what you are doing:
+    - port = 9200
+    - scheme = "https"
+
+  * Change the following entries:
+    - cutoff_cpu = 70
+    - cutoff_disk = 65
+
+```
+cd test/integration/elastic_db_admin/config
+cp ../../../../config/elastic.py.TEMPLATE elastic.py
+vim elastic.py
+sudo chown elasticsearch:elasticsearch elastic.py
+```
+
+### Testing:
+  * These tests must be run as the elasticsearch account:
+
+```
+cd {Python_Project}/elastic-admin
+test/integration/elastic_db_admin/integration_test_run.sh
+```
+
+### Code coverage:
+
+```
+cd {Python_Project}/elastic-admin
+test/integration/elastic_db_admin/code_coverage.sh
 ```
 
