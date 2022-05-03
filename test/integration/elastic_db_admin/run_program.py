@@ -123,6 +123,7 @@ class UnitTest(unittest.TestCase):
 
         self.args["-F"] = True
         self.args["-L"] = True
+        print(self.args)
         elastic_db_admin.run_program(self.args, self.func_dict)
 
         self.assertFalse(os.path.isfile(self.t_file))
@@ -152,6 +153,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        print(self.args)
         elastic_db_admin.run_program(self.args, self.func_dict)
 
         self.assertFalse(os.path.isfile(self.t_file))
