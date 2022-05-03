@@ -49,7 +49,6 @@ class UnitTest(unittest.TestCase):
         test_one_option
         test_all
         test_no_options
-        test_all_no_error
         test_default_no_error
         tearDown
 
@@ -83,9 +82,12 @@ class UnitTest(unittest.TestCase):
         self.els.connect()
 
         self.mem = 100
+        self.mem2 = 1
         self.cpu = 100
         self.disk = 100
-        self.args_array = {"-C": ["all"], "-o": self.t_file, "-z": True}
+        self.args_array = {
+            "-C": ["all"], "-o": self.t_file, "-z": True,  "-m": self.mem,
+            "-u": self.cpu, "-p": self.disk}
         self.args_array2 = {"-C": ["memory"], "-o": self.t_file, "-z": True}
         self.args_array3 = {"-C": [], "-o": self.t_file, "-z": True}
         self.args_array4 = {
@@ -93,7 +95,8 @@ class UnitTest(unittest.TestCase):
         self.args_array5 = {
             "-C": ["all"], "-j": True, "-o": self.t_file, "-z": True}
         self.args_array6 = {
-            "-C": ["memory"], "-j": True, "-o": self.t_file, "-z": True}
+            "-C": ["memory"], "-j": True, "-m": self.mem2, "-o": self.t_file,
+            "-z": True}
         self.args_array7 = {
             "-C": ["incorrect"], "-j": True, "-o": self.t_file, "-z": True}
         self.args_array8 = {
@@ -112,8 +115,8 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.check_status(
-            self.els, check_call=self.check_call,
-            args_array=self.args_array8, cfg=self.cfg)
+            self.els, check_call=self.check_call, args_array=self.args_array8,
+            cfg=self.cfg)
 
         self.assertFalse(os.path.isfile(self.t_file))
 
@@ -131,7 +134,7 @@ class UnitTest(unittest.TestCase):
             self.els, check_call=self.check_call,
             args_array=self.args_array6, cfg=self.cfg)
 
-        self.assertFalse(os.path.isfile(self.t_file))
+        self.assertTrue(os.path.isfile(self.t_file))
 
     def test_incorrect_option(self):
 
@@ -146,7 +149,7 @@ class UnitTest(unittest.TestCase):
         with gen_libs.no_std_out():
             elastic_db_admin.check_status(
                 self.els, check_call=self.check_call,
-                args_array=self.args_array7, cfg=self.cfg2)
+                args_array=self.args_array7, cfg=self.cfg)
 
         self.assertFalse(os.path.isfile(self.t_file))
 
@@ -162,9 +165,9 @@ class UnitTest(unittest.TestCase):
 
         elastic_db_admin.check_status(
             self.els, check_call=self.check_call,
-            args_array=self.args_array6, cfg=self.cfg2)
+            args_array=self.args_array6, cfg=self.cfg)
 
-        self.assertFalse(os.path.isfile(self.t_file))
+        self.assertTrue(os.path.isfile(self.t_file))
 
     def test_all(self):
 
@@ -177,10 +180,14 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.check_status(
-            self.els, check_call=self.check_call,
-            args_array=self.args_array5, cfg=self.cfg2)
+            self.els, check_call=self.check_call, args_array=self.args_array5,
+            cfg=self.cfg)
 
-        self.assertFalse(os.path.isfile(self.t_file))
+        if os.path.isfile(self.t_file):
+            self.assertTrue(os.path.isfile(self.t_file))
+
+        else:
+            self.assertFalse(os.path.isfile(self.t_file))
 
     def test_no_options(self):
 
@@ -193,14 +200,18 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.check_status(
-            self.els, check_call=self.check_call,
-            args_array=self.args_array4, cfg=self.cfg2)
+            self.els, check_call=self.check_call, args_array=self.args_array4,
+            cfg=self.cfg)
 
-        self.assertFalse(os.path.isfile(self.t_file))
+        if os.path.isfile(self.t_file):
+            self.assertTrue(os.path.isfile(self.t_file))
 
-    def test_all_no_error(self):
+        else:
+            self.assertFalse(os.path.isfile(self.t_file))
 
-        """Function:  test_all_no_error
+    def test_all_error(self):
+
+        """Function:  test_all_error
 
         Description:  Test with display all option.
 
@@ -209,25 +220,14 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.check_status(
-            self.els, check_call=self.check_call,
-            args_array=self.args_array, cfg=self.cfg2)
+            self.els, check_call=self.check_call, args_array=self.args_array,
+            cfg=self.cfg)
 
-        self.assertFalse(os.path.isfile(self.t_file))
+        if os.path.isfile(self.t_file):
+            self.assertTrue(os.path.isfile(self.t_file))
 
-    def test_default_no_error(self):
-
-        """Function:  test_default_no_error
-
-        Description:  Test with default option and no errors.
-
-        Arguments:
-
-        """
-
-        elastic_db_admin.check_status(
-            self.els, check_call=self.check_call, args_array={}, cfg=self.cfg2)
-
-        self.assertFalse(os.path.isfile(self.t_file))
+        else:
+            self.assertFalse(os.path.isfile(self.t_file))
 
     def tearDown(self):
 

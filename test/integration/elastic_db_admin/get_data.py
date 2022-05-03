@@ -108,7 +108,7 @@ class UnitTest(unittest.TestCase):
         data = elastic_db_admin._get_data(
             self.data, self.els, self.opt, status_call=self.status_call)
 
-        self.assertTrue("memory" in data)
+        self.assertTrue("memory" in data or "Memory" in data)
 
     def test_no_option(self):
 
@@ -123,7 +123,7 @@ class UnitTest(unittest.TestCase):
         data = elastic_db_admin._get_data(
             self.data, self.els, self.opt, status_call=self.status_call)
 
-        self.assertTrue("memory" in data)
+        self.assertTrue("memory" in data or "Memory" in data)
 
 
 if __name__ == "__main__":

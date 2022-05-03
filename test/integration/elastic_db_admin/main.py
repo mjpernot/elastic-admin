@@ -71,10 +71,12 @@ class UnitTest(unittest.TestCase):
         self.config_path = os.path.join(self.test_path, "config")
         self.config_path2 = os.path.join(self.test_path, "config2")
 
-        self.argv_list = ["-c", "elastic", "-d", self.config_path, "-R", True]
+        self.argv_list = [
+            "elastic_db_admin.py", "-c", "elastic", "-d", self.config_path,
+            "-R"]
         self.argv_list2 = [
-            "-c", "elastic", "-d", self.config_path, "-D", True, "-o",
-            self.t_file, "-z", True]
+            "elastic_db_admin.py", "-c", "elastic", "-d", self.config_path,
+            "-D", "-o", self.t_file, "-z"]
 
     def test_help_func2(self):
 
@@ -95,7 +97,7 @@ class UnitTest(unittest.TestCase):
 
     def test_help_func(self):
 
-        """Function:  test_help_func2
+        """Function:  test_help_func
 
         Description:  Test with help_func for -h option.
 

@@ -58,9 +58,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cutoff_cpu = 90
-        self.cutoff_mem = 95
-        self.cutoff_disk = 80
+        self.cutoff_cpu = 100
+        self.cutoff_mem = 100
+        self.cutoff_disk = 100
 
         self.base_dir = "test/integration/elastic_db_admin"
         self.test_path = os.path.join(os.getcwd(), self.base_dir)
