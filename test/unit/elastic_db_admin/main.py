@@ -73,10 +73,6 @@ class UnitTest(unittest.TestCase):
         test_help_false
         test_require_true
         test_require_false
-        test_xor_dict_false
-        test_xor_dict_true
-        test_con_req_or_false
-        test_con_req_or_true
         test_dir_chk_crt_true
         test_dir_chk_crt_false
         test_arg_cond_req_false
