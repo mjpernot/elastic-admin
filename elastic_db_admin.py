@@ -227,7 +227,7 @@ def print_failures(els, repo):
     print("Repository: {0:25}".format(repo))
 
     elastic_libs.list_dumps(
-        [dmp for dmp in elastic_class.get_dump_list(els, repo=repo)[0]
+        [dmp for dmp in elastic_class.get_dump_list(els.els, repo=repo)[0]
          if dmp["state"] != "SUCCESS"])
 
 
@@ -275,7 +275,7 @@ def print_dumps(els, repo):
     """
 
     print("Repository: {0:25}".format(repo))
-    elastic_libs.list_dumps(elastic_class.get_dump_list(els, repo=repo)[0])
+    elastic_libs.list_dumps(elastic_class.get_dump_list(els.els, repo=repo)[0])
 
 
 def list_dumps(els, **kwargs):
@@ -617,7 +617,7 @@ def main():
     opt_multi_list = ["-D", "-C", "-t", "-s"]
     opt_req_list = ["-c", "-d"]
     opt_val = ["-F", "-L"]
-    opt_val_list = ["-c", "-d", "-m", "-u", "-p"]
+    opt_val_list = ["-c", "-d", "-m", "-u", "-p", "-o"]
     status_call = {"node": "get_node_status", "server": "get_svr_status",
                    "memory": "get_mem_status", "shard": "get_shrd_status",
                    "general": "get_gen_status", "disk": "get_disk_status"}

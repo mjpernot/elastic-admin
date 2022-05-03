@@ -9,6 +9,10 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Updated elastic-lib to v4.0.0
 - Added login credentials and SSL capability.
 
+### Fixed
+- main: Added -o option to opt_val_list.
+- print_failures, print_dumps: Changed reference call to elasticsearch class instance.
+
 ### Added
 - data_out: Determine where the data will be sent to such as email, file, or standard out.
 
