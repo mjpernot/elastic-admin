@@ -29,61 +29,11 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import elastic_db_admin
+import elastic_lib.elastic_class as elastic_class
 import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
-
-
-class ElasticSearchDump(object):
-
-    """Class:  ElasticSearchDump
-
-    Description:  Class representation of the ElasticSearchDump class.
-
-    Methods:
-        __init__
-
-    """
-
-    def __init__(self, hosts, repo, port):
-
-        """Method:  __init__
-
-        Description:  Initialization instance of the class.
-
-        Arguments:
-
-        """
-
-        self.hosts = hosts
-        self.port = port
-        self.repo_name = repo
-
-
-class ElasticSearch(object):
-
-    """Class:  ElasticSearch
-
-    Description:  Class representation of the ElasticSearch class.
-
-    Methods:
-        __init__
-
-    """
-
-    def __init__(self):
-
-        """Method:  __init__
-
-        Description:  Initialization instance of the class.
-
-        Arguments:
-
-        """
-
-        self.hosts = ["nodename1", "nodename2"]
-        self.port = 9200
 
 
 class UnitTest(unittest.TestCase):
@@ -111,7 +61,11 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.els = ElasticSearch()
+        self.host = "localhost"
+        self.user = "UserName"
+        self.japd = "japd"
+        self.els = elastic_class.ElasticSearchStatus(
+            self.host, user=self.user, japd=self.japd)
         self.reponame = "reponame"
         self.dump_list = (
             [{"snapshot": "dump1", "state": "SUCCESS"},

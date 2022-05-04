@@ -9,9 +9,11 @@
         elastic_db_admin.py -c file -d path
             {-D [all | general | memory | node | server | shard | disk]
                 [-t email_addr [email_addr ...] -s subject_line]
-                [-o dir_path/file [-a]] [-j] ]-z]|
+                [-o dir_path/file [-a]] [-j] ]-z]
              -C [all | general | memory | node | server | shard | disk]
-                {-m value | -u value | -p value} |
+                {-m value | -u value | -p value}
+                [-t email_addr [email_addr ...] -s subject_line]
+                [-o dir_path/file [-a]] [-j] ]-z]
              -L [repo_name] |
              -F [repo_name] |
              -R |
@@ -38,7 +40,7 @@
                     then a default one will be used.
             -o directory_path/file => Directory path and file name for output.
                 -a => Append output to the file.  By default will overwrite.
-            -j => Flatten JSON data structure.
+            -j => Non-flatten JSON data structure.
             -z => Suppress standard out.
 
         -C [all | general | memory | node | server | shard | disk] => Check
@@ -53,6 +55,14 @@
             -m value => Threshold cutoff for memory usage.
             -u value => Threshold cutoff for cpu usage.
             -p value => Threshold cutoff for disk usage.
+            -t email_addr [email_addr ...] => Enables emailing out all output.
+                    Sends the output to one or more email addresses.
+                -s Subject Line => Subject line of email.  If none is provided
+                    then a default one will be used.
+            -o directory_path/file => Directory path and file name for output.
+                -a => Append output to the file.  By default will overwrite.
+            -j => Non-flatten JSON data structure.
+            -z => Suppress standard out.
 
         -L [repo_name] => List of database dumps for an Elasticsearch
             repository.  repo_name is name of repository to dump.  If no
@@ -227,7 +237,7 @@ def print_failures(els, repo):
     print("Repository: {0:25}".format(repo))
 
     elastic_libs.list_dumps(
-        [dmp for dmp in elastic_class.get_dump_list(els, repo=repo)[0]
+        [dmp for dmp in elastic_class.get_dump_list(els.els, repo=repo)[0]
          if dmp["state"] != "SUCCESS"])
 
 
@@ -275,7 +285,7 @@ def print_dumps(els, repo):
     """
 
     print("Repository: {0:25}".format(repo))
-    elastic_libs.list_dumps(elastic_class.get_dump_list(els, repo=repo)[0])
+    elastic_libs.list_dumps(elastic_class.get_dump_list(els.els, repo=repo)[0])
 
 
 def list_dumps(els, **kwargs):
@@ -617,7 +627,7 @@ def main():
     opt_multi_list = ["-D", "-C", "-t", "-s"]
     opt_req_list = ["-c", "-d"]
     opt_val = ["-F", "-L"]
-    opt_val_list = ["-c", "-d", "-m", "-u", "-p"]
+    opt_val_list = ["-c", "-d", "-m", "-u", "-p", "-o"]
     status_call = {"node": "get_node_status", "server": "get_svr_status",
                    "memory": "get_mem_status", "shard": "get_shrd_status",
                    "general": "get_gen_status", "disk": "get_disk_status"}

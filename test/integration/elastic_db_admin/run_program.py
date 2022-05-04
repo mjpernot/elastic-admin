@@ -33,6 +33,19 @@ import version
 __version__ = version.__version__
 
 
+def list_master(els, **kwargs):
+
+    """Function:  list_master
+
+    Description:  This is a function stub for elastic_db_admin.list_master.
+
+    Arguments:
+
+    """
+
+    pass
+
+
 def failed_dumps(els, **kwargs):
 
     """Function:  failed_dumps
@@ -93,7 +106,8 @@ class UnitTest(unittest.TestCase):
         self.args = {
             "-c": "elastic", "-d": self.config_path, "-M": True,
             "-o": self.t_file, "-z": True}
-        self.func_dict = {"-F": failed_dumps, "-L": list_dumps}
+        self.func_dict = {
+            "-F": failed_dumps, "-L": list_dumps, "-M": list_master}
 
     def test_is_connected(self):
 

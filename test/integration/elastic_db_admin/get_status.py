@@ -105,10 +105,11 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        elastic_db_admin.get_status(self.els, status_call=self.status_call,
-                                    args_array=self.args_array8)
+        elastic_db_admin.get_status(
+            self.els, status_call=self.status_call,
+            args_array=self.args_array8)
 
-        self.assertFalse(os.path.isfile(self.t_file))
+        self.assertTrue(os.path.isfile(self.t_file))
 
     def test_incorrect_option(self):
 
@@ -125,7 +126,7 @@ class UnitTest(unittest.TestCase):
                 self.els, status_call=self.status_call,
                 args_array=self.args_array7)
 
-        self.assertFalse(os.path.isfile(self.t_file))
+        self.assertTrue(os.path.isfile(self.t_file))
 
     def test_one_option(self):
 
@@ -173,7 +174,7 @@ class UnitTest(unittest.TestCase):
             self.els, status_call=self.status_call,
             args_array=self.args_array4)
 
-        self.assertFalse(os.path.isfile(self.t_file))
+        self.assertTrue(os.path.isfile(self.t_file))
 
     def test_display_all(self):
 
@@ -201,9 +202,10 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(
-            elastic_db_admin.get_status(
-                self.els, status_call=self.status_call, args_array={}))
+        with gen_libs.no_std_out():
+            self.assertFalse(
+                elastic_db_admin.get_status(
+                    self.els, status_call=self.status_call, args_array={}))
 
     def tearDown(self):
 
