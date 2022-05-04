@@ -86,7 +86,7 @@ class UnitTest(unittest.TestCase):
         self.cpu = 100
         self.disk = 100
         self.args_array = {
-            "-C": ["all"], "-o": self.t_file, "-z": True,  "-m": self.mem,
+            "-C": ["all"], "-o": self.t_file, "-z": True, "-m": self.mem,
             "-u": self.cpu, "-p": self.disk}
         self.args_array2 = {"-C": ["memory"], "-o": self.t_file, "-z": True}
         self.args_array3 = {"-C": [], "-o": self.t_file, "-z": True}
