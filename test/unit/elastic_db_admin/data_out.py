@@ -123,12 +123,13 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        dir_file = "dir/file"
         self.data = {"key1": "value1", "key2": "value2"}
         self.mail = Mail()
         self.args_array = {}
-        self.args_array2 = {"-o": "dir/file", "-z": True}
-        self.args_array3 = {"-o": "dir/file", "-a": True, "-z": True}
-        self.args_array4 = {"-o": "dir/file", "-j": True, "-z": True}
+        self.args_array2 = {"-o": dir_file, "-z": True}
+        self.args_array3 = {"-o": dir_file, "-a": True, "-z": True}
+        self.args_array4 = {"-o": dir_file, "-j": True, "-z": True}
         self.args_array5 = {"-t": "to_address", "-z": True}
         self.args_array6 = {"-t": "to_address", "-j": True, "-z": True}
         self.args_array7 = {"-z": True}
