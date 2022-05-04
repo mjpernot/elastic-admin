@@ -138,6 +138,7 @@ __version__ = version.__version__
 # Global variables
 PRT_TEMPLATE = "\n{0:25}"
 SUBJ_LINE = "Elasticsearch_DB_Admin"
+TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
 def help_message():
@@ -376,6 +377,8 @@ def get_status(els, **kwargs):
 
     """
 
+    global TIME_FORMAT
+
     args_array = dict(kwargs.get("args_array"))
     display_list = list(args_array.get("-D", []))
 
@@ -390,7 +393,7 @@ def get_status(els, **kwargs):
             data = _get_data(data, els, opt, **kwargs)
 
     data["AsOf"] = datetime.datetime.strftime(
-        datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
+        datetime.datetime.now(), TIME_FORMAT)
     data["HostName"] = socket.gethostname()
     data_out(data, args_array)
 
@@ -445,6 +448,8 @@ def check_status(els, **kwargs):
 
     """
 
+    global TIME_FORMAT
+
     args_array = dict(kwargs.get("args_array"))
     check_list = list(args_array.get("-C", []))
     cfg = kwargs.get("cfg")
@@ -452,11 +457,8 @@ def check_status(els, **kwargs):
     cutoff_cpu = args_array.get("-u", None)
     cutoff_disk = args_array.get("-p", None)
 
-    if cutoff_mem:
-        els.cutoff_mem = int(cutoff_mem)
-
-    else:
-        els.cutoff_mem = cfg.cutoff_mem if hasattr(
+    els.cutoff_mem = \
+        int(cutoff_mem) if cutoff_mem else cfg.cutoff_mem if hasattr(
             cfg, "cutoff_mem") else els.cutoff_mem
 
     if cutoff_cpu:
@@ -480,7 +482,7 @@ def check_status(els, **kwargs):
 
         if data:
             data["AsOf"] = datetime.datetime.strftime(
-                datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
+                datetime.datetime.now(), TIME_FORMAT)
             data, _, _ = gen_libs.merge_two_dicts(data, els.get_nodes())
 
     else:
@@ -490,7 +492,7 @@ def check_status(els, **kwargs):
 
         if data:
             data["AsOf"] = datetime.datetime.strftime(
-                datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
+                datetime.datetime.now(), TIME_FORMAT)
             data["HostName"] = socket.gethostname()
             data, _, _ = gen_libs.merge_two_dicts(data, els.get_cluster())
             data, _, _ = gen_libs.merge_two_dicts(data, els.get_nodes())
