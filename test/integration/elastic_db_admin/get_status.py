@@ -218,7 +218,7 @@ class UnitTest(unittest.TestCase):
         """
 
         if os.path.isfile(self.t_file):
-            pass #os.remove(self.t_file)
+            os.remove(self.t_file)
 
 
 if __name__ == "__main__":
