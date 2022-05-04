@@ -461,18 +461,12 @@ def check_status(els, **kwargs):
         int(cutoff_mem) if cutoff_mem else cfg.cutoff_mem if hasattr(
             cfg, "cutoff_mem") else els.cutoff_mem
 
-    if cutoff_cpu:
-        els.cutoff_cpu = int(cutoff_cpu)
-
-    else:
-        els.cutoff_cpu = cfg.cutoff_cpu if hasattr(
+    els.cutoff_cpu = \
+        int(cutoff_cpu) if cutoff_cpu else cfg.cutoff_cpu if hasattr(
             cfg, "cutoff_cpu") else els.cutoff_cpu
 
-    if cutoff_disk:
-        els.cutoff_disk = int(cutoff_disk)
-
-    else:
-        els.cutoff_disk = cfg.cutoff_disk if hasattr(
+    els.cutoff_disk = \
+        int(cutoff_disk) if cutoff_disk else cfg.cutoff_disk if hasattr(
             cfg, "cutoff_disk") else els.cutoff_disk
 
     if not check_list or "all" in check_list:
