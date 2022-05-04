@@ -9,9 +9,11 @@
         elastic_db_admin.py -c file -d path
             {-D [all | general | memory | node | server | shard | disk]
                 [-t email_addr [email_addr ...] -s subject_line]
-                [-o dir_path/file [-a]] [-j] ]-z]|
+                [-o dir_path/file [-a]] [-j] ]-z]
              -C [all | general | memory | node | server | shard | disk]
-                {-m value | -u value | -p value} |
+                {-m value | -u value | -p value}
+                [-t email_addr [email_addr ...] -s subject_line]
+                [-o dir_path/file [-a]] [-j] ]-z]
              -L [repo_name] |
              -F [repo_name] |
              -R |
@@ -38,7 +40,7 @@
                     then a default one will be used.
             -o directory_path/file => Directory path and file name for output.
                 -a => Append output to the file.  By default will overwrite.
-            -j => Flatten JSON data structure.
+            -j => Non-flatten JSON data structure.
             -z => Suppress standard out.
 
         -C [all | general | memory | node | server | shard | disk] => Check
@@ -53,6 +55,14 @@
             -m value => Threshold cutoff for memory usage.
             -u value => Threshold cutoff for cpu usage.
             -p value => Threshold cutoff for disk usage.
+            -t email_addr [email_addr ...] => Enables emailing out all output.
+                    Sends the output to one or more email addresses.
+                -s Subject Line => Subject line of email.  If none is provided
+                    then a default one will be used.
+            -o directory_path/file => Directory path and file name for output.
+                -a => Append output to the file.  By default will overwrite.
+            -j => Non-flatten JSON data structure.
+            -z => Suppress standard out.
 
         -L [repo_name] => List of database dumps for an Elasticsearch
             repository.  repo_name is name of repository to dump.  If no
