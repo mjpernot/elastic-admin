@@ -6,3 +6,4 @@ config/*.pyc
 lib
 elastic_lib
 coverage.xml
+test/integration/elastic_db_admin/config/elastic.py

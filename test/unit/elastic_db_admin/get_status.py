@@ -42,28 +42,26 @@ class ElasticSearchStatus(object):
     Description:  Class representation of the ElasticSearchStatus class.
 
     Methods:
-        __init__ -> Initialize configuration environment.
-        get_mem_status -> Holder for ElasticSearchStatus.get_mem_status method.
-        get_nodes -> Stub holder for ElasticSearchStatus.get_nodes method.
-        get_cluster -> Stub holder for ElasticSearchStatus.get_cluster method.
-        get_all -> Stub holder for ElasticSearchStatus.get_all method.
+        __init__
+        get_mem_status
+        get_nodes
+        get_cluster
+        get_all
 
     """
 
-    def __init__(self, hosts, port):
+    def __init__(self):
 
         """Method:  __init__
 
         Description:  Initialization instance of the class.
 
         Arguments:
-            (input) hosts -> Host name.
-            (input) port -> Port number.
 
         """
 
-        self.hosts = hosts
-        self.port = port
+        self.hosts = ["hosts"]
+        self.port = 9200
 
     def get_mem_status(self):
 
@@ -111,32 +109,7 @@ class ElasticSearchStatus(object):
 
         """
 
-        return True
-
-
-class ElasticSearch(object):
-
-    """Class:  ElasticSearch
-
-    Description:  Class representation of the ElasticSearch class.
-
-    Methods:
-        __init__ -> Initialize configuration environment.
-
-    """
-
-    def __init__(self):
-
-        """Method:  __init__
-
-        Description:  Initialization instance of the class.
-
-        Arguments:
-
-        """
-
-        self.hosts = ["nodename1", "nodename2"]
-        self.port = 9200
+        return {}
 
 
 class UnitTest(unittest.TestCase):
@@ -146,14 +119,14 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialization for unit testing.
-        test_empty_display_list -> Test with empty display list.
-        test_incorrect_option -> Test with incorrect option.
-        test_one_option -> Test with one option.
-        test_all -> Test with all option.
-        test_no_options -> Test with no options.
-        test_display_all -> Test with display all option.
-        test_display_default -> Test with display default option.
+        setUp
+        test_empty_display_list
+        test_incorrect_option
+        test_one_option
+        test_all
+        test_no_options
+        test_display_all
+        test_display_default
 
     """
 
@@ -167,7 +140,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.els = ElasticSearch()
+        self.els = ElasticSearchStatus()
         self.args_array = {"-D": ["all"]}
         self.args_array2 = {"-D": ["memory"]}
         self.args_array3 = {"-D": []}
@@ -178,8 +151,8 @@ class UnitTest(unittest.TestCase):
         self.args_array8 = {"-D": []}
         self.status_call = {"memory": "get_mem_status"}
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
-    def test_empty_display_list(self, mock_class):
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
+    def test_empty_display_list(self):
 
         """Function:  test_empty_display_list
 
@@ -189,17 +162,13 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.els.hosts,
-                                                      self.els.port)
+        self.assertFalse(
+            elastic_db_admin.get_status(
+                self.els, status_call=self.status_call,
+                args_array=self.args_array8))
 
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.get_status(
-                    self.els, status_call=self.status_call,
-                    args_array=self.args_array8))
-
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
-    def test_incorrect_option(self, mock_class):
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
+    def test_incorrect_option(self):
 
         """Function:  test_incorrect_option
 
@@ -209,17 +178,14 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.els.hosts,
-                                                      self.els.port)
-
         with gen_libs.no_std_out():
             self.assertFalse(
                 elastic_db_admin.get_status(
                     self.els, status_call=self.status_call,
                     args_array=self.args_array7))
 
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
-    def test_one_option(self, mock_class):
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
+    def test_one_option(self):
 
         """Function:  test_one_option
 
@@ -229,17 +195,13 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.els.hosts,
-                                                      self.els.port)
+        self.assertFalse(
+            elastic_db_admin.get_status(
+                self.els, status_call=self.status_call,
+                args_array=self.args_array6))
 
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.get_status(
-                    self.els, status_call=self.status_call,
-                    args_array=self.args_array6))
-
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
-    def test_all(self, mock_class):
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
+    def test_all(self):
 
         """Function:  test_all
 
@@ -249,17 +211,13 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.els.hosts,
-                                                      self.els.port)
+        self.assertFalse(
+            elastic_db_admin.get_status(
+                self.els, status_call=self.status_call,
+                args_array=self.args_array5))
 
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.get_status(
-                    self.els, status_call=self.status_call,
-                    args_array=self.args_array5))
-
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
-    def test_no_options(self, mock_class):
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
+    def test_no_options(self):
 
         """Function:  test_no_options
 
@@ -269,17 +227,13 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.els.hosts,
-                                                      self.els.port)
+        self.assertFalse(
+            elastic_db_admin.get_status(
+                self.els, status_call=self.status_call,
+                args_array=self.args_array4))
 
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.get_status(
-                    self.els, status_call=self.status_call,
-                    args_array=self.args_array4))
-
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
-    def test_display_all(self, mock_class):
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
+    def test_display_all(self):
 
         """Function:  test_display_all
 
@@ -289,17 +243,13 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.els.hosts,
-                                                      self.els.port)
+        self.assertFalse(
+            elastic_db_admin.get_status(
+                self.els, status_call=self.status_call,
+                args_array=self.args_array))
 
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.get_status(
-                    self.els, status_call=self.status_call,
-                    args_array=self.args_array))
-
-    @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
-    def test_display_default(self, mock_class):
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
+    def test_display_default(self):
 
         """Function:  test_display_default
 
@@ -309,13 +259,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.return_value = ElasticSearchStatus(self.els.hosts,
-                                                      self.els.port)
-
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.get_status(
-                    self.els, status_call=self.status_call, args_array={}))
+        self.assertFalse(
+            elastic_db_admin.get_status(
+                self.els, status_call=self.status_call, args_array={}))
 
 
 if __name__ == "__main__":
