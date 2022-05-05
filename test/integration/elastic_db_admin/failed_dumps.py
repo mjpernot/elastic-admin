@@ -3,10 +3,10 @@
 
 """Program:  failed_dumps.py
 
-    Description:  Unit testing of failed_dumps in elastic_db_admin.py.
+    Description:  Integration testing of failed_dumps in elastic_db_admin.py.
 
     Usage:
-        test/unit/elastic_db_admin/failed_dumps.py
+        test/integration/elastic_db_admin/failed_dumps.py
 
     Arguments:
 
@@ -24,42 +24,15 @@ else:
     import unittest
 
 # Third-party
-import mock
 
 # Local
 sys.path.append(os.getcwd())
 import elastic_db_admin
 import lib.gen_libs as gen_libs
+import elastic_lib.elastic_class as elastic_class
 import version
 
 __version__ = version.__version__
-
-
-class ElasticSearch(object):
-
-    """Class:  ElasticSearch
-
-    Description:  Class representation of the ElasticSearch class.
-
-    Methods:
-        __init__
-
-    """
-
-    def __init__(self):
-
-        """Method:  __init__
-
-        Description:  Initialization instance of the class.
-
-        Arguments:
-
-        """
-
-        self.els = "Elasticsearch class instance"
-        self.hosts = ["nodename1", "nodename2"]
-        self.port = 9200
-        self.dump_list = None
 
 
 class UnitTest(unittest.TestCase):
@@ -85,12 +58,23 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.els = ElasticSearch()
-        self.args_array = {"-F": "reponame"}
+        self.base_dir = "test/integration/elastic_db_admin"
+        self.test_path = os.path.join(os.getcwd(), self.base_dir)
+        self.config_path = os.path.join(self.test_path, "config")
+        self.cfg = gen_libs.load_module("elastic", self.config_path)
+        self.user = self.cfg.user if hasattr(self.cfg, "user") else None
+        self.japd = self.cfg.japd if hasattr(self.cfg, "japd") else None
+        self.ca_cert = self.cfg.ssl_client_ca if hasattr(
+            self.cfg, "ssl_client_ca") else None
+        self.scheme = self.cfg.scheme if hasattr(
+            self.cfg, "scheme") else "https"
+        self.els = elastic_class.ElasticSearchStatus(
+            self.cfg.host, port=self.cfg.port, user=self.user, japd=self.japd,
+            ca_cert=self.ca_cert, scheme=self.scheme)
+        self.els.connect()
+        self.args_array = {"-F": "WhatNameToUse"}
 
-    @mock.patch("elastic_db_admin.elastic_class.get_repo_list")
-    @mock.patch("elastic_db_admin.print_failures")
-    def test_no_repo(self, mock_print, mock_repo):
+    def test_no_repo(self):
 
         """Function:  test_no_repo
 
@@ -100,15 +84,11 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_print.return_value = True
-        mock_repo.return_value = ["repo1", "repo2"]
-
         with gen_libs.no_std_out():
             self.assertFalse(
                 elastic_db_admin.failed_dumps(self.els, args_array={}))
 
-    @mock.patch("elastic_db_admin.print_failures")
-    def test_repo(self, mock_print):
+    def test_repo(self):
 
         """Function:  test_repo
 
@@ -118,12 +98,10 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_print.return_value = True
-
         with gen_libs.no_std_out():
             self.assertFalse(
-                elastic_db_admin.failed_dumps(self.els,
-                                              args_array=self.args_array))
+                elastic_db_admin.failed_dumps(
+                    self.els, args_array=self.args_array))
 
 
 if __name__ == "__main__":

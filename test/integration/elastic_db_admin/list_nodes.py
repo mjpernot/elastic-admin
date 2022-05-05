@@ -3,10 +3,10 @@
 
 """Program:  list_nodes.py
 
-    Description:  Unit testing of list_nodes in elastic_db_admin.py.
+    Description:  Integration testing of list_nodes in elastic_db_admin.py.
 
     Usage:
-        test/unit/elastic_db_admin/list_nodes.py
+        test/integration/elastic_db_admin/list_nodes.py
 
     Arguments:
 
@@ -29,33 +29,10 @@ else:
 sys.path.append(os.getcwd())
 import elastic_db_admin
 import lib.gen_libs as gen_libs
+import elastic_lib.elastic_class as elastic_class
 import version
 
 __version__ = version.__version__
-
-
-class ElasticSearch(object):
-
-    """Class:  ElasticSearch
-
-    Description:  Class representation of the ElasticSearch class.
-
-    Methods:
-        __init__
-
-    """
-
-    def __init__(self):
-
-        """Method:  __init__
-
-        Description:  Initialization instance of the class.
-
-        Arguments:
-
-        """
-
-        self.nodes = ["Node1", "Node2"]
 
 
 class UnitTest(unittest.TestCase):
@@ -66,7 +43,6 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
-        test_empty_list_nodes
         test_list_nodes
 
     """
@@ -81,22 +57,20 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.els = ElasticSearch()
-
-    def test_empty_list_nodes(self):
-
-        """Function:  test_empty_list_nodes
-
-        Description:  Test with empty list for nodes.
-
-        Arguments:
-
-        """
-
-        self.els.nodes = []
-
-        with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.list_nodes(self.els))
+        self.base_dir = "test/integration/elastic_db_admin"
+        self.test_path = os.path.join(os.getcwd(), self.base_dir)
+        self.config_path = os.path.join(self.test_path, "config")
+        self.cfg = gen_libs.load_module("elastic", self.config_path)
+        self.user = self.cfg.user if hasattr(self.cfg, "user") else None
+        self.japd = self.cfg.japd if hasattr(self.cfg, "japd") else None
+        self.ca_cert = self.cfg.ssl_client_ca if hasattr(
+            self.cfg, "ssl_client_ca") else None
+        self.scheme = self.cfg.scheme if hasattr(
+            self.cfg, "scheme") else "https"
+        self.els = elastic_class.ElasticSearchStatus(
+            self.cfg.host, port=self.cfg.port, user=self.user, japd=self.japd,
+            ca_cert=self.ca_cert, scheme=self.scheme)
+        self.els.connect()
 
     def test_list_nodes(self):
 

@@ -41,10 +41,10 @@ class ElasticSearchStatus(object):
     Description:  Class representation of the ElasticSearchStatus class.
 
     Methods:
-        __init__ -> Initialize configuration environment.
-        chk_mem -> Stub holder for ElasticSearchStatus.chk_mem method.
-        get_cluster -> Stub holder for ElasticSearchStatus.get_cluster method.
-        chk_all -> Stub holder for ElasticSearchStatus.chk_all method.
+        __init__
+        chk_mem
+        get_cluster
+        chk_all
 
     """
 
@@ -55,11 +55,6 @@ class ElasticSearchStatus(object):
         Description:  Initialization instance of the class.
 
         Arguments:
-            (input) node -> Node name.
-            (input) port -> Port number.
-            (input) mem -> Memory cutoff.
-            (input) cpu -> Cpu cutoff.
-            (input) disk -> Disk cutoff.
 
         """
 
@@ -79,9 +74,6 @@ class ElasticSearchStatus(object):
         Description:  Stub holder for ElasticSearchStatus.chk_mem method.
 
         Arguments:
-            (input) cutoff_cpu -> CPU cutoff value.
-            (input) cutoff_mem -> Memory cutoff value.
-            (input) cutoff_disk -> Disk cutoff value.
 
         """
 
@@ -110,9 +102,6 @@ class ElasticSearchStatus(object):
         Description:  Stub holder for ElasticSearchStatus.chk_all method.
 
         Arguments:
-            (input) cutoff_cpu -> CPU cutoff value.
-            (input) cutoff_mem -> Memory cutoff value.
-            (input) cutoff_disk -> Disk cutoff value.
 
         """
 
@@ -130,10 +119,10 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialization for unit testing.
-        test_one_option_error -> Test with one option with error.
-        test_incorrect_option -> Test with incorrect option.
-        test_one_option -> Test with one option.
+        setUp
+        test_one_option_error
+        test_incorrect_option
+        test_one_option
 
     """
 
@@ -155,10 +144,6 @@ class UnitTest(unittest.TestCase):
         self.check_call = {"memory": "chk_mem"}
         self.check_list = ["memory"]
         self.check_list2 = ["incorrect"]
-        self.err_flag = False
-        self.err_msg = {}
-        self.err_msg2 = ""
-        self.err_msg3 = {"Error": True}
 
     def test_one_option_error(self):
 
@@ -175,10 +160,9 @@ class UnitTest(unittest.TestCase):
 
         self.assertEqual(
             elastic_db_admin._process_data(
-                self.check_list, self.err_flag, self.err_msg3, self.els,
-                check_call=self.check_call, cutoff_cpu=self.cutoff_cpu,
-                cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk),
-            (True, {"Err": "Error Message", "Error": True}))
+                self.check_list, self.els, check_call=self.check_call,
+                cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
+                cutoff_disk=self.cutoff_disk), {"Err": "Error Message"})
 
     def test_incorrect_option(self):
 
@@ -193,10 +177,9 @@ class UnitTest(unittest.TestCase):
         with gen_libs.no_std_out():
             self.assertEqual(
                 elastic_db_admin._process_data(
-                    self.check_list2, self.err_flag, self.err_msg, self.els,
-                    check_call=self.check_call, cutoff_cpu=self.cutoff_cpu,
-                    cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk),
-                (False, {}))
+                    self.check_list2, self.els, check_call=self.check_call,
+                    cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
+                    cutoff_disk=self.cutoff_disk), {})
 
     def test_one_option(self):
 
@@ -210,10 +193,9 @@ class UnitTest(unittest.TestCase):
 
         self.assertEqual(
             elastic_db_admin._process_data(
-                self.check_list, self.err_flag, self.err_msg, self.els,
-                check_call=self.check_call, cutoff_cpu=self.cutoff_cpu,
-                cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk),
-            (False, {}))
+                self.check_list, self.els, check_call=self.check_call,
+                cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
+                cutoff_disk=self.cutoff_disk), {})
 
 
 if __name__ == "__main__":

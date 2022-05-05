@@ -1,12 +1,32 @@
 # Configuration file
-# # Classification (U)
-# # Unclassified until filled.
+# Classification (U)
+# Unclassified until filled.
 
+# List of elasticsearch nodes in cluster
 host = ["HOST_NAME1", "HOST_NAME2"]
+# Elasticsearch port - default is port 9200
 port = 9200
-# Threshold cutoff for Memory check in whole numbers
+# User name
+# If no user name is required then use None
+# Example:  user = "username"
+user = None
+# User pswd
+# Example:  japd = "xxx"
+japd = None
+
+# SSL Configuration settings
+# If not set will connect to Elasticsearch without using SSL connections.
+# File containing the SSL certificate authority.
+# Example: ssl_client_ca = "/etc/elasticsearch/certs/ca.pem"
+ssl_client_ca = None
+# Type of connection when using SSL connection.
+# Do not change unless you know what you are doing.
+scheme = "https"
+
+# Note:  These are in whole numbers only.
+# Threshold cutoff for Memory check
 cutoff_mem = 75
-# Threshold cutoff for CPU usage check in whole numbers
+# Threshold cutoff for CPU usage check
 cutoff_cpu = 75
-# Threshold cutoff for Disk usage check in whole numbers
+# Threshold cutoff for Disk usage check
 cutoff_disk = 75
