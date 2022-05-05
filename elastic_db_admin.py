@@ -474,24 +474,19 @@ def check_status(els, **kwargs):
             cutoff_cpu=els.cutoff_cpu, cutoff_mem=els.cutoff_mem,
             cutoff_disk=els.cutoff_disk)
 
-        if data:
-            data["AsOf"] = datetime.datetime.strftime(
-                datetime.datetime.now(), TIME_FORMAT)
-            data, _, _ = gen_libs.merge_two_dicts(data, els.get_nodes())
-
     else:
         data = _process_data(
             check_list, els, cutoff_cpu=els.cutoff_cpu,
             cutoff_mem=els.cutoff_mem, cutoff_disk=els.cutoff_disk, **kwargs)
 
         if data:
-            data["AsOf"] = datetime.datetime.strftime(
-                datetime.datetime.now(), TIME_FORMAT)
             data["HostName"] = socket.gethostname()
             data, _, _ = gen_libs.merge_two_dicts(data, els.get_cluster())
-            data, _, _ = gen_libs.merge_two_dicts(data, els.get_nodes())
 
     if data:
+        data["AsOf"] = datetime.datetime.strftime(
+            datetime.datetime.now(), TIME_FORMAT)
+        data, _, _ = gen_libs.merge_two_dicts(data, els.get_nodes())
         data_out(data, args_array)
 
 
