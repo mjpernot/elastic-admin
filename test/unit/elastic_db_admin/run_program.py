@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # Classification (U)
 
 """Program:  run_program.py
@@ -17,13 +16,7 @@
 # Standard
 import sys
 import os
-
-if sys.version_info < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
-
-# Third-party
+import unittest
 import mock
 
 # Local
@@ -199,7 +192,7 @@ class UnitTest(unittest.TestCase):
         self.cfg = CfgTest()
         self.els = ElasticSearchStatus()
         self.args = {"-c": "config_file", "-d": "config_dir", "-M": True}
-        self.func_dict = {"-F": failed_dumps, "-L": list_dumps}
+        self.func_names = {"-F": failed_dumps, "-L": list_dumps}
         self.proglock = ProgramLock(["cmdline"], "FlavorID")
 
     @mock.patch("elastic_db_admin.gen_libs.load_module")
@@ -224,7 +217,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(
-                elastic_db_admin.run_program(self.args, self.func_dict))
+                elastic_db_admin.run_program(self.args, self.func_names))
 
     @mock.patch("elastic_db_admin.gen_libs.load_module")
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -246,7 +239,7 @@ class UnitTest(unittest.TestCase):
         mock_load.return_value = self.cfg
 
         self.assertFalse(
-            elastic_db_admin.run_program(self.args, self.func_dict))
+            elastic_db_admin.run_program(self.args, self.func_names))
 
     @mock.patch("elastic_db_admin.gen_libs.load_module")
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -270,7 +263,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(
-                elastic_db_admin.run_program(self.args, self.func_dict))
+                elastic_db_admin.run_program(self.args, self.func_names))
 
     @mock.patch("elastic_db_admin.gen_libs.load_module")
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -294,7 +287,7 @@ class UnitTest(unittest.TestCase):
         mock_load.return_value = self.cfg
 
         self.assertFalse(
-            elastic_db_admin.run_program(self.args, self.func_dict))
+            elastic_db_admin.run_program(self.args, self.func_names))
 
     @mock.patch("elastic_db_admin.gen_libs.load_module")
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -316,7 +309,7 @@ class UnitTest(unittest.TestCase):
         mock_load.return_value = self.cfg
 
         self.assertFalse(
-            elastic_db_admin.run_program(self.args, self.func_dict))
+            elastic_db_admin.run_program(self.args, self.func_names))
 
     @mock.patch("elastic_db_admin.gen_libs.load_module")
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -336,7 +329,7 @@ class UnitTest(unittest.TestCase):
         mock_load.return_value = self.cfg
 
         self.assertFalse(
-            elastic_db_admin.run_program(self.args, self.func_dict))
+            elastic_db_admin.run_program(self.args, self.func_names))
 
 
 if __name__ == "__main__":
