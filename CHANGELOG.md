@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.2.10] - 2022-12-22
+- Updated to work in Python 3 too
+- Upgraded python-lib to v2.9.4
+
+### Changed
+- Converted imports to use Python 2.7 or Python 3.
+
+
 ## [0.2.9] - 2021-12-03
 - Updated to work in Elasticsearch 7.17.0
 - Updated elastic-lib to v4.0.0
