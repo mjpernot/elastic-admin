@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [0.2.10] - 2022-12-22
 - Updated to work in Python 3 too
+- Updated elastic-lib to v4.0.1
 - Upgraded python-lib to v2.9.4
 
 ### Changed
