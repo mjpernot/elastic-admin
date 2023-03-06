@@ -7,7 +7,6 @@
 
 ###  This README file is broken down into the following sections:
   * Features
-  * Prerequisites
   * Installation
   * Configuration
   * Program Help Function
@@ -22,16 +21,6 @@
   * Check/display status on nodes in the cluster.
   * Check/display status on shards in the database.
   * Check/display status on disks in the database.
-
-# Prerequisites:
-
-  * List of Linux packages that need to be installed on the server.
-    - git
-    - python-pip
-
-  * Local class/library dependencies within the program structure.
-    - python-lib
-    - elastic-lib
 
 
 # Installation:
