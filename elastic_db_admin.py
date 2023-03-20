@@ -568,9 +568,10 @@ def run_program(args_array, func_dict, **kwargs):
     japd = cfg.japd if hasattr(cfg, "japd") else None
     ca_cert = cfg.ssl_client_ca if hasattr(cfg, "ssl_client_ca") else None
     scheme = cfg.scheme if hasattr(cfg, "scheme") else "https"
+    flavorid = "elasticadmin"
 
     try:
-        prog_lock = gen_class.ProgramLock(cmdline.argv, cfg.host)
+        prog_lock = gen_class.ProgramLock(cmdline.argv, flavor_id=flavorid)
 
         # Intersect args_array & func_dict to find which functions to call.
         for opt in set(args_array.keys()) & set(func_dict.keys()):
@@ -588,7 +589,7 @@ def run_program(args_array, func_dict, **kwargs):
         del prog_lock
 
     except gen_class.SingleInstanceException:
-        print("Warning:  elastic_db_admin lock in place for: %s" % (cfg.host))
+        print("Warning:  elastic_db_admin lock in place for: %s" % (flavorid))
 
 
 def main():
