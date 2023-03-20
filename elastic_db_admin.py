@@ -91,7 +91,7 @@
         database.
 
             # Elasticsearch configuration file
-            name = ["HOST_NAME1", "HOST_NAME2"]
+            name = ["https://HOST_NAME1:9200", "https://HOST_NAME2:9200"]
             port = 9200
 
             # Login credentials
