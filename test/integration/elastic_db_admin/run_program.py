@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # Classification (U)
 
 """Program:  run_program.py
@@ -17,13 +16,7 @@
 # Standard
 import sys
 import os
-
-if sys.version_info < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
-
-# Third-party
+import unittest
 
 # Local
 sys.path.append(os.getcwd())
@@ -106,7 +99,7 @@ class UnitTest(unittest.TestCase):
         self.args = {
             "-c": "elastic", "-d": self.config_path, "-M": True,
             "-o": self.t_file, "-z": True}
-        self.func_dict = {
+        self.func_names = {
             "-F": failed_dumps, "-L": list_dumps, "-M": list_master}
 
     def test_is_connected(self):
@@ -120,7 +113,7 @@ class UnitTest(unittest.TestCase):
         """
 
         self.args["-F"] = True
-        elastic_db_admin.run_program(self.args, self.func_dict)
+        elastic_db_admin.run_program(self.args, self.func_names)
 
         self.assertFalse(os.path.isfile(self.t_file))
 
@@ -137,7 +130,7 @@ class UnitTest(unittest.TestCase):
 
         self.args["-F"] = True
         self.args["-L"] = True
-        elastic_db_admin.run_program(self.args, self.func_dict)
+        elastic_db_admin.run_program(self.args, self.func_names)
 
         self.assertFalse(os.path.isfile(self.t_file))
 
@@ -152,7 +145,7 @@ class UnitTest(unittest.TestCase):
         """
 
         self.args["-F"] = True
-        elastic_db_admin.run_program(self.args, self.func_dict)
+        elastic_db_admin.run_program(self.args, self.func_names)
 
         self.assertFalse(os.path.isfile(self.t_file))
 
@@ -166,7 +159,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        elastic_db_admin.run_program(self.args, self.func_dict)
+        elastic_db_admin.run_program(self.args, self.func_names)
 
         self.assertFalse(os.path.isfile(self.t_file))
 
