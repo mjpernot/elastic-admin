@@ -127,7 +127,6 @@ import json
 
 # Local
 try:
-    from .lib import arg_parser
     from .lib import gen_libs
     from .lib import gen_class
     from .elastic_lib import elastic_class
@@ -135,7 +134,6 @@ try:
     from . import version
 
 except (ValueError, ImportError) as err:
-    import lib.arg_parser as arg_parser
     import lib.gen_libs as gen_libs
     import lib.gen_class as gen_class
     import elastic_lib.elastic_class as elastic_class
@@ -171,12 +169,12 @@ def list_nodes(els, **kwargs):
     Description:  Lists the current nodes in the Elasticsearch cluster.
 
     Arguments:
-        (input) els -> Elasticsearch class instance.
+        (input) els -> Elasticsearch class instance
         (input) **kwargs:
-            args_array -> Dict of command line options and values.
-            status_call -> Contains class method names for the '-D' option.
-            check_call -> Contains class method names for the '-C' option.
-            cfg -> Configuration variables from configuration file.
+            args_array -> Dict of command line options and values
+            status_call -> Contains class method names for the '-D' option
+            check_call -> Contains class method names for the '-C' option
+            cfg -> Configuration variables from configuration file
 
     """
 
@@ -195,12 +193,12 @@ def list_repos(els, **kwargs):
     Description:  Lists the current repositories in the Elasticsearch database.
 
     Arguments:
-        (input) els -> Elasticsearch class instance.
+        (input) els -> Elasticsearch class instance
         (input) **kwargs:
-            args_array -> Dict of command line options and values.
-            status_call -> Contains class method names for the '-D' option.
-            check_call -> Contains class method names for the '-C' option.
-            cfg -> Configuration variables from configuration file.
+            args_array -> Dict of command line options and values
+            status_call -> Contains class method names for the '-D' option
+            check_call -> Contains class method names for the '-C' option
+            cfg -> Configuration variables from configuration file
 
     """
 
@@ -217,12 +215,12 @@ def list_master(els, **kwargs):
     Description:  Displays the current master node name.
 
     Arguments:
-        (input) els-> Elasticsearch class instance.
+        (input) els-> Elasticsearch class instance
         (input) **kwargs:
-            args_array -> Dict of command line options and values.
-            status_call -> Contains class method names for the '-D' option.
-            check_call -> Contains class method names for the '-C' option.
-            cfg -> Configuration variables from configuration file.
+            args_array -> Dict of command line options and values
+            status_call -> Contains class method names for the '-D' option
+            check_call -> Contains class method names for the '-C' option
+            cfg -> Configuration variables from configuration file
 
     """
 
@@ -239,8 +237,8 @@ def print_failures(els, repo):
     Description:  Print the failed dumps in the current repository.
 
     Arguments:
-        (input) els -> Elasticsearch class instance.
-        (input) repo -> Repository name.
+        (input) els -> Elasticsearch class instance
+        (input) repo -> Repository name
 
     """
 
@@ -259,12 +257,12 @@ def failed_dumps(els, **kwargs):
         repository.
 
     Arguments:
-        (input) els -> Elasticsearch class instance.
+        (input) els -> Elasticsearch class instance
         (input) **kwargs:
-            args_array -> Dict of command line options and values.
-            status_call -> Contains class method names for the '-D' option.
-            check_call -> Contains class method names for the '-C' option.
-            cfg -> Configuration variables from configuration file.
+            args_array -> Dict of command line options and values
+            status_call -> Contains class method names for the '-D' option
+            check_call -> Contains class method names for the '-C' option
+            cfg -> Configuration variables from configuration file
 
     """
 
@@ -289,8 +287,8 @@ def print_dumps(els, repo):
     Description:  Print the dumps in the current repository.
 
     Arguments:
-        (input) els -> Elasticsearch class instance.
-        (input) repo -> Repository name.
+        (input) els -> Elasticsearch class instance
+        (input) repo -> Repository name
 
     """
 
@@ -306,12 +304,12 @@ def list_dumps(els, **kwargs):
         dumps in all repositories.
 
     Arguments:
-        (input) els -> Elasticsearch class instance.
+        (input) els -> Elasticsearch class instance
         (input) **kwargs:
-            args_array -> Dict of command line options and values.
-            status_call -> Contains class method names for the '-D' option.
-            check_call -> Contains class method names for the '-C' option.
-            cfg -> Configuration variables from configuration file.
+            args_array -> Dict of command line options and values
+            status_call -> Contains class method names for the '-D' option
+            check_call -> Contains class method names for the '-C' option
+            cfg -> Configuration variables from configuration file
 
     """
 
@@ -342,8 +340,8 @@ def data_out(data, args_array):
         standard out and in the type of format it will be displayed.
 
     Arguments:
-        (input) data -> Data to be sent out.
-        (input) args_array -> Dict of command line options and values.
+        (input) data -> Data to be sent out
+        (input) args_array -> Dict of command line options and values
 
     """
 
@@ -377,12 +375,12 @@ def get_status(els, **kwargs):
         Elasticsearch database cluster.
 
     Arguments:
-        (input) els -> Elasticsearch class instance.
+        (input) els -> Elasticsearch class instance
         (input) **kwargs:
-            args_array -> Dict of command line options and values.
-            status_call -> Contains class method names for the '-D' option.
-            check_call -> Contains class method names for the '-C' option.
-            cfg -> Configuration variables from configuration file.
+            args_array -> Dict of command line options and values
+            status_call -> Contains class method names for the '-D' option
+            check_call -> Contains class method names for the '-C' option
+            cfg -> Configuration variables from configuration file
 
     """
 
@@ -415,15 +413,15 @@ def _get_data(data, els, opt, **kwargs):
         Elasticsearch database.
 
     Arguments:
-        (input) data -> Data results.
-        (input) els -> Elasticsearch status class instance.
-        (input) opt -> Method to run in class instance.
+        (input) data -> Data results
+        (input) els -> Elasticsearch status class instance
+        (input) opt -> Method to run in class instance
         (input) **kwargs:
-            status_call -> Contains class method names for the '-D' option.
-            args_array -> Dict of command line options and values.
-            check_call -> Contains class method names for the '-C' option.
-            cfg -> Configuration variables from configuration file.
-        (output) data -> Modified data results.
+            status_call -> Contains class method names for the '-D' option
+            args_array -> Dict of command line options and values
+            check_call -> Contains class method names for the '-C' option
+            cfg -> Configuration variables from configuration file
+        (output) data -> Modified data results
 
     """
 
@@ -448,12 +446,12 @@ def check_status(els, **kwargs):
         Elasticsearch database cluster.
 
     Arguments:
-        (input) els -> Elasticsearch class instance.
+        (input) els -> Elasticsearch class instance
         (input) **kwargs:
-            args_array -> Dict of command line options and values.
-            check_call -> Contains class method names for the '-C' option.
-            status_call -> Contains class method names for the '-D' option.
-            cfg -> Configuration variables from configuration file.
+            args_array -> Dict of command line options and values
+            check_call -> Contains class method names for the '-C' option
+            status_call -> Contains class method names for the '-D' option
+            cfg -> Configuration variables from configuration file
 
     """
 
@@ -507,18 +505,18 @@ def _process_data(check_list, esc, **kwargs):
         from Elasticsearch database.
 
     Arguments:
-        (input) check_list -> Contains class method names for the '-C' option.
-        (input) esc -> Elasticsearch status class instance.
+        (input) check_list -> Contains class method names for the '-C' option
+        (input) esc -> Elasticsearch status class instance
         (input) **kwargs:
-            check_call -> Contains class method names for the '-C' option.
-            cutoff_cpu -> Cutoff value for CPU usage.
-            cutoff_mem -> Cutoff value for Memory usage.
-            cutoff_disk -> Cutoff value for Disk usage.
-            args_array -> Dict of command line options and values.
-            status_call -> Contains class method names for the '-D' option.
-            cfg -> Configuration variables from configuration file.
-        (output) err_flag -> True|False - Status of results.
-        (output) err_msg -> Error message(s).
+            check_call -> Contains class method names for the '-C' option
+            cutoff_cpu -> Cutoff value for CPU usage
+            cutoff_mem -> Cutoff value for Memory usage
+            cutoff_disk -> Cutoff value for Disk usage
+            args_array -> Dict of command line options and values
+            status_call -> Contains class method names for the '-D' option
+            cfg -> Configuration variables from configuration file
+        (output) err_flag -> True|False - Status of results
+        (output) err_msg -> Error message(s)
 
     """
 
@@ -552,15 +550,14 @@ def run_program(args_array, func_dict, **kwargs):
         Create a program lock to prevent other instantiations from running.
 
     Arguments:
-        (input) args_array -> Dict of command line options and values.
-        (input) func_dict -> Dictionary list of functions and options.
+        (input) args_array -> Dict of command line options and values
+        (input) func_dict -> Dictionary list of functions and options
         (input) **kwargs:
-            status_call -> Contains class method names for the '-D' option.
-            check_call -> Contains class method names for the '-C' option.
+            status_call -> Contains class method names for the '-D' option
+            check_call -> Contains class method names for the '-C' option
 
     """
 
-    cmdline = gen_libs.get_inst(sys)
     args_array = dict(args_array)
     func_dict = dict(func_dict)
     cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
@@ -571,7 +568,7 @@ def run_program(args_array, func_dict, **kwargs):
     flavorid = "elasticadmin"
 
     try:
-        prog_lock = gen_class.ProgramLock(cmdline.argv, flavor_id=flavorid)
+        prog_lock = gen_class.ProgramLock(sys.argv, flavor_id=flavorid)
 
         # Intersect args_array & func_dict to find which functions to call.
         for opt in set(args_array.keys()) & set(func_dict.keys()):
@@ -600,25 +597,24 @@ def main():
         line arguments and values.
 
     Variables:
-        dir_chk_list -> contains options which will be directories.
-        func_dict -> dictionary list for the function calls or other options.
-        opt_con_req_list -> contains the options that require other options.
-        opt_def_dict -> contains options with their default values.
-        opt_multi_list -> contains the options that will have multiple values.
-        opt_req_list -> contains options that are required for the program.
-        opt_val -> List of options that allow 0 or 1 value for option.
-        opt_val_list -> contains options which require values.
+        dir_chk_list -> contains options which will be directories
+        func_dict -> dictionary list for the function calls or other options
+        opt_con_req_list -> contains the options that require other options
+        opt_def_dict -> contains options with their default values
+        opt_multi_list -> contains the options that will have multiple values
+        opt_req_list -> contains options that are required for the program
+        opt_val -> List of options that allow 0 or 1 value for option
+        opt_val_list -> contains options which require values
         status_call -> contains '-D' option values and associated
-            ElasticSearchStatus class method names.
+            ElasticSearchStatus class method names
         check_call -> contains '-C' option values and associated
-            ElasticSearchStatus class method names.
+            ElasticSearchStatus class method names
 
     Arguments:
         (input) argv -> Arguments from the command line.
 
     """
 
-    cmdline = gen_libs.get_inst(sys)
     dir_chk_list = ["-d"]
     func_dict = {"-F": failed_dumps, "-L": list_dumps, "-M": list_master,
                  "-R": list_repos, "-N": list_nodes, "-D": get_status,
@@ -638,7 +634,7 @@ def main():
 
     # Process argument list from command line.
     args_array = arg_parser.arg_parse2(
-        cmdline.argv, opt_val_list, opt_def_dict, opt_val=opt_val,
+        sys.argv, opt_val_list, opt_def_dict, opt_val=opt_val,
         multi_val=opt_multi_list)
 
     if not gen_libs.help_func(args_array, __version__, help_message) \
