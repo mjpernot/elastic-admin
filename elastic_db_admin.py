@@ -597,14 +597,15 @@ def main():
         line arguments and values.
 
     Variables:
-        dir_chk_list -> contains options which will be directories
+        dir_perms_chk -> contains options which will be directories and the
+            octal permission settings
         func_dict -> dictionary list for the function calls or other options
         opt_con_req_list -> contains the options that require other options
         opt_def_dict -> contains options with their default values
         opt_multi_list -> contains the options that will have multiple values
         opt_req_list -> contains options that are required for the program
-        opt_val -> List of options that allow 0 or 1 value for option
-        opt_val_list -> contains options which require values
+        opt_val_bin -> List of options that allow 0 or 1 value for option
+        opt_val -> contains options which require values
         status_call -> contains '-D' option values and associated
             ElasticSearchStatus class method names
         check_call -> contains '-C' option values and associated
@@ -615,34 +616,44 @@ def main():
 
     """
 
-    dir_chk_list = ["-d"]
-    func_dict = {"-F": failed_dumps, "-L": list_dumps, "-M": list_master,
-                 "-R": list_repos, "-N": list_nodes, "-D": get_status,
-                 "-C": check_status}
+    dir_perms_chk = {"-d": 5}
+    func_dict = {
+        "-F": failed_dumps, "-L": list_dumps, "-M": list_master,
+        "-R": list_repos, "-N": list_nodes, "-D": get_status,
+        "-C": check_status}
     opt_con_req_list = {"-s": ["-t"]}
     opt_def_dict = {"-D": [], "-C": []}
     opt_multi_list = ["-D", "-C", "-t", "-s"]
     opt_req_list = ["-c", "-d"]
     opt_val = ["-F", "-L"]
     opt_val_list = ["-c", "-d", "-m", "-u", "-p", "-o"]
-    status_call = {"node": "get_node_status", "server": "get_svr_status",
-                   "memory": "get_mem_status", "shard": "get_shrd_status",
-                   "general": "get_gen_status", "disk": "get_disk_status"}
-    check_call = {"node": "chk_nodes", "server": "chk_server",
-                  "memory": "chk_mem", "shard": "chk_shards",
-                  "general": "chk_status", "disk": "chk_disk"}
+    status_call = {
+        "node": "get_node_status", "server": "get_svr_status",
+        "memory": "get_mem_status", "shard": "get_shrd_status",
+        "general": "get_gen_status", "disk": "get_disk_status"}
+    check_call = {
+        "node": "chk_nodes", "server": "chk_server", "memory": "chk_mem",
+        "shard": "chk_shards", "general": "chk_status", "disk": "chk_disk"}
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(
-        sys.argv, opt_val_list, opt_def_dict, opt_val=opt_val,
-        multi_val=opt_multi_list)
+    args = gen_class.ArgParser(
+        sys.argv, opt_val=opt_val, opt_val_bin=opt_val_bin,
+        multi_val=opt_multi_list, opt_def=opt_def_dict, do_parse=True)
+#    args_array = arg_parser.arg_parse2(
+#        sys.argv, opt_val_list, opt_def_dict, opt_val=opt_val,
+#        multi_val=opt_multi_list)
 
-    if not gen_libs.help_func(args_array, __version__, help_message) \
-       and not arg_parser.arg_require(args_array, opt_req_list) \
-       and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list) \
-       and arg_parser.arg_cond_req(args_array, opt_con_req_list):
-        run_program(args_array, func_dict, status_call=status_call,
-                    check_call=check_call)
+    if not gen_libs.help_func(args, __version__, help_message)  \
+       and args.arg_require(opt_req=opt_req_list)               \
+       and args.arg_dir_chk(dir_perms_chk=dir_perms_chk)        \
+       and args.arg_cond_req(opt_con_req=opt_con_req_list):
+        run_program(
+            args, func_dict, status_call=status_call, check_call=check_call)
+
+#    if not gen_libs.help_func(args_array, __version__, help_message) \
+#       and not arg_parser.arg_require(args_array, opt_req_list) \
+#       and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list) \
+#       and arg_parser.arg_cond_req(args_array, opt_con_req_list):
 
 
 if __name__ == "__main__":
