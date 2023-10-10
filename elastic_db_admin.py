@@ -171,7 +171,7 @@ def list_nodes(els, **kwargs):
     Arguments:
         (input) els -> Elasticsearch class instance
         (input) **kwargs:
-            args_array -> Dict of command line options and values
+            args -> ArgParser class instance
             status_call -> Contains class method names for the '-D' option
             check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
@@ -195,7 +195,7 @@ def list_repos(els, **kwargs):
     Arguments:
         (input) els -> Elasticsearch class instance
         (input) **kwargs:
-            args_array -> Dict of command line options and values
+            args -> ArgParser class instance
             status_call -> Contains class method names for the '-D' option
             check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
@@ -217,7 +217,7 @@ def list_master(els, **kwargs):
     Arguments:
         (input) els-> Elasticsearch class instance
         (input) **kwargs:
-            args_array -> Dict of command line options and values
+            args -> ArgParser class instance
             status_call -> Contains class method names for the '-D' option
             check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
@@ -259,7 +259,7 @@ def failed_dumps(els, **kwargs):
     Arguments:
         (input) els -> Elasticsearch class instance
         (input) **kwargs:
-            args_array -> Dict of command line options and values
+            args -> ArgParser class instance
             status_call -> Contains class method names for the '-D' option
             check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
@@ -268,8 +268,8 @@ def failed_dumps(els, **kwargs):
 
     global PRT_TEMPLATE
 
-    args_array = dict(kwargs.get("args_array"))
-    repo = args_array.get("-F", None)
+    args = kwargs.get("args")
+    repo = args.get_val("-F", def_val=None)
     print(PRT_TEMPLATE.format("List of Failed Dumps:"))
 
     if repo:
@@ -306,7 +306,7 @@ def list_dumps(els, **kwargs):
     Arguments:
         (input) els -> Elasticsearch class instance
         (input) **kwargs:
-            args_array -> Dict of command line options and values
+            args -> ArgParser class instance
             status_call -> Contains class method names for the '-D' option
             check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
@@ -315,8 +315,8 @@ def list_dumps(els, **kwargs):
 
     global PRT_TEMPLATE
 
-    args_array = dict(kwargs.get("args_array"))
-    repo = args_array.get("-L", None)
+    args = kwargs.get("args")
+    repo = args.get_val("-L", def_val=None)
 
     if repo and repo not in els.repo_dict:
         print("Warning:  Repository '%s' does not exist." % (repo))
@@ -332,7 +332,7 @@ def list_dumps(els, **kwargs):
             print_dumps(els, repo)
 
 
-def data_out(data, args_array):
+def data_out(data, args):
 
     """Function:  data_out
 
@@ -341,20 +341,19 @@ def data_out(data, args_array):
 
     Arguments:
         (input) data -> Data to be sent out
-        (input) args_array -> Dict of command line options and values
+        (input) args -> ArgParser class instance
 
     """
 
     global SUBJ_LINE
 
-    args_array = dict(args_array)
     data = dict(data)
-    mode = "a" if args_array.get("-a") else "w"
-    indent = 4 if args_array.get("-j") else None
+    mode = "a" if args.arg_exist("-a") else "w"
+    indent = 4 if args.arg_exist("-j") else None
     mail = gen_class.setup_mail(
-        args_array.get("-t"),
-        subj=args_array.get("-s", SUBJ_LINE)) if args_array.get("-t") else None
-    ofile = args_array["-o"] if args_array.get("-o") else None
+        args.get_val("-t"), subj=args.get_val("-s", def_val=SUBJ_LINE)) \
+        if args.arg_exist("-t") else None
+    ofile = args.get_val("-o") if args.get_val("-o") else None
 
     if mail:
         mail.add_2_msg(json.dumps(data, indent=indent))
@@ -363,7 +362,7 @@ def data_out(data, args_array):
     if ofile:
         gen_libs.write_file(ofile, mode, json.dumps(data, indent=indent))
 
-    if not args_array.get("-z", False):
+    if not args.get_val("-z", def_val=False):
         print(json.dumps(data, indent=indent))
 
 
@@ -377,7 +376,7 @@ def get_status(els, **kwargs):
     Arguments:
         (input) els -> Elasticsearch class instance
         (input) **kwargs:
-            args_array -> Dict of command line options and values
+            args -> ArgParser class instance
             status_call -> Contains class method names for the '-D' option
             check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
@@ -386,8 +385,8 @@ def get_status(els, **kwargs):
 
     global TIME_FORMAT
 
-    args_array = dict(kwargs.get("args_array"))
-    display_list = list(args_array.get("-D", []))
+    args = kwargs.get("args")
+    display_list = args.get_val("-D", def_val=list())
 
     if not display_list or "all" in display_list:
         data = els.get_all()
@@ -402,7 +401,7 @@ def get_status(els, **kwargs):
     data["AsOf"] = datetime.datetime.strftime(
         datetime.datetime.now(), TIME_FORMAT)
     data["HostName"] = socket.gethostname()
-    data_out(data, args_array)
+    data_out(data, args)
 
 
 def _get_data(data, els, opt, **kwargs):
@@ -418,7 +417,7 @@ def _get_data(data, els, opt, **kwargs):
         (input) opt -> Method to run in class instance
         (input) **kwargs:
             status_call -> Contains class method names for the '-D' option
-            args_array -> Dict of command line options and values
+            args -> ArgParser class instance
             check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
         (output) data -> Modified data results
@@ -448,7 +447,7 @@ def check_status(els, **kwargs):
     Arguments:
         (input) els -> Elasticsearch class instance
         (input) **kwargs:
-            args_array -> Dict of command line options and values
+            args -> ArgParser class instance
             check_call -> Contains class method names for the '-C' option
             status_call -> Contains class method names for the '-D' option
             cfg -> Configuration variables from configuration file
@@ -457,12 +456,12 @@ def check_status(els, **kwargs):
 
     global TIME_FORMAT
 
-    args_array = dict(kwargs.get("args_array"))
-    check_list = list(args_array.get("-C", []))
+    args = kwargs.get("args")
+    check_list = args.get_val("-C", def_val=list())
     cfg = kwargs.get("cfg")
-    cutoff_mem = args_array.get("-m", None)
-    cutoff_cpu = args_array.get("-u", None)
-    cutoff_disk = args_array.get("-p", None)
+    cutoff_mem = args.get_val("-m", def_val=None)
+    cutoff_cpu = args.get_val("-u", def_val=None)
+    cutoff_disk = args.get_val("-p", def_val=None)
 
     els.cutoff_mem = \
         int(cutoff_mem) if cutoff_mem else cfg.cutoff_mem if hasattr(
@@ -494,7 +493,7 @@ def check_status(els, **kwargs):
         data["AsOf"] = datetime.datetime.strftime(
             datetime.datetime.now(), TIME_FORMAT)
         data, _, _ = gen_libs.merge_two_dicts(data, els.get_nodes())
-        data_out(data, args_array)
+        data_out(data, args)
 
 
 def _process_data(check_list, esc, **kwargs):
@@ -512,7 +511,7 @@ def _process_data(check_list, esc, **kwargs):
             cutoff_cpu -> Cutoff value for CPU usage
             cutoff_mem -> Cutoff value for Memory usage
             cutoff_disk -> Cutoff value for Disk usage
-            args_array -> Dict of command line options and values
+            args -> ArgParser class instance
             status_call -> Contains class method names for the '-D' option
             cfg -> Configuration variables from configuration file
         (output) err_flag -> True|False - Status of results
@@ -542,7 +541,7 @@ def _process_data(check_list, esc, **kwargs):
     return data
 
 
-def run_program(args_array, func_dict, **kwargs):
+def run_program(args, func_dict, **kwargs):
 
     """Function:  run_program
 
@@ -550,7 +549,7 @@ def run_program(args_array, func_dict, **kwargs):
         Create a program lock to prevent other instantiations from running.
 
     Arguments:
-        (input) args_array -> Dict of command line options and values
+        (input) args -> ArgParser class instance
         (input) func_dict -> Dictionary list of functions and options
         (input) **kwargs:
             status_call -> Contains class method names for the '-D' option
@@ -558,9 +557,8 @@ def run_program(args_array, func_dict, **kwargs):
 
     """
 
-    args_array = dict(args_array)
     func_dict = dict(func_dict)
-    cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
+    cfg = gen_libs.load_module(args.get_val("-c"), args.get_val("-d"))
     user = cfg.user if hasattr(cfg, "user") else None
     japd = cfg.japd if hasattr(cfg, "japd") else None
     ca_cert = cfg.ssl_client_ca if hasattr(cfg, "ssl_client_ca") else None
@@ -571,14 +569,14 @@ def run_program(args_array, func_dict, **kwargs):
         prog_lock = gen_class.ProgramLock(sys.argv, flavor_id=flavorid)
 
         # Intersect args_array & func_dict to find which functions to call.
-        for opt in set(args_array.keys()) & set(func_dict.keys()):
+        for opt in set(args.get_args_keys()) & set(func_dict.keys()):
             els = elastic_class.ElasticSearchStatus(
                 cfg.host, port=cfg.port, user=user, japd=japd, ca_cert=ca_cert,
                 scheme=scheme)
             els.connect()
 
             if els.is_connected:
-                func_dict[opt](els, args_array=args_array, cfg=cfg, **kwargs)
+                func_dict[opt](els, args=args, cfg=cfg, **kwargs)
 
             else:
                 print("ERROR:  Failed to connect to Elasticsearch")
@@ -625,8 +623,8 @@ def main():
     opt_def_dict = {"-D": [], "-C": []}
     opt_multi_list = ["-D", "-C", "-t", "-s"]
     opt_req_list = ["-c", "-d"]
-    opt_val = ["-F", "-L"]
-    opt_val_list = ["-c", "-d", "-m", "-u", "-p", "-o"]
+    opt_val_bin = ["-F", "-L"]
+    opt_val = ["-c", "-d", "-m", "-u", "-p", "-o"]
     status_call = {
         "node": "get_node_status", "server": "get_svr_status",
         "memory": "get_mem_status", "shard": "get_shrd_status",
@@ -635,13 +633,10 @@ def main():
         "node": "chk_nodes", "server": "chk_server", "memory": "chk_mem",
         "shard": "chk_shards", "general": "chk_status", "disk": "chk_disk"}
 
-    # Process argument list from command line.
+    # Process argument list from command line
     args = gen_class.ArgParser(
         sys.argv, opt_val=opt_val, opt_val_bin=opt_val_bin,
         multi_val=opt_multi_list, opt_def=opt_def_dict, do_parse=True)
-#    args_array = arg_parser.arg_parse2(
-#        sys.argv, opt_val_list, opt_def_dict, opt_val=opt_val,
-#        multi_val=opt_multi_list)
 
     if not gen_libs.help_func(args, __version__, help_message)  \
        and args.arg_require(opt_req=opt_req_list)               \
@@ -649,11 +644,6 @@ def main():
        and args.arg_cond_req(opt_con_req=opt_con_req_list):
         run_program(
             args, func_dict, status_call=status_call, check_call=check_call)
-
-#    if not gen_libs.help_func(args_array, __version__, help_message) \
-#       and not arg_parser.arg_require(args_array, opt_req_list) \
-#       and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list) \
-#       and arg_parser.arg_cond_req(args_array, opt_con_req_list):
 
 
 if __name__ == "__main__":

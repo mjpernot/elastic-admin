@@ -40,7 +40,7 @@ def failed_dumps(els, **kwargs):
 
     status = True
 
-    if els and dict(kwargs.get("args_array")):
+    if els and kwargs.get("args"):
         status = True
 
     return status
@@ -58,10 +58,60 @@ def list_dumps(els, **kwargs):
 
     status = True
 
-    if els and dict(kwargs.get("args_array")):
+    if els and kwargs.get("args"):
         status = True
 
     return status
+
+
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        get_val
+        get_args_keys
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.args_array = {"-c": "elastic", "-d": "config"}
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+    def get_args_keys(self):
+
+        """Method:  get_args_keys
+
+        Description:  Method stub holder for gen_class.ArgParser.get_args_keys.
+
+        Arguments:
+
+        """
+
+        return list(self.args_array.keys())
 
 
 class ProgramLock(object):
@@ -191,7 +241,12 @@ class UnitTest(unittest.TestCase):
 
         self.cfg = CfgTest()
         self.els = ElasticSearchStatus()
-        self.args = {"-c": "config_file", "-d": "config_dir", "-M": True}
+        self.args = ArgParser()
+        self.args2 = ArgParser()
+        self.args.args_array = {
+            "-c": "config_file", "-d": "config_dir", "-M": True}
+        self.args2.args_array = {
+            "-c": "config_file", "-d": "config_dir", "-M": True, "-F": True}
         self.func_names = {"-F": failed_dumps, "-L": list_dumps}
         self.proglock = ProgramLock(["cmdline"], "FlavorID")
 
@@ -208,7 +263,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args["-F"] = True
         self.els.is_connected = False
 
         mock_lock.return_value = self.proglock
@@ -217,7 +271,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(
-                elastic_db_admin.run_program(self.args, self.func_names))
+                elastic_db_admin.run_program(self.args2, self.func_names))
 
     @mock.patch("elastic_db_admin.gen_libs.load_module")
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -232,14 +286,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args["-F"] = True
-
         mock_lock.return_value = self.proglock
         mock_class.return_value = self.els
         mock_load.return_value = self.cfg
 
         self.assertFalse(
-            elastic_db_admin.run_program(self.args, self.func_names))
+            elastic_db_admin.run_program(self.args2, self.func_names))
 
     @mock.patch("elastic_db_admin.gen_libs.load_module")
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -254,8 +306,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args["-F"] = True
-
         mock_lock.side_effect = \
             elastic_db_admin.gen_class.SingleInstanceException
         mock_class.return_value = self.els
@@ -263,7 +313,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(
-                elastic_db_admin.run_program(self.args, self.func_names))
+                elastic_db_admin.run_program(self.args2, self.func_names))
 
     @mock.patch("elastic_db_admin.gen_libs.load_module")
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -279,15 +329,14 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args["-F"] = True
-        self.args["-L"] = True
+        self.args2.args_array["-L"] = True
 
         mock_lock.return_value = self.proglock
         mock_class.return_value = self.els
         mock_load.return_value = self.cfg
 
         self.assertFalse(
-            elastic_db_admin.run_program(self.args, self.func_names))
+            elastic_db_admin.run_program(self.args2, self.func_names))
 
     @mock.patch("elastic_db_admin.gen_libs.load_module")
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
@@ -302,14 +351,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args["-F"] = True
-
         mock_lock.return_value = self.proglock
         mock_class.return_value = self.els
         mock_load.return_value = self.cfg
 
         self.assertFalse(
-            elastic_db_admin.run_program(self.args, self.func_names))
+            elastic_db_admin.run_program(self.args2, self.func_names))
 
     @mock.patch("elastic_db_admin.gen_libs.load_module")
     @mock.patch("elastic_db_admin.elastic_class.ElasticSearchStatus")
