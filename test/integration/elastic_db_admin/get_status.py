@@ -28,6 +28,43 @@ import version
 __version__ = version.__version__
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        get_val
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.args_array = {"-c": "elastic", "-d": "config"}
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -73,19 +110,29 @@ class UnitTest(unittest.TestCase):
             self.cfg.host, port=self.cfg.port, user=self.user, japd=self.japd,
             ca_cert=self.ca_cert, scheme=self.scheme)
         self.els.connect()
-
-        self.args_array = {"-D": ["all"], "-o": self.t_file, "-z": True}
-        self.args_array2 = {"-D": ["memory"], "-o": self.t_file, "-z": True}
-        self.args_array3 = {"-D": [], "-o": self.t_file, "-z": True}
-        self.args_array4 = {
+        self.args = ArgParser()
+        self.args2 = ArgParser()
+        self.args3 = ArgParser()
+        self.args4 = ArgParser()
+        self.args5 = ArgParser()
+        self.args6 = ArgParser()
+        self.args7 = ArgParser()
+        self.args8 = ArgParser()
+        self.args9 = ArgParser()
+        self.args.args_array = {"-D": ["all"], "-o": self.t_file, "-z": True}
+        self.args2.args_array = {
+            "-D": ["memory"], "-o": self.t_file, "-z": True}
+        self.args3.args_array = {"-D": [], "-o": self.t_file, "-z": True}
+        self.args4.args_array = {
             "-D": [], "-j": True, "-o": self.t_file, "-z": True}
-        self.args_array5 = {
+        self.args5.args_array = {
             "-D": ["all"], "-j": True, "-o": self.t_file, "-z": True}
-        self.args_array6 = {
+        self.args6.args_array = {
             "-D": ["memory"], "-j": True, "-o": self.t_file, "-z": True}
-        self.args_array7 = {
+        self.args7.args_array = {
             "-D": ["incorrect"], "-j": True, "-o": self.t_file, "-z": True}
-        self.args_array8 = {"-D": [], "-o": self.t_file, "-z": True}
+        self.args8.args_array8 = {"-D": [], "-o": self.t_file, "-z": True}
+        self.args9.args_array = dict()
         self.status_call = {"memory": "get_mem_status"}
 
     def test_empty_display_list(self):
@@ -99,8 +146,7 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.get_status(
-            self.els, status_call=self.status_call,
-            args_array=self.args_array8)
+            self.els, status_call=self.status_call, args=self.args8)
 
         self.assertTrue(os.path.isfile(self.t_file))
 
@@ -116,8 +162,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             elastic_db_admin.get_status(
-                self.els, status_call=self.status_call,
-                args_array=self.args_array7)
+                self.els, status_call=self.status_call, args=self.args7)
 
         self.assertTrue(os.path.isfile(self.t_file))
 
@@ -132,8 +177,7 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.get_status(
-            self.els, status_call=self.status_call,
-            args_array=self.args_array6)
+            self.els, status_call=self.status_call, args=self.args6)
 
         self.assertTrue(os.path.isfile(self.t_file))
 
@@ -148,8 +192,7 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.get_status(
-            self.els, status_call=self.status_call,
-            args_array=self.args_array5)
+            self.els, status_call=self.status_call, args=self.args5)
 
         self.assertTrue(os.path.isfile(self.t_file))
 
@@ -164,8 +207,7 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.get_status(
-            self.els, status_call=self.status_call,
-            args_array=self.args_array4)
+            self.els, status_call=self.status_call, args=self.args4)
 
         self.assertTrue(os.path.isfile(self.t_file))
 
@@ -180,8 +222,7 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.get_status(
-            self.els, status_call=self.status_call,
-            args_array=self.args_array)
+            self.els, status_call=self.status_call, args=self.args)
 
         self.assertTrue(os.path.isfile(self.t_file))
 
@@ -198,7 +239,7 @@ class UnitTest(unittest.TestCase):
         with gen_libs.no_std_out():
             self.assertFalse(
                 elastic_db_admin.get_status(
-                    self.els, status_call=self.status_call, args_array={}))
+                    self.els, status_call=self.status_call, args=self.args))
 
     def tearDown(self):
 

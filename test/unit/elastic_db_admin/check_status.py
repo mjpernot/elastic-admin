@@ -29,6 +29,43 @@ import version
 __version__ = version.__version__
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        get_val
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.args_array = {"-c": "elastic", "-d": "config"}
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+
 class ElasticSearchStatus(object):
 
     """Class:  ElasticSearchStatus
@@ -155,18 +192,29 @@ class UnitTest(unittest.TestCase):
         self.cpu = 95
         self.disk = 80
         self.els = ElasticSearchStatus()
-        self.args_array = {"-C": ["all"]}
-        self.args_array2 = {"-C": ["memory"]}
-        self.args_array3 = {"-C": []}
-        self.args_array4 = {"-C": [], "-j": True}
-        self.args_array5 = {"-C": ["all"], "-j": True}
-        self.args_array6 = {"-C": ["memory"], "-j": True}
-        self.args_array7 = {"-C": ["incorrect"], "-j": True}
-        self.args_array8 = {"-C": ["memory"], "-j": True, "-m": self.mem,
-                            "-u": self.cpu, "-p": self.disk}
+        self.args = ArgParser()
+        self.args2 = ArgParser()
+        self.args3 = ArgParser()
+        self.args4 = ArgParser()
+        self.args5 = ArgParser()
+        self.args6 = ArgParser()
+        self.args7 = ArgParser()
+        self.args8 = ArgParser()
+        self.args9 = ArgParser()
+        self.args.args_array = {"-C": ["all"]}
+        self.args2.args_array = {"-C": ["memory"]}
+        self.args3.args_array = {"-C": []}
+        self.args4.args_array = {"-C": [], "-j": True}
+        self.args5.args_array = {"-C": ["all"], "-j": True}
+        self.args6.args_array = {"-C": ["memory"], "-j": True}
+        self.args7.args_array = {"-C": ["incorrect"], "-j": True}
+        self.args8.args_array = {
+            "-C": ["memory"], "-j": True, "-m": self.mem, "-u": self.cpu,
+            "-p": self.disk}
+        self.args9.args_array = dict()
         self.check_call = {"memory": "chk_mem"}
-        cfg = collections.namedtuple("Cfg",
-                                     "cutoff_mem cutoff_cpu cutoff_disk")
+        cfg = collections.namedtuple(
+            "Cfg", "cutoff_mem cutoff_cpu cutoff_disk")
         self.cfg = cfg("75", "70", "65")
         cfg2 = collections.namedtuple("Cfg", "test")
         self.cfg2 = cfg2("test")
@@ -183,8 +231,8 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             elastic_db_admin.check_status(
-                self.els, check_call=self.check_call,
-                args_array=self.args_array8, cfg=self.cfg))
+                self.els, check_call=self.check_call, args=self.args8,
+                cfg=self.cfg))
 
     def test_one_option_cfg(self):
 
@@ -198,8 +246,8 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             elastic_db_admin.check_status(
-                self.els, check_call=self.check_call,
-                args_array=self.args_array6, cfg=self.cfg))
+                self.els, check_call=self.check_call, args=self.args6,
+                cfg=self.cfg))
 
     @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_one_option_error(self):
@@ -217,8 +265,8 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             elastic_db_admin.check_status(
-                self.els, check_call=self.check_call,
-                args_array=self.args_array6, cfg=self.cfg2))
+                self.els, check_call=self.check_call, args=self.args6,
+                cfg=self.cfg2))
 
     @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_incorrect_option(self):
@@ -234,8 +282,8 @@ class UnitTest(unittest.TestCase):
         with gen_libs.no_std_out():
             self.assertFalse(
                 elastic_db_admin.check_status(
-                    self.els, check_call=self.check_call,
-                    args_array=self.args_array7, cfg=self.cfg2))
+                    self.els, check_call=self.check_call, args=self.args7,
+                    cfg=self.cfg2))
 
     def test_one_option(self):
 
@@ -249,8 +297,8 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             elastic_db_admin.check_status(
-                self.els, check_call=self.check_call,
-                args_array=self.args_array6, cfg=self.cfg2))
+                self.els, check_call=self.check_call, args=self.args6,
+                cfg=self.cfg2))
 
     def test_all(self):
 
@@ -264,8 +312,8 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             elastic_db_admin.check_status(
-                self.els, check_call=self.check_call,
-                args_array=self.args_array5, cfg=self.cfg2))
+                self.els, check_call=self.check_call, args=self.args5,
+                cfg=self.cfg2))
 
     def test_no_options(self):
 
@@ -279,8 +327,8 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             elastic_db_admin.check_status(
-                self.els, check_call=self.check_call,
-                args_array=self.args_array4, cfg=self.cfg2))
+                self.els, check_call=self.check_call, args=self.args4,
+                cfg=self.cfg2))
 
     @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_all_with_error(self):
@@ -297,8 +345,8 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             elastic_db_admin.check_status(
-                self.els, check_call=self.check_call,
-                args_array=self.args_array, cfg=self.cfg2))
+                self.els, check_call=self.check_call, args=self.args,
+                cfg=self.cfg2))
 
     def test_all_no_error(self):
 
@@ -312,8 +360,8 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             elastic_db_admin.check_status(
-                self.els, check_call=self.check_call,
-                args_array=self.args_array, cfg=self.cfg2))
+                self.els, check_call=self.check_call, args=self.args,
+                cfg=self.cfg2))
 
     def test_default_no_error(self):
 
@@ -327,7 +375,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             elastic_db_admin.check_status(
-                self.els, check_call=self.check_call, args_array={},
+                self.els, check_call=self.check_call, args=self.args9,
                 cfg=self.cfg2))
 
 
