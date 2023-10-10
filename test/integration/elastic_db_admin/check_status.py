@@ -28,6 +28,43 @@ import version
 __version__ = version.__version__
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        get_val
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.args_array = dict()
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -78,21 +115,30 @@ class UnitTest(unittest.TestCase):
         self.mem2 = 1
         self.cpu = 100
         self.disk = 100
-        self.args_array = {
+        self.args = ArgParser()
+        self.args2 = ArgParser()
+        self.args3 = ArgParser()
+        self.args4 = ArgParser()
+        self.args5 = ArgParser()
+        self.args6 = ArgParser()
+        self.args7 = ArgParser()
+        self.args8 = ArgParser()
+        self.args.args_array = {
             "-C": ["all"], "-o": self.t_file, "-z": True, "-m": self.mem,
             "-u": self.cpu, "-p": self.disk}
-        self.args_array2 = {"-C": ["memory"], "-o": self.t_file, "-z": True}
-        self.args_array3 = {"-C": [], "-o": self.t_file, "-z": True}
-        self.args_array4 = {
+        self.args2.args_array = {
+            "-C": ["memory"], "-o": self.t_file, "-z": True}
+        self.args3.args_array = {"-C": [], "-o": self.t_file, "-z": True}
+        self.args4.args_array = {
             "-C": [], "-j": True, "-o": self.t_file, "-z": True}
-        self.args_array5 = {
+        self.args5.args_array = {
             "-C": ["all"], "-j": True, "-o": self.t_file, "-z": True}
-        self.args_array6 = {
+        self.args6.args_array = {
             "-C": ["memory"], "-j": True, "-m": self.mem2, "-o": self.t_file,
             "-z": True}
-        self.args_array7 = {
+        self.args7.args_array = {
             "-C": ["incorrect"], "-j": True, "-o": self.t_file, "-z": True}
-        self.args_array8 = {
+        self.args8.args_array = {
             "-C": ["memory"], "-j": True, "-m": self.mem, "-u": self.cpu,
             "-p": self.disk, "-o": self.t_file, "-z": True}
         self.check_call = {"memory": "chk_mem"}
@@ -108,7 +154,7 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.check_status(
-            self.els, check_call=self.check_call, args_array=self.args_array8,
+            self.els, check_call=self.check_call, args=self.args8,
             cfg=self.cfg)
 
         self.assertFalse(os.path.isfile(self.t_file))
@@ -124,8 +170,8 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.check_status(
-            self.els, check_call=self.check_call,
-            args_array=self.args_array6, cfg=self.cfg)
+            self.els, check_call=self.check_call, args=self.args6,
+            cfg=self.cfg)
 
         self.assertTrue(os.path.isfile(self.t_file))
 
@@ -141,8 +187,8 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             elastic_db_admin.check_status(
-                self.els, check_call=self.check_call,
-                args_array=self.args_array7, cfg=self.cfg)
+                self.els, check_call=self.check_call, args=self.args7,
+                cfg=self.cfg)
 
         self.assertFalse(os.path.isfile(self.t_file))
 
@@ -157,8 +203,8 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.check_status(
-            self.els, check_call=self.check_call,
-            args_array=self.args_array6, cfg=self.cfg)
+            self.els, check_call=self.check_call, args=self.args6,
+            cfg=self.cfg)
 
         self.assertTrue(os.path.isfile(self.t_file))
 
@@ -173,7 +219,7 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.check_status(
-            self.els, check_call=self.check_call, args_array=self.args_array5,
+            self.els, check_call=self.check_call, args=self.args5,
             cfg=self.cfg)
 
         if os.path.isfile(self.t_file):
@@ -193,7 +239,7 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.check_status(
-            self.els, check_call=self.check_call, args_array=self.args_array4,
+            self.els, check_call=self.check_call, args=self.args4,
             cfg=self.cfg)
 
         if os.path.isfile(self.t_file):
@@ -213,7 +259,7 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.check_status(
-            self.els, check_call=self.check_call, args_array=self.args_array,
+            self.els, check_call=self.check_call, args=self.args,
             cfg=self.cfg)
 
         if os.path.isfile(self.t_file):

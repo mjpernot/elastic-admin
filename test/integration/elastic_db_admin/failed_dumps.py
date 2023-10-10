@@ -28,6 +28,43 @@ import version
 __version__ = version.__version__
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        get_val
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.args_array = dict()
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -65,7 +102,9 @@ class UnitTest(unittest.TestCase):
             self.cfg.host, port=self.cfg.port, user=self.user, japd=self.japd,
             ca_cert=self.ca_cert, scheme=self.scheme)
         self.els.connect()
-        self.args_array = {"-F": "WhatNameToUse"}
+        self.args = ArgParser()
+        self.args2 = ArgParser()
+        self.args.args_array = {"-F": "WhatNameToUse"}
 
     def test_no_repo(self):
 
@@ -79,7 +118,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(
-                elastic_db_admin.failed_dumps(self.els, args_array={}))
+                elastic_db_admin.failed_dumps(self.els, args=self.args2))
 
     def test_repo(self):
 
@@ -93,8 +132,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(
-                elastic_db_admin.failed_dumps(
-                    self.els, args_array=self.args_array))
+                elastic_db_admin.failed_dumps(self.els, args=self.args))
 
 
 if __name__ == "__main__":

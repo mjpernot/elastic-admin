@@ -28,6 +28,56 @@ import version
 __version__ = version.__version__
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        arg_exist
+        get_val
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.args_array = {"-c": "elastic", "-d": "config"}
+
+    def arg_exist(self, arg):
+
+        """Method:  arg_exist
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_exist.
+
+        Arguments:
+
+        """
+
+        return True if arg in self.args_array else False
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+
 class Mail(object):
 
     """Class:  Mail
@@ -119,14 +169,23 @@ class UnitTest(unittest.TestCase):
         dir_file = "dir/file"
         self.data = {"key1": "value1", "key2": "value2"}
         self.mail = Mail()
-        self.args_array = {}
-        self.args_array2 = {"-o": dir_file, "-z": True}
-        self.args_array3 = {"-o": dir_file, "-a": True, "-z": True}
-        self.args_array4 = {"-o": dir_file, "-j": True, "-z": True}
-        self.args_array5 = {"-t": "to_address", "-z": True}
-        self.args_array6 = {"-t": "to_address", "-j": True, "-z": True}
-        self.args_array7 = {"-z": True}
-        self.args_array8 = {"-j": True}
+        self.args = ArgParser()
+        self.args2 = ArgParser()
+        self.args3 = ArgParser()
+        self.args4 = ArgParser()
+        self.args5 = ArgParser()
+        self.args6 = ArgParser()
+        self.args7 = ArgParser()
+        self.args8 = ArgParser()
+        self.args9 = ArgParser()
+        self.args.args_array = dict()
+        self.args2.args_array = {"-o": dir_file, "-z": True}
+        self.args3.args_array = {"-o": dir_file, "-a": True, "-z": True}
+        self.args4.args_array = {"-o": dir_file, "-j": True, "-z": True}
+        self.args5.args_array = {"-t": "to_address", "-z": True}
+        self.args6.args_array = {"-t": "to_address", "-j": True, "-z": True}
+        self.args7.args_array = {"-z": True}
+        self.args8.args_array = {"-j": True}
 
     def test_std_out_json(self):
 
@@ -139,8 +198,7 @@ class UnitTest(unittest.TestCase):
         """
 
         with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.data_out(self.data, self.args_array8))
+            self.assertFalse(elastic_db_admin.data_out(self.data, self.args8))
 
     def test_std_out_suppressed(self):
 
@@ -152,8 +210,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(
-            elastic_db_admin.data_out(self.data, self.args_array7))
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args7))
 
     def test_std_out(self):
 
@@ -166,8 +223,7 @@ class UnitTest(unittest.TestCase):
         """
 
         with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.data_out(self.data, self.args_array))
+            self.assertFalse(elastic_db_admin.data_out(self.data, self.args))
 
     @mock.patch("elastic_db_admin.gen_class.setup_mail")
     def test_mail_json(self, mock_mail):
@@ -182,8 +238,7 @@ class UnitTest(unittest.TestCase):
 
         mock_mail.return_value = self.mail
 
-        self.assertFalse(
-            elastic_db_admin.data_out(self.data, self.args_array6))
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args6))
 
     @mock.patch("elastic_db_admin.gen_class.setup_mail")
     def test_mail(self, mock_mail):
@@ -198,8 +253,7 @@ class UnitTest(unittest.TestCase):
 
         mock_mail.return_value = self.mail
 
-        self.assertFalse(
-            elastic_db_admin.data_out(self.data, self.args_array5))
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args5))
 
     @mock.patch("elastic_db_admin.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -213,8 +267,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(
-            elastic_db_admin.data_out(self.data, self.args_array4))
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args4))
 
     @mock.patch("elastic_db_admin.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -228,8 +281,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(
-            elastic_db_admin.data_out(self.data, self.args_array3))
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args3))
 
     @mock.patch("elastic_db_admin.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -243,8 +295,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(
-            elastic_db_admin.data_out(self.data, self.args_array2))
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args2))
 
     def test_no_data(self):
 
@@ -256,8 +307,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(
-            elastic_db_admin.data_out(self.data, self.args_array7))
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args7))
 
 
 if __name__ == "__main__":
