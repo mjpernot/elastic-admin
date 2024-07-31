@@ -636,11 +636,12 @@ def main():
     # Process argument list from command line
     args = gen_class.ArgParser(
         sys.argv, opt_val=opt_val, opt_val_bin=opt_val_bin,
-        multi_val=opt_multi_list, opt_def=opt_def_dict, do_parse=True)
+        multi_val=opt_multi_list, opt_def=opt_def_dict)
 
-    if not gen_libs.help_func(args, __version__, help_message)  \
-       and args.arg_require(opt_req=opt_req_list)               \
-       and args.arg_dir_chk(dir_perms_chk=dir_perms_chk)        \
+    if args.arg_parse2()                                            \
+       and not gen_libs.help_func(args, __version__, help_message)  \
+       and args.arg_require(opt_req=opt_req_list)                   \
+       and args.arg_dir_chk(dir_perms_chk=dir_perms_chk)            \
        and args.arg_cond_req(opt_con_req=opt_con_req_list):
         run_program(
             args, func_dict, status_call=status_call, check_call=check_call)

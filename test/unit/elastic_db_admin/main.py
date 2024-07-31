@@ -40,6 +40,7 @@ class ArgParser(object):
         arg_cond_req
         arg_dir_chk
         arg_require
+        arg_parse2
 
     """
 
@@ -61,6 +62,7 @@ class ArgParser(object):
         self.opt_req2 = True
         self.dir_perms_chk = None
         self.dir_perms_chk2 = True
+        self.argparse2 = True
 
     def arg_cond_req(self, opt_con_req):
 
@@ -104,6 +106,18 @@ class ArgParser(object):
 
         return self.opt_req2
 
+    def arg_parse2(self):
+
+        """Method:  arg_parse2
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_parse2.
+
+        Arguments:
+
+        """
+
+        return self.argparse2
+
 
 class ProgramLock(object):
 
@@ -138,6 +152,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
+        test_arg_parse2_false
+        test_arg_parse2_true
         test_help_true
         test_help_false
         test_require_false
@@ -164,6 +180,42 @@ class UnitTest(unittest.TestCase):
         self.args.args_array = {
             "-c": "config_file", "-d": "config_dir", "-R": True}
         self.proglock = ProgramLock(["cmdline"], "Hostname")
+
+    @mock.patch("elastic_db_admin.gen_libs.help_func")
+    @mock.patch("elastic_db_admin.gen_class.ArgParser")
+    def test_arg_parse2_false(self, mock_arg, mock_help):
+
+        """Function:  test_arg_parse2_false
+
+        Description:  Test arg_parser2 returns false.
+
+        Arguments:
+
+        """
+
+        self.args.argparse2 = False
+
+        mock_arg.return_value = self.args
+        mock_help.return_value = True
+
+        self.assertFalse(elastic_db_admin.main())
+
+    @mock.patch("elastic_db_admin.gen_libs.help_func")
+    @mock.patch("elastic_db_admin.gen_class.ArgParser")
+    def test_arg_parse2_true(self, mock_arg, mock_help):
+
+        """Function:  test_arg_parse2_true
+
+        Description:  Test arg_parser2 returns true.
+
+        Arguments:
+
+        """
+
+        mock_arg.return_value = self.args
+        mock_help.return_value = True
+
+        self.assertFalse(elastic_db_admin.main())
 
     @mock.patch("elastic_db_admin.gen_libs.help_func")
     @mock.patch("elastic_db_admin.gen_class.ArgParser")
