@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.2.15] - 2024-09-27
+- Updated simplejson==3.13.2 for Python 3
+- Updated python-lib to v3.0.5
+- Updated elastic-lib to v4.0.5
+
+
 ## [0.2.14] - 2024-08-08
 - Updated simplejson==3.13.2
 - Updated requests==2.25.0
