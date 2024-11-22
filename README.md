@@ -123,7 +123,7 @@ Install the project using the procedures in the Installation section.
 
 ```
 cd {Python_Project}/elastic-admin
-test/unit/elastic_db_admin/unit_test_run.sh
+test/unit/elastic_db_admin/unit_test_run3.sh
 ```
 
 ### Code coverage:
@@ -172,7 +172,7 @@ sudo chown elasticsearch:elasticsearch elastic.py
 
 ```
 cd {Python_Project}/elastic-admin
-test/integration/elastic_db_admin/integration_test_run.sh
+test/integration/elastic_db_admin/integration_test_run3.sh
 ```
 
 ### Code coverage:
