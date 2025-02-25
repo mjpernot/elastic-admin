@@ -20,13 +20,13 @@ import unittest
 
 # Local
 sys.path.append(os.getcwd())
-import elastic_db_admin
-import version
+import elastic_db_admin                         # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-def list_master(els, **kwargs):
+def list_master(els, **kwargs):                         # pylint:disable=W0613
 
     """Function:  list_master
 
@@ -36,10 +36,8 @@ def list_master(els, **kwargs):
 
     """
 
-    pass
 
-
-def failed_dumps(els, **kwargs):
+def failed_dumps(els, **kwargs):                        # pylint:disable=W0613
 
     """Function:  failed_dumps
 
@@ -49,10 +47,8 @@ def failed_dumps(els, **kwargs):
 
     """
 
-    pass
 
-
-def list_dumps(els, **kwargs):
+def list_dumps(els, **kwargs):                          # pylint:disable=W0613
 
     """Function:  list_repos
 
@@ -61,8 +57,6 @@ def list_dumps(els, **kwargs):
     Arguments:
 
     """
-
-    pass
 
 
 class UnitTest(unittest.TestCase):

@@ -21,14 +21,14 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import elastic_db_admin
-import lib.gen_libs as gen_libs
-import version
+import elastic_db_admin                         # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ArgParser(object):
+class ArgParser():                                      # pylint:disable=R0903
 
     """Class:  ArgParser
 
@@ -65,7 +65,7 @@ class ArgParser(object):
         return self.args_array.get(skey, def_val)
 
 
-class ElasticSearchStatus(object):
+class ElasticSearchStatus():
 
     """Class:  ElasticSearchStatus
 
@@ -182,13 +182,13 @@ class UnitTest(unittest.TestCase):
         self.args9 = ArgParser()
         self.args.args_array = {"-D": ["all"]}
         self.args2.args_array = {"-D": ["memory"]}
-        self.args3.args_array = {"-D": list()}
-        self.args4.args_array = {"-D": list(), "-j": True}
+        self.args3.args_array = {"-D": []}
+        self.args4.args_array = {"-D": [], "-j": True}
         self.args5.args_array = {"-D": ["all"], "-j": True}
         self.args6.args_array = {"-D": ["memory"], "-j": True}
         self.args7.args_array = {"-D": ["incorrect"], "-j": True}
-        self.args8.args_array = {"-D": list()}
-        self.args9.args_array = dict()
+        self.args8.args_array = {"-D": []}
+        self.args9.args_array = {}
         self.status_call = {"memory": "get_mem_status"}
 
     @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))

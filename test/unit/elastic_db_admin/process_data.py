@@ -2,7 +2,7 @@
 
 """Program:  process_data.py
 
-    Description:  Unit testing of _process_data in elastic_db_admin.py.
+    Description:  Unit testing of process_data in elastic_db_admin.py.
 
     Usage:
         test/unit/elastic_db_admin/process_data.py
@@ -20,14 +20,14 @@ import unittest
 
 # Local
 sys.path.append(os.getcwd())
-import elastic_db_admin
-import lib.gen_libs as gen_libs
-import version
+import elastic_db_admin                         # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ElasticSearchStatus(object):
+class ElasticSearchStatus():
 
     """Class:  ElasticSearchStatus
 
@@ -41,7 +41,7 @@ class ElasticSearchStatus(object):
 
     """
 
-    def __init__(self, node, port, mem, cpu, disk):
+    def __init__(self, node, port, mem, cpu, disk):     # pylint:disable=R0913
 
         """Method:  __init__
 
@@ -152,7 +152,7 @@ class UnitTest(unittest.TestCase):
         self.els.cluster_err_msg = {}
 
         self.assertEqual(
-            elastic_db_admin._process_data(
+            elastic_db_admin.process_data(
                 self.check_list, self.els, check_call=self.check_call,
                 cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
                 cutoff_disk=self.cutoff_disk), {"Err": "Error Message"})
@@ -169,7 +169,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertEqual(
-                elastic_db_admin._process_data(
+                elastic_db_admin.process_data(
                     self.check_list2, self.els, check_call=self.check_call,
                     cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
                     cutoff_disk=self.cutoff_disk), {})
@@ -185,7 +185,7 @@ class UnitTest(unittest.TestCase):
         """
 
         self.assertEqual(
-            elastic_db_admin._process_data(
+            elastic_db_admin.process_data(
                 self.check_list, self.els, check_call=self.check_call,
                 cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
                 cutoff_disk=self.cutoff_disk), {})
