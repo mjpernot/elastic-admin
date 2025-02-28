@@ -39,12 +39,8 @@ setuptools.setup(
         #  3 - Beta
         #  4 - Field
         #  5 - Production/Stable
-        "Development Status :: 3 - Beta",
+        "Development Status :: 4 - Field",
         "Operating System :: Linux",
-        "Operating System :: Linux :: Centos",
-        "Operating System :: Linux :: Centos :: 7",
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 2.7",
         "Operating System :: Linux :: RedHat",
         "Operating System :: Linux :: RedHat :: 8",
         "Programming Language :: Python",

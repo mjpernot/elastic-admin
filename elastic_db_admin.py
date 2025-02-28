@@ -14,11 +14,7 @@
                 {-m value | -u value | -p value}
                 [-t email_addr [email_addr ...] -s subject_line]
                 [-o dir_path/file [-a]] [-j] ]-z]
-             -L [repo_name] |
-             -F [repo_name] |
-             -R |
-             -M |
-             -N}
+             -L [repo_name] | -F [repo_name] | -R | -M | -N}
             [-v | -h]
 
     Arguments:
@@ -116,14 +112,16 @@
 """
 
 # Libraries and Global Variables
-from __future__ import print_function
-from __future__ import absolute_import
 
 # Standard
 import sys
 import datetime
 import socket
-import json
+
+try:
+    import simplejson as json
+except ImportError:
+    import json
 
 # Local
 try:
@@ -134,18 +132,15 @@ try:
     from . import version
 
 except (ValueError, ImportError) as err:
-    import lib.gen_libs as gen_libs
-    import lib.gen_class as gen_class
-    import elastic_lib.elastic_class as elastic_class
-    import elastic_lib.elastic_libs as elastic_libs
+    import lib.gen_libs as gen_libs                     # pylint:disable=R0402
+    import lib.gen_class as gen_class                   # pylint:disable=R0402
+    import elastic_lib.elastic_class as elastic_class   # pylint:disable=R0402
+    import elastic_lib.elastic_libs as elastic_libs     # pylint:disable=R0402
     import version
 
 __version__ = version.__version__
 
 # Global variables
-PRT_TEMPLATE = "\n{0:25}"
-SUBJ_LINE = "Elasticsearch_DB_Admin"
-TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
 def help_message():
@@ -162,7 +157,7 @@ def help_message():
     print(__doc__)
 
 
-def list_nodes(els, **kwargs):
+def list_nodes(els, **kwargs):                          # pylint:disable=W0613
 
     """Function:  list_nodes
 
@@ -178,15 +173,13 @@ def list_nodes(els, **kwargs):
 
     """
 
-    global PRT_TEMPLATE
-
-    print(PRT_TEMPLATE.format("List of Nodes"))
+    print(f'\n{"List of Nodes":25}')
 
     for item in els.nodes:
-        print("{0:25}".format(item))
+        print(f"{item:25}")
 
 
-def list_repos(els, **kwargs):
+def list_repos(els, **kwargs):                          # pylint:disable=W0613
 
     """Function:  list_repos
 
@@ -202,13 +195,11 @@ def list_repos(els, **kwargs):
 
     """
 
-    global PRT_TEMPLATE
-
-    print(PRT_TEMPLATE.format("List of Repositories"))
+    print(f'\n{"List of Repositories":25}')
     elastic_libs.list_repos2(els.repo_dict)
 
 
-def list_master(els, **kwargs):
+def list_master(els, **kwargs):                         # pylint:disable=W0613
 
     """Function:  list_master
 
@@ -224,10 +215,8 @@ def list_master(els, **kwargs):
 
     """
 
-    global PRT_TEMPLATE
-
-    print(PRT_TEMPLATE.format("Master Node"))
-    print("{0:25}".format(els.master))
+    print(f'\n{"Master Node":25}')
+    print(f"{els.master:25}")
 
 
 def print_failures(els, repo):
@@ -242,7 +231,7 @@ def print_failures(els, repo):
 
     """
 
-    print("Repository: {0:25}".format(repo))
+    print(f"Repository: {repo:25}")
 
     elastic_libs.list_dumps(
         [dmp for dmp in elastic_class.get_dump_list(els.els, repo=repo)[0]
@@ -266,11 +255,9 @@ def failed_dumps(els, **kwargs):
 
     """
 
-    global PRT_TEMPLATE
-
     args = kwargs.get("args")
     repo = args.get_val("-F", def_val=None)
-    print(PRT_TEMPLATE.format("List of Failed Dumps:"))
+    print(f'\n{"List of Failed Dumps:":25}')
 
     if repo:
         print_failures(els, repo)
@@ -292,7 +279,7 @@ def print_dumps(els, repo):
 
     """
 
-    print("Repository: {0:25}".format(repo))
+    print(f"Repository: {repo:25}")
     elastic_libs.list_dumps(elastic_class.get_dump_list(els.els, repo=repo)[0])
 
 
@@ -313,20 +300,18 @@ def list_dumps(els, **kwargs):
 
     """
 
-    global PRT_TEMPLATE
-
     args = kwargs.get("args")
     repo = args.get_val("-L", def_val=None)
 
     if repo and repo not in els.repo_dict:
-        print("Warning:  Repository '%s' does not exist." % (repo))
+        print(f"Warning:  Repository {repo} does not exist.")
 
     elif repo:
-        print(PRT_TEMPLATE.format("List of Dumps:"))
+        print(f'\n{"List of Dumps:":25}')
         print_dumps(els, repo)
 
     else:
-        print(PRT_TEMPLATE.format("List of Dumps:"))
+        print(f'\n{"List of Dumps:":25}')
 
         for repo in elastic_class.get_repo_list(els.els):
             print_dumps(els, repo)
@@ -345,13 +330,12 @@ def data_out(data, args):
 
     """
 
-    global SUBJ_LINE
-
     data = dict(data)
     mode = "a" if args.arg_exist("-a") else "w"
     indent = 4 if args.arg_exist("-j") else None
     mail = gen_class.setup_mail(
-        args.get_val("-t"), subj=args.get_val("-s", def_val=SUBJ_LINE)) \
+        args.get_val("-t"),
+        subj=args.get_val("-s", def_val="Elasticsearch_DB_Admin")) \
         if args.arg_exist("-t") else None
     ofile = args.get_val("-o") if args.get_val("-o") else None
 
@@ -383,10 +367,8 @@ def get_status(els, **kwargs):
 
     """
 
-    global TIME_FORMAT
-
     args = kwargs.get("args")
-    display_list = args.get_val("-D", def_val=list())
+    display_list = args.get_val("-D", def_val=[])
 
     if not display_list or "all" in display_list:
         data = els.get_all()
@@ -396,20 +378,19 @@ def get_status(els, **kwargs):
             els.get_cluster(), els.get_nodes())
 
         for opt in display_list:
-            data = _get_data(data, els, opt, **kwargs)
+            data = get_data(data, els, opt, **kwargs)
 
     data["AsOf"] = datetime.datetime.strftime(
-        datetime.datetime.now(), TIME_FORMAT)
+        datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
     data["HostName"] = socket.gethostname()
     data_out(data, args)
 
 
-def _get_data(data, els, opt, **kwargs):
+def get_data(data, els, opt, **kwargs):
 
-    """Function:  _get_data
+    """Function:  get_data
 
-    Description:  Private function for get_status function.  Get data from
-        Elasticsearch database.
+    Description:  Get data from Elasticsearch database.
 
     Arguments:
         (input) data -> Data results
@@ -432,7 +413,7 @@ def _get_data(data, els, opt, **kwargs):
             data, getattr(els, func_call[opt])())
 
     else:
-        print("Warning:  Option '{%s}' is not supported" % (opt))
+        print(f"Warning:  Option {opt} is not supported")
 
     return data
 
@@ -454,10 +435,8 @@ def check_status(els, **kwargs):
 
     """
 
-    global TIME_FORMAT
-
     args = kwargs.get("args")
-    check_list = args.get_val("-C", def_val=list())
+    check_list = args.get_val("-C", def_val=[])
     cfg = kwargs.get("cfg")
     cutoff_mem = args.get_val("-m", def_val=None)
     cutoff_cpu = args.get_val("-u", def_val=None)
@@ -481,7 +460,7 @@ def check_status(els, **kwargs):
             cutoff_disk=els.cutoff_disk)
 
     else:
-        data = _process_data(
+        data = process_data(
             check_list, els, cutoff_cpu=els.cutoff_cpu,
             cutoff_mem=els.cutoff_mem, cutoff_disk=els.cutoff_disk, **kwargs)
 
@@ -491,17 +470,16 @@ def check_status(els, **kwargs):
 
     if data:
         data["AsOf"] = datetime.datetime.strftime(
-            datetime.datetime.now(), TIME_FORMAT)
+            datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
         data, _, _ = gen_libs.merge_two_dicts(data, els.get_nodes())
         data_out(data, args)
 
 
-def _process_data(check_list, esc, **kwargs):
+def process_data(check_list, esc, **kwargs):
 
-    """Function:  _process_data
+    """Function:  process_data
 
-    Description:  Private function for check_status function.  Process data
-        from Elasticsearch database.
+    Description:  Process data from Elasticsearch database.
 
     Arguments:
         (input) check_list -> Contains class method names for the '-C' option
@@ -536,7 +514,7 @@ def _process_data(check_list, esc, **kwargs):
                 data, _, _ = gen_libs.merge_two_dicts(data, results)
 
         else:
-            print("Warning:  Option '{%s}' is not supported" % (opt))
+            print(f"Warning:  Option {opt} is not supported")
 
     return data
 
@@ -584,7 +562,7 @@ def run_program(args, func_dict, **kwargs):
         del prog_lock
 
     except gen_class.SingleInstanceException:
-        print("Warning:  elastic_db_admin lock in place for: %s" % (flavorid))
+        print(f"Warning:  elastic_db_admin lock in place for: {flavorid}")
 
 
 def main():

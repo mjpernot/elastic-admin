@@ -22,14 +22,14 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import elastic_db_admin
-import version
+import elastic_db_admin                         # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 # Version
 __version__ = version.__version__
 
 
-class ArgParser(object):
+class ArgParser():
 
     """Class:  ArgParser
 
@@ -55,7 +55,7 @@ class ArgParser(object):
         """
 
         self.cmdline = None
-        self.args_array = dict()
+        self.args_array = {}
         self.opt_con_req = None
         self.opt_con_req2 = True
         self.opt_req = None
@@ -119,7 +119,7 @@ class ArgParser(object):
         return self.argparse2
 
 
-class ProgramLock(object):
+class ProgramLock():                                    # pylint:disable=R0903
 
     """Class:  ProgramLock
 

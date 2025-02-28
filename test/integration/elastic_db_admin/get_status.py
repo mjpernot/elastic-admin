@@ -20,15 +20,15 @@ import unittest
 
 # Local
 sys.path.append(os.getcwd())
-import elastic_db_admin
-import lib.gen_libs as gen_libs
-import elastic_lib.elastic_class as elastic_class
-import version
+import elastic_db_admin                         # pylint:disable=E0401,C0413
+import elastic_lib.elastic_class as elcs    # pylint:disable=E0401,C0413,R0402
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ArgParser(object):
+class ArgParser():                                      # pylint:disable=R0903
 
     """Class:  ArgParser
 
@@ -106,7 +106,7 @@ class UnitTest(unittest.TestCase):
             self.cfg, "ssl_client_ca") else None
         self.scheme = self.cfg.scheme if hasattr(
             self.cfg, "scheme") else "https"
-        self.els = elastic_class.ElasticSearchStatus(
+        self.els = elcs.ElasticSearchStatus(
             self.cfg.host, port=self.cfg.port, user=self.user, japd=self.japd,
             ca_cert=self.ca_cert, scheme=self.scheme)
         self.els.connect()
@@ -132,7 +132,7 @@ class UnitTest(unittest.TestCase):
         self.args7.args_array = {
             "-D": ["incorrect"], "-j": True, "-o": self.t_file, "-z": True}
         self.args8.args_array8 = {"-D": [], "-o": self.t_file, "-z": True}
-        self.args9.args_array = dict()
+        self.args9.args_array = {}
         self.status_call = {"memory": "get_mem_status"}
 
     def test_empty_display_list(self):

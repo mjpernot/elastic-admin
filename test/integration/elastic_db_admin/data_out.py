@@ -20,14 +20,14 @@ import unittest
 
 # Local
 sys.path.append(os.getcwd())
-import elastic_db_admin
-import lib.gen_libs as gen_libs
-import version
+import elastic_db_admin                         # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ArgParser(object):
+class ArgParser():
 
     """Class:  ArgParser
 
@@ -62,7 +62,7 @@ class ArgParser(object):
 
         """
 
-        return True if arg in self.args_array else False
+        return arg in self.args_array
 
     def get_val(self, skey, def_val=None):
 
@@ -116,7 +116,7 @@ class UnitTest(unittest.TestCase):
         self.args4 = ArgParser()
         self.args5 = ArgParser()
         self.args6 = ArgParser()
-        self.args.args_array = dict()
+        self.args.args_array = {}
         self.args2.args_array = {"-o": self.t_file, "-z": True}
         self.args3.args_array = {"-o": self.t_file, "-a": True, "-z": True}
         self.args4.args_array = {"-o": self.t_file, "-j": True, "-z": True}

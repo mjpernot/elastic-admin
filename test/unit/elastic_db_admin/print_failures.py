@@ -21,10 +21,10 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import elastic_db_admin
-import elastic_lib.elastic_class as elastic_class
-import lib.gen_libs as gen_libs
-import version
+import elastic_db_admin                         # pylint:disable=E0401,C0413
+import elastic_lib.elastic_class as elcs    # pylint:disable=E0401,C0413,R0402
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
@@ -57,7 +57,7 @@ class UnitTest(unittest.TestCase):
         self.host = "localhost"
         self.user = "UserName"
         self.japd = "japd"
-        self.els = elastic_class.ElasticSearchStatus(
+        self.els = elcs.ElasticSearchStatus(
             self.host, user=self.user, japd=self.japd)
         self.reponame = "reponame"
         self.dump_list = (

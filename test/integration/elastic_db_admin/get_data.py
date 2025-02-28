@@ -2,7 +2,7 @@
 
 """Program:  get_data.py
 
-    Description:  Integration testing of _get_data in elastic_db_admin.py.
+    Description:  Integration testing of get_data in elastic_db_admin.py.
 
     Usage:
         test/integration/elastic_db_admin/get_data.py
@@ -20,10 +20,10 @@ import unittest
 
 # Local
 sys.path.append(os.getcwd())
-import elastic_db_admin
-import lib.gen_libs as gen_libs
-import elastic_lib.elastic_class as elastic_class
-import version
+import elastic_db_admin                         # pylint:disable=E0401,C0413
+import elastic_lib.elastic_class as elcs    # pylint:disable=E0401,C0413,R0402
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
@@ -62,7 +62,7 @@ class UnitTest(unittest.TestCase):
             self.cfg, "ssl_client_ca") else None
         self.scheme = self.cfg.scheme if hasattr(
             self.cfg, "scheme") else "https"
-        self.els = elastic_class.ElasticSearchStatus(
+        self.els = elcs.ElasticSearchStatus(
             self.cfg.host, port=self.cfg.port, user=self.user, japd=self.japd,
             ca_cert=self.ca_cert, scheme=self.scheme)
         self.els.connect()
@@ -84,7 +84,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertEqual(
-                elastic_db_admin._get_data(
+                elastic_db_admin.get_data(
                     self.data, self.els, self.opt2,
                     status_call=self.status_call), ({}))
 
@@ -98,7 +98,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        data = elastic_db_admin._get_data(
+        data = elastic_db_admin.get_data(
             self.data, self.els, self.opt, status_call=self.status_call)
 
         self.assertTrue("memory" in data or "Memory" in data)
@@ -113,7 +113,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        data = elastic_db_admin._get_data(
+        data = elastic_db_admin.get_data(
             self.data, self.els, self.opt, status_call=self.status_call)
 
         self.assertTrue("memory" in data or "Memory" in data)
