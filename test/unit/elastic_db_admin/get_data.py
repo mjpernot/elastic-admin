@@ -2,7 +2,7 @@
 
 """Program:  get_data.py
 
-    Description:  Unit testing of _get_data in elastic_db_admin.py.
+    Description:  Unit testing of get_data in elastic_db_admin.py.
 
     Usage:
         test/unit/elastic_db_admin/get_data.py
@@ -20,14 +20,14 @@ import unittest
 
 # Local
 sys.path.append(os.getcwd())
-import elastic_db_admin
-import lib.gen_libs as gen_libs
-import version
+import elastic_db_admin                         # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ElasticSearchStatus(object):
+class ElasticSearchStatus():
 
     """Class:  ElasticSearchStatus
 
@@ -146,7 +146,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertEqual(
-                elastic_db_admin._get_data(
+                elastic_db_admin.get_data(
                     self.data, self.els, self.opt2,
                     status_call=self.status_call), ({}))
 
@@ -161,7 +161,7 @@ class UnitTest(unittest.TestCase):
         """
 
         self.assertEqual(
-            elastic_db_admin._get_data(
+            elastic_db_admin.get_data(
                 self.data, self.els, self.opt, status_call=self.status_call),
             ({"memory": "memory_status"}))
 
@@ -176,7 +176,7 @@ class UnitTest(unittest.TestCase):
         """
 
         self.assertEqual(
-            elastic_db_admin._get_data(
+            elastic_db_admin.get_data(
                 self.data, self.els, self.opt, status_call=self.status_call),
             ({"memory": "memory_status"}))
 

@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.3.0] - 2025-02-25
+- Field release
+- Breaking Changes
+
+- Removed support for Python 2.7.
+- Updated python-lib==4.0.0
+- Updated elastic-lib==4.1.0
+- Updated certifi==2024.12.14
+- Updated urllib3==1.26.20
+
+### Added
+- process_data: Process data from Elasticsearch database.
+- get_data: Get data from Elasticsearch database.
+
+### Changed
+- get_status: Replaced \_get_data call with get_data call and replaced \process_data call with process_data call.
+- Replaced list() with [].
+- Converted strings to f-strings.
+- Documentation changes.
+
+### Removed
+- \_get_data function.
+- \_process_data function.
+
 ## [0.2.16] - 2024-11-22
 - Updated certifi==2024.6.2 for Python 3.
 - Updated distro==1.9.0 for Python 3.
