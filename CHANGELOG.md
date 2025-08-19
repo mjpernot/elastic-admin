@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.3.1] - 2025-08-19
+- Updated python-lib v4.0.3
+- Updated elastic-lib v4.2.0
+
+### Added
+- create_header: Create standard dictionary header.
+
+### Changed
+- run_program: Created gen_class.TimeFormat instance and passed to functions being called.
+- run_program: Removed "port" and "scheme" variables from the elastic_class.ElasticSearchStatus instance call.
+- config/elastic.py.TEMPLATE: Removed "port" and "scheme" entries.
+- Documentation changes.
+
+### Deprecated
+- Support for Elasticsearch v7.4, v7.12 and v7.17
+
+### Removed
+- Support for Elasticsearch v6.4
+
+
 ## [0.3.0] - 2025-02-25
 - Field release
 - Breaking Changes

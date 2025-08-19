@@ -7,6 +7,7 @@
 echo ""
 echo "Unit test:"
 /usr/bin/python test/unit/elastic_db_admin/check_status.py
+/usr/bin/python test/unit/elastic_db_admin/create_header.py
 /usr/bin/python test/unit/elastic_db_admin/data_out.py
 /usr/bin/python test/unit/elastic_db_admin/failed_dumps.py
 /usr/bin/python test/unit/elastic_db_admin/get_data.py

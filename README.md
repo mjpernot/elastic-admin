@@ -77,8 +77,8 @@ Make the appropriate changes to the Elasticsearch environment.
 
 ```
 cp config/elastic.py.TEMPLATE config/elastic.py
-vim config/elastic.py
 chmod 600 config/elastic.py
+vim config/elastic.py
 ```
 
 
@@ -136,6 +136,7 @@ Make the appropriate changes to the Elasticsearch environment.
 
 ```
 cp config/elastic.py.TEMPLATE test/integration/elastic_db_admin/config/elastic.py
+chmod 600 test/integration/elastic_db_admin/config/elastic.py
 vim test/integration/elastic_db_admin/config/elastic.py
 sudo chown elasticsearch:elasticsearch test/integration/elastic_db_admin/config/elastic.py
 ```

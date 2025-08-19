@@ -88,7 +88,6 @@
 
             # Elasticsearch configuration file
             name = ["https://HOST_NAME1:9200", "https://HOST_NAME2:9200"]
-            port = 9200
 
             # Login credentials
             user = None
@@ -96,7 +95,6 @@
 
             # SSL connection
             ssl_client_ca = None
-            scheme = "https"
 
             # Threshold cutoffs
             cutoff_mem = 75
@@ -157,6 +155,30 @@ def help_message():
     print(__doc__)
 
 
+def create_header(dtg, name=None):
+
+    """Function:  create_header
+
+    Description:  Create standard dictionary header and add Check entry to
+        header if needed.
+
+    Arguments:
+        (input) dtg -> TimeFormat instance
+        (input) name -> Name of check
+        (output) header -> Dictionary header
+
+    """
+
+    header = {
+        "Application": "Elastic_DB_Admin",
+        "AsOf": dtg.get_time("zulu")}
+
+    if name:
+        header["Check"] = name
+
+    return header
+
+
 def list_nodes(els, **kwargs):                          # pylint:disable=W0613
 
     """Function:  list_nodes
@@ -170,6 +192,7 @@ def list_nodes(els, **kwargs):                          # pylint:disable=W0613
             status_call -> Contains class method names for the '-D' option
             check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
+            dtg -> TimeFormat instance
 
     """
 
@@ -192,6 +215,7 @@ def list_repos(els, **kwargs):                          # pylint:disable=W0613
             status_call -> Contains class method names for the '-D' option
             check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
+            dtg -> TimeFormat instance
 
     """
 
@@ -212,6 +236,7 @@ def list_master(els, **kwargs):                         # pylint:disable=W0613
             status_call -> Contains class method names for the '-D' option
             check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
+            dtg -> TimeFormat instance
 
     """
 
@@ -252,6 +277,7 @@ def failed_dumps(els, **kwargs):
             status_call -> Contains class method names for the '-D' option
             check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
+            dtg -> TimeFormat instance
 
     """
 
@@ -297,6 +323,7 @@ def list_dumps(els, **kwargs):
             status_call -> Contains class method names for the '-D' option
             check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
+            dtg -> TimeFormat instance
 
     """
 
@@ -364,6 +391,7 @@ def get_status(els, **kwargs):
             status_call -> Contains class method names for the '-D' option
             check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
+            dtg -> TimeFormat instance
 
     """
 
@@ -401,6 +429,7 @@ def get_data(data, els, opt, **kwargs):
             args -> ArgParser class instance
             check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
+            dtg -> TimeFormat instance
         (output) data -> Modified data results
 
     """
@@ -432,6 +461,7 @@ def check_status(els, **kwargs):
             check_call -> Contains class method names for the '-C' option
             status_call -> Contains class method names for the '-D' option
             cfg -> Configuration variables from configuration file
+            dtg -> TimeFormat instance
 
     """
 
@@ -492,6 +522,7 @@ def process_data(check_list, esc, **kwargs):
             args -> ArgParser class instance
             status_call -> Contains class method names for the '-D' option
             cfg -> Configuration variables from configuration file
+            dtg -> TimeFormat instance
         (output) err_flag -> True|False - Status of results
         (output) err_msg -> Error message(s)
 
@@ -540,8 +571,9 @@ def run_program(args, func_dict, **kwargs):
     user = cfg.user if hasattr(cfg, "user") else None
     japd = cfg.japd if hasattr(cfg, "japd") else None
     ca_cert = cfg.ssl_client_ca if hasattr(cfg, "ssl_client_ca") else None
-    scheme = cfg.scheme if hasattr(cfg, "scheme") else "https"
     flavorid = "elasticadmin"
+    dtg = gen_class.TimeFormat()
+    dtg.create_time()
 
     try:
         prog_lock = gen_class.ProgramLock(sys.argv, flavor_id=flavorid)
@@ -549,12 +581,11 @@ def run_program(args, func_dict, **kwargs):
         # Intersect args_array & func_dict to find which functions to call.
         for opt in set(args.get_args_keys()) & set(func_dict.keys()):
             els = elastic_class.ElasticSearchStatus(
-                cfg.host, port=cfg.port, user=user, japd=japd, ca_cert=ca_cert,
-                scheme=scheme)
+                cfg.host, user=user, japd=japd, ca_cert=ca_cert)
             els.connect()
 
             if els.is_connected:
-                func_dict[opt](els, args=args, cfg=cfg, **kwargs)
+                func_dict[opt](els, args=args, cfg=cfg, dtg=dtg, **kwargs)
 
             else:
                 print("ERROR:  Failed to connect to Elasticsearch")
