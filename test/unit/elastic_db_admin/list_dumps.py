@@ -73,6 +73,7 @@ class ElasticSearch():                                  # pylint:disable=R0903
 
     Methods:
         __init__
+        get_repo_list
 
     """
 
@@ -90,6 +91,18 @@ class ElasticSearch():                                  # pylint:disable=R0903
         self.hosts = ["nodename1", "nodename2"]
         self.port = 9200
         self.repo_dict = {"reponame": "Repo", "reponame2": "Repo"}
+
+    def get_repo_list(self):
+
+        """Method:  get_repo_list
+
+        Description:  Return repositiory list.
+
+        Arguments:
+
+        """
+
+        return self.repo_dict
 
 
 class UnitTest(unittest.TestCase):
@@ -118,11 +131,10 @@ class UnitTest(unittest.TestCase):
 
         self.els = ElasticSearch()
         self.args = ArgParser()
-        self.args2 = ArgParser()
-        self.args3 = ArgParser()
-        self.args.args_array = {"-L": "reponame"}
-        self.args2.args_array = {"-L": "reponame3"}
 
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
     def test_repo_incorrect(self):
 
         """Function:  test_repo_incorrect
@@ -133,13 +145,19 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        self.args.args_array = {"-L": "reponame3"}
+
         with gen_libs.no_std_out():
             self.assertFalse(
-                elastic_db_admin.list_dumps(self.els, args=self.args2))
+                elastic_db_admin.list_dumps(self.els, args=self.args))
 
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     @mock.patch("elastic_db_admin.elastic_class.get_repo_list")
-    @mock.patch("elastic_db_admin.print_dumps")
-    def test_no_repo(self, mock_print, mock_repo):
+    @mock.patch("elastic_db_admin.get_dumps",
+                mock.Mock(return_value={"key": "data"}))
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
+    def test_no_repo(self, mock_repo):
 
         """Function:  test_no_repo
 
@@ -149,15 +167,19 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_print.return_value = True
+        self.args.args_array = {"-L": None}
+
         mock_repo.return_value = {"repo1": True, "repo2": True}
 
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.list_dumps(self.els, args=self.args3))
+        self.assertFalse(
+            elastic_db_admin.list_dumps(self.els, args=self.args))
 
-    @mock.patch("elastic_db_admin.print_dumps")
-    def test_repo(self, mock_print):
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
+    @mock.patch("elastic_db_admin.get_dumps",
+                mock.Mock(return_value={"key": "data"}))
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
+    def test_repo(self):
 
         """Function:  test_repo
 
@@ -167,11 +189,10 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_print.return_value = True
+        self.args.args_array = {"-L": "reponame"}
 
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                elastic_db_admin.list_dumps(self.els, args=self.args))
+        self.assertFalse(
+            elastic_db_admin.list_dumps(self.els, args=self.args))
 
 
 if __name__ == "__main__":

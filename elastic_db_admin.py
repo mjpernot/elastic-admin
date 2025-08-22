@@ -60,9 +60,18 @@
             -j => Non-flatten JSON data structure.
             -z => Suppress standard out.
 
-        -L [repo_name] => List of database dumps for an Elasticsearch
-            repository.  repo_name is name of repository to dump.  If no
-            repo_name is passed then all dumps in all repositories are listed.
+        -L [repo_name] => Name of respository - list of database dumps for an
+            Elasticsearch repository.  If no repo_name is passed then all dumps
+            in all repositories are listed.
+            -t email_addr [email_addr ...] => Enables emailing out all output.
+                    Sends the output to one or more email addresses.
+                -s Subject Line => Subject line of email.  If none is provided
+                    then a default one will be used.
+                -x => Override the default mail command and use mailx.
+            -o directory_path/file => Directory path and file name for output.
+                -a => Append output to the file.  By default will overwrite.
+            -j => Expand JSON data structure.
+            -z => Suppress standard out.
 
         -F [repo_name] => List of database dumps that have failed for some
             reason.  repo_name is name of repository to dump.  If no
@@ -115,6 +124,7 @@
 import sys
 import datetime
 import socket
+import pprint
 
 try:
     import simplejson as json
@@ -293,7 +303,7 @@ def failed_dumps(els, **kwargs):
             print_failures(els, repo)
 
 
-def print_dumps(els, repo):
+#def print_dumps(els, repo):
 
     """Function:  print_dumps
 
@@ -305,8 +315,36 @@ def print_dumps(els, repo):
 
     """
 
-    print(f"Repository: {repo:25}")
-    elastic_libs.list_dumps(elastic_class.get_dump_list(els.els, repo=repo)[0])
+#    print(f"Repository: {repo:25}")
+#    elastic_libs.list_dumps(elastic_class.get_dump_list(els.els, repo=repo)[0])
+
+
+def get_dumps(els, repo): 
+
+    """Function:  get_dumps
+
+    Description:  Retrieve dumps from the Elasticsearch cluster and return the
+        dumps in a dictionary format.
+
+    Arguments:
+        (input) els -> Elasticsearch class instance
+        (input) repo -> Repository name
+        (output) data -> Dictionary of repository dumps
+
+    """
+
+    data = {repo: []}
+
+    for dump in els.get_dump_list(repo=repo)[0]:
+        tdata = {
+            "Status": dump["state"], "StartTime": dump["start_time"],
+            "ShardSuccess": dump["shards"]["successful"],
+            "ShardFail": dump["shards"]["failed"],
+            "ShardTotal": dump["shards"]["total"],
+            "DumpName": dump["snapshot"]}
+        data[repo].append(tdata)
+
+    return data
 
 
 def list_dumps(els, **kwargs):
@@ -327,21 +365,34 @@ def list_dumps(els, **kwargs):
 
     """
 
-    args = kwargs.get("args")
-    repo = args.get_val("-L", def_val=None)
+    repo = kwargs.get("args").get_val("-L", def_val=None)
+#    args = kwargs.get("args")
+#    repo = args.get_val("-L", def_val=None)
+    data = create_header(kwargs.get("dtg"), name="ListDumps")
 
     if repo and repo not in els.repo_dict:
+        data["Repos"] = []
         print(f"Warning:  Repository {repo} does not exist.")
 
     elif repo:
-        print(f'\n{"List of Dumps:":25}')
-        print_dumps(els, repo)
+        data["Repos"] = [get_dumps(els, repo)]
+
+#        print(f'\n{"List of Dumps:":25}')
+#        print_dumps(els, repo)
 
     else:
-        print(f'\n{"List of Dumps:":25}')
+        data["Repos"] = []
 
-        for repo in elastic_class.get_repo_list(els.els):
-            print_dumps(els, repo)
+        for repo in els.get_repo_list():
+            data["Repos"].append(get_dumps(els, repo))
+
+#        print(f'\n{"List of Dumps:":25}')
+#
+#        for repo in elastic_class.get_repo_list(els.els):
+#            print_dumps(els, repo)
+
+    # Data out here.
+    data_out(data, kwargs.get("args"))
 
 
 def data_out(data, args):
@@ -357,24 +408,51 @@ def data_out(data, args):
 
     """
 
+    if not isinstance(data, dict):
+        print(f"Error: Is not a dictionary: {data}")
+        return
+
     data = dict(data)
     mode = "a" if args.arg_exist("-a") else "w"
-    indent = 4 if args.arg_exist("-j") else None
-    mail = gen_class.setup_mail(
-        args.get_val("-t"),
-        subj=args.get_val("-s", def_val="Elasticsearch_DB_Admin")) \
-        if args.arg_exist("-t") else None
-    ofile = args.get_val("-o") if args.get_val("-o") else None
+#    indent = 4 if args.arg_exist("-j") else None
+    indent = {"indent": 4} if args.arg_exist("-j") else {}
 
-    if mail:
-        mail.add_2_msg(json.dumps(data, indent=indent))
-        mail.send_mail()
+    if args.arg_exist("-t"):
+        subj = args.get_val("-s", def_val="Elasticsearch_DB_Admin")
+        mail = gen_class.setup_mail(args.get_val("-t"), subj=subj)
+#        mail.add_2_msg(json.dumps(data, indent=indent))
+        mail.add_2_msg(json.dumps(data, **indent))
+        mail.send_mail(use_mailx=args.arg_exist("-x"))
 
-    if ofile:
-        gen_libs.write_file(ofile, mode, json.dumps(data, indent=indent))
+    if args.arg_exist("-o") and indent:
+        with open(args.get_val("-o"), mode, encoding="UTF-8") as outfile:
+            pprint.pprint(data, stream=outfile, **indent)
 
-    if not args.get_val("-z", def_val=False):
-        print(json.dumps(data, indent=indent))
+    elif args.arg_exist("-o"):
+        gen_libs.write_file(
+            args.get_val("-o"), mode, json.dumps(data, **indent))
+
+    if not args.arg_exist("-z") and indent:
+        pprint.pprint(data, **indent)
+
+    elif not args.arg_exist("-z"):
+        print(data)
+
+#    mail = gen_class.setup_mail(
+#        args.get_val("-t"),
+#        subj=args.get_val("-s", def_val="Elasticsearch_DB_Admin")) \
+#        if args.arg_exist("-t") else None
+#    ofile = args.get_val("-o") if args.get_val("-o") else None
+#
+#    if mail:
+#        mail.add_2_msg(json.dumps(data, indent=indent))
+#        mail.send_mail()
+#
+#    if ofile:
+#        gen_libs.write_file(ofile, mode, json.dumps(data, indent=indent))
+#
+#    if not args.get_val("-z", def_val=False):
+#        print(json.dumps(data, indent=indent))
 
 
 def get_status(els, **kwargs):

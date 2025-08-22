@@ -17,7 +17,6 @@ echo "Unit test:"
 /usr/bin/python test/unit/elastic_db_admin/list_master.py
 /usr/bin/python test/unit/elastic_db_admin/list_nodes.py
 /usr/bin/python test/unit/elastic_db_admin/list_repos.py
-/usr/bin/python test/unit/elastic_db_admin/print_dumps.py
 /usr/bin/python test/unit/elastic_db_admin/print_failures.py
 /usr/bin/python test/unit/elastic_db_admin/process_data.py
 /usr/bin/python test/unit/elastic_db_admin/run_program.py

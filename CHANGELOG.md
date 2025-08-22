@@ -9,9 +9,12 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Updated elastic-lib v4.2.0
 
 ### Added
+- get_dumps: 
 - create_header: Create standard dictionary header.
 
 ### Changed
+- list_dumps: Converted output to a dictionary format and also call data_out function to handle the output.
+- data_out: Refactored the function to be more stream-lined.
 - run_program: Created gen_class.TimeFormat instance and passed to functions being called.
 - run_program: Removed "port" and "scheme" variables from the elastic_class.ElasticSearchStatus instance call.
 - config/elastic.py.TEMPLATE: Removed "port" and "scheme" entries.
@@ -21,6 +24,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Support for Elasticsearch v7.4, v7.12 and v7.17
 
 ### Removed
+- print_dumps function
 - Support for Elasticsearch v6.4
 
 
