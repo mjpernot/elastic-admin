@@ -88,7 +88,16 @@
 
         -R => List of repositories in the Elasticsearch database.
 
-        -M => List the name of the master node.
+        -M => Return the name of the master node.
+            -t email_addr [email_addr ...] => Enables emailing out all output.
+                    Sends the output to one or more email addresses.
+                -s Subject Line => Subject line of email.  If none is provided
+                    then a default one will be used.
+                -x => Override the default mail command and use mailx.
+            -o directory_path/file => Directory path and file name for output.
+                -a => Append output to the file.  By default will overwrite.
+            -j => Expand JSON data structure.
+            -z => Suppress standard out.
 
         -N => List the nodes in the Elasticsearch cluster.
 
@@ -238,8 +247,19 @@ def list_repos(els, **kwargs):                          # pylint:disable=W0613
 
     """
 
-    print(f'\n{"List of Repositories":25}')
-    elastic_libs.list_repos2(els.repo_dict)
+    data = create_header(kwargs.get("dtg"), name="ListRepositories")
+    data["Repositories"] = []
+
+    for repo in els.repo_dict:
+        tdata = {
+            "Repo": repo,
+            "Location": els.repo_dict[repo]["settings"]["location"]}
+        data["Repositories"].append(tdata)
+
+#    print(f'\n{"List of Repositories":25}')
+#    elastic_libs.list_repos2(els.repo_dict)
+
+    data_out(data, kwargs.get("args"))
 
 
 def list_master(els, **kwargs):                         # pylint:disable=W0613
