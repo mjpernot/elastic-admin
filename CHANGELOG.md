@@ -13,6 +13,8 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - create_header: Create standard dictionary header.
 
 ### Changed
+- list_nodes: Converted output to dictionary format and call data_out function to handle the output.
+- list_repos: Converted output to dictionary format and call data_out function to handle the output.
 - list_master: Converted output to dictionary format and call data_out function to handle the output.
 - failed_dumps: Added check for existing repo name, converted output to a dictionary format and call data_out function to handle the output.
 - list_dumps: Converted output to a dictionary format and call data_out function to handle the output.

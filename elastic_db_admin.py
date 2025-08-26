@@ -224,10 +224,14 @@ def list_nodes(els, **kwargs):                          # pylint:disable=W0613
 
     """
 
-    print(f'\n{"List of Nodes":25}')
+    data = create_header(kwargs.get("dtg"), name="ListNodes")
+    data["Nodes"] = els.nodes
 
-    for item in els.nodes:
-        print(f"{item:25}")
+#    print(f'\n{"List of Nodes":25}')
+#    for item in els.nodes:
+#        print(f"{item:25}")
+
+    data_out(data, kwargs.get("args"))
 
 
 def list_repos(els, **kwargs):                          # pylint:disable=W0613
