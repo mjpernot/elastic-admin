@@ -259,8 +259,11 @@ def list_master(els, **kwargs):                         # pylint:disable=W0613
 
     """
 
-    print(f'\n{"Master Node":25}')
-    print(f"{els.master:25}")
+    data = create_header(kwargs.get("dtg"), name="MasterNode")
+    data["Master"] = els.master
+#    print(f'\n{"Master Node":25}')
+#    print(f"{els.master:25}")
+    data_out(data, kwargs.get("args"))
 
 
 #def print_failures(els, repo):

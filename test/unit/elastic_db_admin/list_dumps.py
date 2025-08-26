@@ -87,9 +87,7 @@ class ElasticSearch():                                  # pylint:disable=R0903
 
         """
 
-        self.els = "Elasticsearch class instance"
-        self.hosts = ["nodename1", "nodename2"]
-        self.port = 9200
+        self.hosts = ["http://nodename1:9200", "http://nodename2:9200"]
         self.repo_dict = {"reponame": "Repo", "reponame2": "Repo"}
 
     def get_repo_list(self):
