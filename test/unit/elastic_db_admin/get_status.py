@@ -191,6 +191,8 @@ class UnitTest(unittest.TestCase):
         self.args9.args_array = {}
         self.status_call = {"memory": "get_mem_status"}
 
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
     @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_empty_display_list(self):
 
@@ -207,6 +209,8 @@ class UnitTest(unittest.TestCase):
                 self.els, status_call=self.status_call,
                 args=self.args8))
 
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
     @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_incorrect_option(self):
 
@@ -224,6 +228,8 @@ class UnitTest(unittest.TestCase):
                     self.els, status_call=self.status_call,
                     args=self.args7))
 
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
     @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_one_option(self):
 
@@ -240,6 +246,8 @@ class UnitTest(unittest.TestCase):
                 self.els, status_call=self.status_call,
                 args=self.args6))
 
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
     @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_all(self):
 
@@ -256,6 +264,8 @@ class UnitTest(unittest.TestCase):
                 self.els, status_call=self.status_call,
                 args=self.args5))
 
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
     @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_no_options(self):
 
@@ -272,6 +282,8 @@ class UnitTest(unittest.TestCase):
                 self.els, status_call=self.status_call,
                 args=self.args4))
 
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
     @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_display_all(self):
 
@@ -288,6 +300,8 @@ class UnitTest(unittest.TestCase):
                 self.els, status_call=self.status_call,
                 args=self.args))
 
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
     @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_display_default(self):
 

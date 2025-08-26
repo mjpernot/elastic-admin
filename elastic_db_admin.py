@@ -3,7 +3,7 @@
 
 """Program:  elastic_db_admin.py
 
-    Description:  Runs administration tasks on an Elasticsearch database.
+    Description:  Runs administration tasks in an Elasticsearch database.
 
     Usage:
         elastic_db_admin.py -c file -d path
@@ -14,12 +14,21 @@
                 {-m value | -u value | -p value}
                 [-t email_addr [email_addr ...] -s subject_line]
                 [-o dir_path/file [-a]] [-j] ]-z]
-             -L [repo_name] | -F [repo_name] | -R | -M | -N}
+             -L [repo_name] [-t email_addr [email_addr ...] -s subject_line]
+                [-o dir_path/file [-a]] [-j] ]-z] |
+             -F [repo_name] [-t email_addr [email_addr ...] -s subject_line]
+                [-o dir_path/file [-a]] [-j] ]-z] |
+             -R [-t email_addr [email_addr ...] -s subject_line]
+                [-o dir_path/file [-a]] [-j] ]-z] |
+             -M [-t email_addr [email_addr ...] -s subject_line]
+                [-o dir_path/file [-a]] [-j] ]-z] |
+             -N [-t email_addr [email_addr ...] -s subject_line]
+                [-o dir_path/file [-a]] [-j] ]-z]}
             [-v | -h]
 
     Arguments:
-        -c file => Elasticsearch configuration file.  Required argument.
-        -d dir path => Directory path for option '-c'.  Required argument.
+        -c file => Elasticsearch configuration file.
+        -d dir path => Directory path for configuration file.
 
         -D [all | general | memory | node | server | shard | disk] => Display
             the current status for the one or more options selected.
@@ -87,6 +96,15 @@
             -z => Suppress standard out.
 
         -R => List of repositories in the Elasticsearch database.
+            -t email_addr [email_addr ...] => Enables emailing out all output.
+                    Sends the output to one or more email addresses.
+                -s Subject Line => Subject line of email.  If none is provided
+                    then a default one will be used.
+                -x => Override the default mail command and use mailx.
+            -o directory_path/file => Directory path and file name for output.
+                -a => Append output to the file.  By default will overwrite.
+            -j => Expand JSON data structure.
+            -z => Suppress standard out.
 
         -M => Return the name of the master node.
             -t email_addr [email_addr ...] => Enables emailing out all output.
@@ -100,6 +118,15 @@
             -z => Suppress standard out.
 
         -N => List the nodes in the Elasticsearch cluster.
+            -t email_addr [email_addr ...] => Enables emailing out all output.
+                    Sends the output to one or more email addresses.
+                -s Subject Line => Subject line of email.  If none is provided
+                    then a default one will be used.
+                -x => Override the default mail command and use mailx.
+            -o directory_path/file => Directory path and file name for output.
+                -a => Append output to the file.  By default will overwrite.
+            -j => Expand JSON data structure.
+            -z => Suppress standard out.
 
         -v => Display version of this program.
         -h => Help and usage message.
@@ -541,22 +568,24 @@ def get_status(els, **kwargs):
 
     """
 
+    data = create_header(kwargs.get("dtg"), name="GetStatus")
     args = kwargs.get("args")
     display_list = args.get_val("-D", def_val=[])
 
     if not display_list or "all" in display_list:
-        data = els.get_all()
+        tdata = els.get_all()
 
     else:
-        data, _, _ = gen_libs.merge_two_dicts(
+        tdata, _, _ = gen_libs.merge_two_dicts(
             els.get_cluster(), els.get_nodes())
 
         for opt in display_list:
-            data = get_data(data, els, opt, **kwargs)
+            tdata = get_data(tdata, els, opt, **kwargs)
 
-    data["AsOf"] = datetime.datetime.strftime(
-        datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
+#    data["AsOf"] = datetime.datetime.strftime(
+#        datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
     data["HostName"] = socket.gethostname()
+    data["Status"] = tdata
     data_out(data, args)
 
 
