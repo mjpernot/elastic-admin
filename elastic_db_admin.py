@@ -73,9 +73,18 @@
             -j => Expand JSON data structure.
             -z => Suppress standard out.
 
-        -F [repo_name] => List of database dumps that have failed for some
-            reason.  repo_name is name of repository to dump.  If no
-            repo_name is passed then all dumps in all repositories are checked.
+        -F [repo_name] => Name of respository - list of database dumps that
+            have failed for some reason.  If no repo_name is passed then all 
+            failed dumps in all repositories are listed.
+            -t email_addr [email_addr ...] => Enables emailing out all output.
+                    Sends the output to one or more email addresses.
+                -s Subject Line => Subject line of email.  If none is provided
+                    then a default one will be used.
+                -x => Override the default mail command and use mailx.
+            -o directory_path/file => Directory path and file name for output.
+                -a => Append output to the file.  By default will overwrite.
+            -j => Expand JSON data structure.
+            -z => Suppress standard out.
 
         -R => List of repositories in the Elasticsearch database.
 
@@ -254,7 +263,7 @@ def list_master(els, **kwargs):                         # pylint:disable=W0613
     print(f"{els.master:25}")
 
 
-def print_failures(els, repo):
+#def print_failures(els, repo):
 
     """Function:  print_failures
 
@@ -266,11 +275,11 @@ def print_failures(els, repo):
 
     """
 
-    print(f"Repository: {repo:25}")
+#    print(f"Repository: {repo:25}")
 
-    elastic_libs.list_dumps(
-        [dmp for dmp in elastic_class.get_dump_list(els.els, repo=repo)[0]
-         if dmp["state"] != "SUCCESS"])
+#    elastic_libs.list_dumps(
+#        [dmp for dmp in elastic_class.get_dump_list(els.els, repo=repo)[0]
+#         if dmp["state"] != "SUCCESS"])
 
 
 def failed_dumps(els, **kwargs):
@@ -291,16 +300,31 @@ def failed_dumps(els, **kwargs):
 
     """
 
-    args = kwargs.get("args")
-    repo = args.get_val("-F", def_val=None)
-    print(f'\n{"List of Failed Dumps:":25}')
+    repo = kwargs.get("args").get_val("-F", def_val=None)
+#    args = kwargs.get("args")
+#    repo = args.get_val("-F", def_val=None)
+    data = create_header(kwargs.get("dtg"), name="FailedDumps")
+#    print(f'\n{"List of Failed Dumps:":25}')
 
-    if repo:
-        print_failures(els, repo)
+    if repo and repo not in els.repo_dict:
+        data["Repos"] = []
+        print(f"Warning:  Repository {repo} does not exist.")
+
+    elif repo:
+        data["Repos"] = [get_dumps(els, repo, get_failed=True)]
+#    if repo:
+#        print_failures(els, repo)
 
     else:
-        for repo in elastic_class.get_repo_list(els.els):
-            print_failures(els, repo)
+        data["Repos"] = []
+
+        for repo in els.get_repo_list():
+            data["Repos"].append(get_dumps(els, repo, get_failed=True))
+
+#        for repo in elastic_class.get_repo_list(els.els):
+#            print_failures(els, repo)
+
+    data_out(data, kwargs.get("args"))
 
 
 #def print_dumps(els, repo):
@@ -319,7 +343,7 @@ def failed_dumps(els, **kwargs):
 #    elastic_libs.list_dumps(elastic_class.get_dump_list(els.els, repo=repo)[0])
 
 
-def get_dumps(els, repo): 
+def get_dumps(els, repo, **kwargs): 
 
     """Function:  get_dumps
 
@@ -329,20 +353,38 @@ def get_dumps(els, repo):
     Arguments:
         (input) els -> Elasticsearch class instance
         (input) repo -> Repository name
+        (input) **kwargs:
+            get_failed -> True|False - Return failed dumps
         (output) data -> Dictionary of repository dumps
 
     """
 
+    get_failed = auto_delete=kwargs.get("get_failed", False)
+
     data = {repo: []}
 
     for dump in els.get_dump_list(repo=repo)[0]:
-        tdata = {
-            "Status": dump["state"], "StartTime": dump["start_time"],
-            "ShardSuccess": dump["shards"]["successful"],
-            "ShardFail": dump["shards"]["failed"],
-            "ShardTotal": dump["shards"]["total"],
-            "DumpName": dump["snapshot"]}
-        data[repo].append(tdata)
+        tdata = None
+
+        if get_failed and dump["state"] != "SUCCESS":
+            tdata = {
+                "Status": dump["state"], "StartTime": dump["start_time"],
+                "ShardSuccess": dump["shards"]["successful"],
+                "ShardFail": dump["shards"]["failed"],
+                "ShardTotal": dump["shards"]["total"],
+                "DumpName": dump["snapshot"]}
+
+
+        elif not get_failed:
+            tdata = {
+                "Status": dump["state"], "StartTime": dump["start_time"],
+                "ShardSuccess": dump["shards"]["successful"],
+                "ShardFail": dump["shards"]["failed"],
+                "ShardTotal": dump["shards"]["total"],
+                "DumpName": dump["snapshot"]}
+
+        if tdata:
+            data[repo].append(tdata)
 
     return data
 
@@ -391,7 +433,6 @@ def list_dumps(els, **kwargs):
 #        for repo in elastic_class.get_repo_list(els.els):
 #            print_dumps(els, repo)
 
-    # Data out here.
     data_out(data, kwargs.get("args"))
 
 
