@@ -244,8 +244,6 @@ def list_nodes(els, **kwargs):                          # pylint:disable=W0613
         (input) els -> Elasticsearch class instance
         (input) **kwargs:
             args -> ArgParser class instance
-            status_call -> Contains class method names for the '-D' option
-            check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
             dtg -> TimeFormat instance
 
@@ -271,8 +269,6 @@ def list_repos(els, **kwargs):                          # pylint:disable=W0613
         (input) els -> Elasticsearch class instance
         (input) **kwargs:
             args -> ArgParser class instance
-            status_call -> Contains class method names for the '-D' option
-            check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
             dtg -> TimeFormat instance
 
@@ -303,8 +299,6 @@ def list_master(els, **kwargs):                         # pylint:disable=W0613
         (input) els-> Elasticsearch class instance
         (input) **kwargs:
             args -> ArgParser class instance
-            status_call -> Contains class method names for the '-D' option
-            check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
             dtg -> TimeFormat instance
 
@@ -347,8 +341,6 @@ def failed_dumps(els, **kwargs):
         (input) els -> Elasticsearch class instance
         (input) **kwargs:
             args -> ArgParser class instance
-            status_call -> Contains class method names for the '-D' option
-            check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
             dtg -> TimeFormat instance
 
@@ -454,8 +446,6 @@ def list_dumps(els, **kwargs):
         (input) els -> Elasticsearch class instance
         (input) **kwargs:
             args -> ArgParser class instance
-            status_call -> Contains class method names for the '-D' option
-            check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
             dtg -> TimeFormat instance
 
@@ -561,24 +551,33 @@ def get_status(els, **kwargs):
         (input) els -> Elasticsearch class instance
         (input) **kwargs:
             args -> ArgParser class instance
-            status_call -> Contains class method names for the '-D' option
-            check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
             dtg -> TimeFormat instance
 
     """
 
-    data = create_header(kwargs.get("dtg"), name="GetStatus")
-    data["HostName"] = socket.gethostname()
     args = kwargs.get("args")
     display_list = args.get_val("-D", def_val=[])
+    data = create_header(kwargs.get("dtg"), name="GetStatus")
+    data["HostName"] = socket.gethostname()
+    data["Nodes"] = els.get_nodes()["Nodes"]
+    data["Cluster"] = els.get_cluster()["Cluster"]
 
     if not display_list or "all" in display_list:
         tdata = els.get_all()
 
+        # Temporary fix until elastic_class can be fixed
+        if "Cluster" in tdata:
+            del tdata["Cluster"]
+
+        # Temporary fix until elastic_class can be fixed
+        if "Nodes" in tdata:
+            del tdata["Nodes"]
+
     else:
-        tdata, _, _ = gen_libs.merge_two_dicts(
-            els.get_cluster(), els.get_nodes())
+        tdata = {}
+#        tdata, _, _ = gen_libs.merge_two_dicts(
+#            els.get_cluster(), els.get_nodes())
 
         for opt in display_list:
             tdata = get_data(tdata, els, opt, **kwargs)
@@ -595,26 +594,32 @@ def get_data(data, els, opt, **kwargs):
 
     Description:  Get data from Elasticsearch database.
 
+    Variables:
+        status_call -> contains '-D' option values and associated
+            ElasticSearchStatus class method names
+
     Arguments:
         (input) data -> Data results
         (input) els -> Elasticsearch status class instance
         (input) opt -> Method to run in class instance
         (input) **kwargs:
-            status_call -> Contains class method names for the '-D' option
             args -> ArgParser class instance
-            check_call -> Contains class method names for the '-C' option
             cfg -> Configuration variables from configuration file
             dtg -> TimeFormat instance
         (output) data -> Modified data results
 
     """
 
-    func_call = dict(kwargs.get("status_call"))
+    status_call = {
+        "node": "get_node_status", "server": "get_svr_status",
+        "memory": "get_mem_status", "shard": "get_shrd_status",
+        "general": "get_gen_status", "disk": "get_disk_status"}
+#    func_call = dict(kwargs.get("status_call"))
     data = dict(data)
 
-    if opt in func_call:
+    if opt in status_call:
         data, _, _ = gen_libs.merge_two_dicts(
-            data, getattr(els, func_call[opt])())
+            data, getattr(els, status_call[opt])())
 
     else:
         print(f"Warning:  Option {opt} is not supported")
@@ -633,8 +638,6 @@ def check_status(els, **kwargs):
         (input) els -> Elasticsearch class instance
         (input) **kwargs:
             args -> ArgParser class instance
-            check_call -> Contains class method names for the '-C' option
-            status_call -> Contains class method names for the '-D' option
             cfg -> Configuration variables from configuration file
             dtg -> TimeFormat instance
 
@@ -678,7 +681,7 @@ def check_status(els, **kwargs):
 #            data, _, _ = gen_libs.merge_two_dicts(data, els.get_cluster())
 
     if tdata:
-        # Temporary fix until elastic_class can be fixed.
+        # Temporary fix until elastic_class can be fixed
         if "Cluster" in tdata:
             del tdata["Cluster"]
 
@@ -695,16 +698,18 @@ def process_data(check_list, esc, **kwargs):
 
     Description:  Process data from Elasticsearch database.
 
+    Variables:
+        check_call -> contains '-C' option values and associated
+            ElasticSearchStatus class method names
+
     Arguments:
         (input) check_list -> Contains class method names for the '-C' option
         (input) esc -> Elasticsearch status class instance
         (input) **kwargs:
-            check_call -> Contains class method names for the '-C' option
             cutoff_cpu -> Cutoff value for CPU usage
             cutoff_mem -> Cutoff value for Memory usage
             cutoff_disk -> Cutoff value for Disk usage
             args -> ArgParser class instance
-            status_call -> Contains class method names for the '-D' option
             cfg -> Configuration variables from configuration file
             dtg -> TimeFormat instance
         (output) err_flag -> True|False - Status of results
@@ -712,8 +717,11 @@ def process_data(check_list, esc, **kwargs):
 
     """
 
+    check_call = {
+        "node": "chk_nodes", "server": "chk_server", "memory": "chk_mem",
+        "shard": "chk_shards", "general": "chk_status", "disk": "chk_disk"}
     check_list = list(check_list)
-    func_call = dict(kwargs.get("check_call"))
+#    func_call = dict(kwargs.get("check_call"))
     cutoff_cpu = kwargs.get("cutoff_cpu")
     cutoff_mem = kwargs.get("cutoff_mem")
     cutoff_disk = kwargs.get("cutoff_disk")
@@ -734,7 +742,7 @@ def process_data(check_list, esc, **kwargs):
     return data
 
 
-def run_program(args, func_dict, **kwargs):
+def run_program(args, func_dict):
 
     """Function:  run_program
 
@@ -744,9 +752,6 @@ def run_program(args, func_dict, **kwargs):
     Arguments:
         (input) args -> ArgParser class instance
         (input) func_dict -> Dictionary list of functions and options
-        (input) **kwargs:
-            status_call -> Contains class method names for the '-D' option
-            check_call -> Contains class method names for the '-C' option
 
     """
 
@@ -769,7 +774,7 @@ def run_program(args, func_dict, **kwargs):
             els.connect()
 
             if els.is_connected:
-                func_dict[opt](els, args=args, cfg=cfg, dtg=dtg, **kwargs)
+                func_dict[opt](els, args=args, cfg=cfg, dtg=dtg)
 
             else:
                 print("ERROR:  Failed to connect to Elasticsearch")
@@ -797,10 +802,6 @@ def main():
         opt_req_list -> contains options that are required for the program
         opt_val_bin -> List of options that allow 0 or 1 value for option
         opt_val -> contains options which require values
-        status_call -> contains '-D' option values and associated
-            ElasticSearchStatus class method names
-        check_call -> contains '-C' option values and associated
-            ElasticSearchStatus class method names
 
     Arguments:
         (input) argv -> Arguments from the command line.
@@ -818,13 +819,6 @@ def main():
     opt_req_list = ["-c", "-d"]
     opt_val_bin = ["-F", "-L"]
     opt_val = ["-c", "-d", "-m", "-u", "-p", "-o"]
-    status_call = {
-        "node": "get_node_status", "server": "get_svr_status",
-        "memory": "get_mem_status", "shard": "get_shrd_status",
-        "general": "get_gen_status", "disk": "get_disk_status"}
-    check_call = {
-        "node": "chk_nodes", "server": "chk_server", "memory": "chk_mem",
-        "shard": "chk_shards", "general": "chk_status", "disk": "chk_disk"}
 
     # Process argument list from command line
     args = gen_class.ArgParser(
@@ -836,8 +830,8 @@ def main():
        and args.arg_require(opt_req=opt_req_list)                   \
        and args.arg_dir_chk(dir_perms_chk=dir_perms_chk)            \
        and args.arg_cond_req(opt_con_req=opt_con_req_list):
-        run_program(
-            args, func_dict, status_call=status_call, check_call=check_call)
+        run_program(args, func_dict)
+#            args, func_dict, status_call=status_call, check_call=check_call)
 
 
 if __name__ == "__main__":
