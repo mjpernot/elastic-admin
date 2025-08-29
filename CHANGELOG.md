@@ -13,11 +13,12 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - create_header: Create standard dictionary header.
 
 ### Changed
+- get_data: Removed \*\*kwargs from argument list.
 - run_program: Removed \*\*kwargs from argument list and func_dict call.
 - main, process_data: Moved check_call variable from main function to process_data function.
 - main, get_data: Moved status_call variable from main function to get_data function.
 - check_status: Added call to create_header to use standard header for all calls and refactored how the data is organized.
-- get_status: Added call to create_header to use standard header for all calls.
+- get_status: Added call to create_header to use standard header for all calls and removed \*\*kwargs from get_data call.
 - list_nodes: Converted output to dictionary format and call data_out function to handle the output.
 - list_repos: Converted output to dictionary format and call data_out function to handle the output.
 - list_master: Converted output to dictionary format and call data_out function to handle the output.

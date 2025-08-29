@@ -357,15 +357,7 @@ def get_dumps(els, repo, **kwargs):
     for dump in els.get_dump_list(repo=repo)[0]:
         tdata = None
 
-        if get_failed and dump["state"] != "SUCCESS":
-            tdata = {
-                "Status": dump["state"], "StartTime": dump["start_time"],
-                "ShardSuccess": dump["shards"]["successful"],
-                "ShardFail": dump["shards"]["failed"],
-                "ShardTotal": dump["shards"]["total"],
-                "DumpName": dump["snapshot"]}
-
-        elif not get_failed:
+        if (get_failed and dump["state"] != "SUCCESS") or not get_failed:
             tdata = {
                 "Status": dump["state"], "StartTime": dump["start_time"],
                 "ShardSuccess": dump["shards"]["successful"],
@@ -494,13 +486,13 @@ def get_status(els, **kwargs):
         tdata = {}
 
         for opt in display_list:
-            tdata = get_data(tdata, els, opt, **kwargs)
+            tdata = get_data(tdata, els, opt)
 
     data["Status"] = tdata
     data_out(data, args)
 
 
-def get_data(data, els, opt, **kwargs):                 # pylint:disable=W0613
+def get_data(data, els, opt):
 
     """Function:  get_data
 
