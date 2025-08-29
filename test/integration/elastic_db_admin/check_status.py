@@ -23,12 +23,13 @@ sys.path.append(os.getcwd())
 import elastic_db_admin                         # pylint:disable=E0401,C0413
 import elastic_lib.elastic_class as elcs    # pylint:disable=E0401,C0413,R0402
 import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import lib.gen_class as gen_class           # pylint:disable=E0401,C0413,R0402
 import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ArgParser():                                      # pylint:disable=R0903
+class ArgParser():
 
     """Class:  ArgParser
 
@@ -36,6 +37,7 @@ class ArgParser():                                      # pylint:disable=R0903
 
     Methods:
         __init__
+        arg_exist
         get_val
 
     """
@@ -51,6 +53,18 @@ class ArgParser():                                      # pylint:disable=R0903
         """
 
         self.args_array = {}
+
+    def arg_exist(self, arg):
+
+        """Method:  arg_exist
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_exist.
+
+        Arguments:
+
+        """
+
+        return arg in self.args_array
 
     def get_val(self, skey, def_val=None):
 
@@ -107,9 +121,11 @@ class UnitTest(unittest.TestCase):
         self.scheme = self.cfg.scheme if hasattr(
             self.cfg, "scheme") else "https"
         self.els = elcs.ElasticSearchStatus(
-            self.cfg.host, port=self.cfg.port, user=self.user, japd=self.japd,
+            self.cfg.host, user=self.user, japd=self.japd,
             ca_cert=self.ca_cert, scheme=self.scheme)
         self.els.connect()
+        self.dtg = gen_class.TimeFormat()
+        self.dtg.create_time()
 
         self.mem = 100
         self.mem2 = 1
@@ -141,7 +157,6 @@ class UnitTest(unittest.TestCase):
         self.args8.args_array = {
             "-C": ["memory"], "-j": True, "-m": self.mem, "-u": self.cpu,
             "-p": self.disk, "-o": self.t_file, "-z": True}
-        self.check_call = {"memory": "chk_mem"}
 
     def test_cutoff_args(self):
 
@@ -154,8 +169,7 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.check_status(
-            self.els, check_call=self.check_call, args=self.args8,
-            cfg=self.cfg)
+            self.els, args=self.args8, cfg=self.cfg, dtg=self.dtg)
 
         self.assertFalse(os.path.isfile(self.t_file))
 
@@ -170,8 +184,7 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.check_status(
-            self.els, check_call=self.check_call, args=self.args6,
-            cfg=self.cfg)
+            self.els, args=self.args6, cfg=self.cfg, dtg=self.dtg)
 
         self.assertTrue(os.path.isfile(self.t_file))
 
@@ -187,8 +200,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             elastic_db_admin.check_status(
-                self.els, check_call=self.check_call, args=self.args7,
-                cfg=self.cfg)
+                self.els, args=self.args7, cfg=self.cfg, dtg=self.dtg)
 
         self.assertFalse(os.path.isfile(self.t_file))
 
@@ -203,8 +215,7 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.check_status(
-            self.els, check_call=self.check_call, args=self.args6,
-            cfg=self.cfg)
+            self.els, args=self.args6, cfg=self.cfg, dtg=self.dtg)
 
         self.assertTrue(os.path.isfile(self.t_file))
 
@@ -219,8 +230,7 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.check_status(
-            self.els, check_call=self.check_call, args=self.args5,
-            cfg=self.cfg)
+            self.els, args=self.args5, cfg=self.cfg, dtg=self.dtg)
 
         if os.path.isfile(self.t_file):
             self.assertTrue(os.path.isfile(self.t_file))
@@ -239,8 +249,7 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.check_status(
-            self.els, check_call=self.check_call, args=self.args4,
-            cfg=self.cfg)
+            self.els, args=self.args4, cfg=self.cfg, dtg=self.dtg)
 
         if os.path.isfile(self.t_file):
             self.assertTrue(os.path.isfile(self.t_file))
@@ -259,8 +268,7 @@ class UnitTest(unittest.TestCase):
         """
 
         elastic_db_admin.check_status(
-            self.els, check_call=self.check_call, args=self.args,
-            cfg=self.cfg)
+            self.els, args=self.args, cfg=self.cfg, dtg=self.dtg)
 
         if os.path.isfile(self.t_file):
             self.assertTrue(os.path.isfile(self.t_file))

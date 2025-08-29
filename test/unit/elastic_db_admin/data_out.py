@@ -124,7 +124,6 @@ class Mail():
         Description:  Stub method holder for Mail.send_mail.
 
         Arguments:
-            (input) use_mailx -> True|False - To use mailx command.
 
         """
 
@@ -144,14 +143,23 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
-        test_std_out_json
-        test_std_out_suppressed
-        test_std_out
-        test_mail_json
-        test_mail
-        test_file_json
-        test_file_append
-        test_file
+        test_outfile_append_mode_expand
+        test_outfile_write_mode_expand
+        test_outfile_expand
+        test_outfile_append_mode
+        test_outfile_write_mode
+        test_outfile
+        test_email_subj
+        test_email_no_subj
+        test_email_mailx
+        test_email_indent
+        test_email
+        test_indent_true
+        test_indent_false
+        test_suppress_true
+        test_suppress_false_no_expand
+        test_suppress_false_expand
+        test_not_dictionary
         test_no_data
 
     """
@@ -166,148 +174,322 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        dir_file = "dir/file"
         self.data = {"key1": "value1", "key2": "value2"}
         self.mail = Mail()
         self.args = ArgParser()
-        self.args2 = ArgParser()
-        self.args3 = ArgParser()
-        self.args4 = ArgParser()
-        self.args5 = ArgParser()
-        self.args6 = ArgParser()
-        self.args7 = ArgParser()
-        self.args8 = ArgParser()
-        self.args9 = ArgParser()
-        self.args.args_array = {}
-        self.args2.args_array = {"-o": dir_file, "-z": True}
-        self.args3.args_array = {"-o": dir_file, "-a": True, "-z": True}
-        self.args4.args_array = {"-o": dir_file, "-j": True, "-z": True}
-        self.args5.args_array = {"-t": "to_address", "-z": True}
-        self.args6.args_array = {"-t": "to_address", "-j": True, "-z": True}
-        self.args7.args_array = {"-z": True}
-        self.args8.args_array = {"-j": True}
+        self.outfile = "path/to/open"
 
-    def test_std_out_json(self):
+    @mock.patch("elastic_db_admin.pprint.pprint", mock.Mock(return_value=True))
+    @mock.patch("builtins.open", new_callable=mock.mock_open, read_data="data")
+    def test_outfile_append_mode_expand(self, mock_file):
 
-        """Function:  test_std_out_json
+        """Function:  test_outfile_append_mode_expand
 
-        Description:  Test with standard out with json mode.
+        Description:  Test with outfile and expand and append option.
 
         Arguments:
 
         """
 
-        with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.data_out(self.data, self.args8))
+        self.args.args_array = {
+            "-o": self.outfile, "-a": True, "-j": True, "-z": True}
 
-    def test_std_out_suppressed(self):
+        assert open(                            # pylint:disable=R1732,W1514
+            self.outfile).read() == "data"
+        mock_file.assert_called_with(self.outfile)
 
-        """Function:  test_std_out_suppressed
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args))
 
-        Description:  Test with standard out suppressed.
+    @mock.patch("elastic_db_admin.pprint.pprint", mock.Mock(return_value=True))
+    @mock.patch("builtins.open", new_callable=mock.mock_open, read_data="data")
+    def test_outfile_write_mode_expand(self, mock_file):
+
+        """Function:  test_outfile_write_mode_expand
+
+        Description:  Test with outfile and expand and write option.
+
+        Arguments:
+
+        """
+
+        self.args.args_array = {"-o": self.outfile, "-j": True, "-z": True}
+
+        assert open(                            # pylint:disable=R1732,W1514
+            self.outfile).read() == "data"
+        mock_file.assert_called_with(self.outfile)
+
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args))
+
+    @mock.patch("elastic_db_admin.pprint.pprint", mock.Mock(return_value=True))
+    @mock.patch("builtins.open", new_callable=mock.mock_open, read_data="data")
+    def test_outfile_expand(self, mock_file):
+
+        """Function:  test_outfile_expand
+
+        Description:  Test with outfile and expand option.
 
         Arguments:
 
         """
 
-        self.assertFalse(elastic_db_admin.data_out(self.data, self.args7))
+        self.args.args_array = {"-o": self.outfile, "-j": True, "-z": True}
 
-    def test_std_out(self):
+        assert open(                            # pylint:disable=R1732,W1514
+            self.outfile).read() == "data"
+        mock_file.assert_called_with(self.outfile)
 
-        """Function:  test_std_out
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args))
 
-        Description:  Test with standard out.
+    @mock.patch("elastic_db_admin.pprint.pprint", mock.Mock(return_value=True))
+    @mock.patch("builtins.open", new_callable=mock.mock_open, read_data="data")
+    def test_outfile_append_mode(self, mock_file):
+
+        """Function:  test_outfile_append_mode
+
+        Description:  Test with outfile and append mode option.
 
         Arguments:
 
         """
+
+        self.args.args_array = {"-o": self.outfile, "-a": True, "-z": True}
+
+        assert open(                            # pylint:disable=R1732,W1514
+            self.outfile).read() == "data"
+        mock_file.assert_called_with(self.outfile)
+
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args))
+
+    @mock.patch("elastic_db_admin.pprint.pprint", mock.Mock(return_value=True))
+    @mock.patch("builtins.open", new_callable=mock.mock_open, read_data="data")
+    def test_outfile_write_mode(self, mock_file):
+
+        """Function:  test_outfile_write_mode
+
+        Description:  Test with outfile and write mode option.
+
+        Arguments:
+
+        """
+
+        self.args.args_array = {"-o": self.outfile, "-z": True}
+
+        assert open(                            # pylint:disable=R1732,W1514
+            self.outfile).read() == "data"
+        mock_file.assert_called_with(self.outfile)
+
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args))
+
+    @mock.patch("elastic_db_admin.pprint.pprint", mock.Mock(return_value=True))
+    @mock.patch("builtins.open", new_callable=mock.mock_open, read_data="data")
+    def test_outfile(self, mock_file):
+
+        """Function:  test_outfile
+
+        Description:  Test with outfile option.
+
+        Arguments:
+
+        """
+
+        self.args.args_array = {"-o": self.outfile, "-z": True}
+
+        assert open(                            # pylint:disable=R1732,W1514
+            self.outfile).read() == "data"
+        mock_file.assert_called_with(self.outfile)
+
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args))
+
+    @mock.patch("elastic_db_admin.gen_class.setup_mail")
+    def test_email_subj(self, mock_mail):
+
+        """Function:  test_email_subj
+
+        Description:  Test with email option with subject option.
+
+        Arguments:
+
+        """
+
+        mock_mail.return_value = self.mail
+
+        self.args.args_array = {
+            "-t": "to_address", "-s": "subject", "-z": True}
+
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args))
+
+    @mock.patch("elastic_db_admin.gen_class.setup_mail")
+    def test_email_no_subj(self, mock_mail):
+
+        """Function:  test_email_no_subj
+
+        Description:  Test with email option with no subject option.
+
+        Arguments:
+
+        """
+
+        mock_mail.return_value = self.mail
+
+        self.args.args_array = {"-t": "to_address", "-z": True}
+
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args))
+
+    @mock.patch("elastic_db_admin.gen_class.setup_mail")
+    def test_email_mailx(self, mock_mail):
+
+        """Function:  test_email_mailx
+
+        Description:  Test with email option with mailx option.
+
+        Arguments:
+
+        """
+
+        mock_mail.return_value = self.mail
+
+        self.args.args_array = {
+            "-t": "to_address", "-j": True, "-x": True, "-z": True}
+
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args))
+
+    @mock.patch("elastic_db_admin.gen_class.setup_mail")
+    def test_email_indent(self, mock_mail):
+
+        """Function:  test_email_indent
+
+        Description:  Test with email option with indent.
+
+        Arguments:
+
+        """
+
+        mock_mail.return_value = self.mail
+
+        self.args.args_array = {"-t": "to_address", "-j": True, "-z": True}
+
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args))
+
+    @mock.patch("elastic_db_admin.gen_class.setup_mail")
+    def test_email(self, mock_mail):
+
+        """Function:  test_email
+
+        Description:  Test with email option.
+
+        Arguments:
+
+        """
+
+        mock_mail.return_value = self.mail
+
+        self.args.args_array = {"-t": "to_address", "-z": True}
+
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args))
+
+    def test_indent_true(self):
+
+        """Function:  test_indent_true
+
+        Description:  Test with indent arg passed in.
+
+        Arguments:
+
+        """
+
+        self.args.args_array = {"-j": True}
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.data_out(self.data, self.args))
 
-    @mock.patch("elastic_db_admin.gen_class.setup_mail")
-    def test_mail_json(self, mock_mail):
+    def test_indent_false(self):
 
-        """Function:  test_mail_json
+        """Function:  test_indent_false
 
-        Description:  Test with mail option with json option.
-
-        Arguments:
-
-        """
-
-        mock_mail.return_value = self.mail
-
-        self.assertFalse(elastic_db_admin.data_out(self.data, self.args6))
-
-    @mock.patch("elastic_db_admin.gen_class.setup_mail")
-    def test_mail(self, mock_mail):
-
-        """Function:  test_mail
-
-        Description:  Test with mail option.
+        Description:  Test with no indent arg passed in.
 
         Arguments:
 
         """
 
-        mock_mail.return_value = self.mail
+        self.args.args_array = {}
 
-        self.assertFalse(elastic_db_admin.data_out(self.data, self.args5))
+        with gen_libs.no_std_out():
+            self.assertFalse(elastic_db_admin.data_out(self.data, self.args))
 
-    @mock.patch("elastic_db_admin.gen_libs.write_file",
-                mock.Mock(return_value=True))
-    def test_file_json(self):
+    def test_suppress_true(self):
 
-        """Function:  test_file_json
+        """Function:  test_suppress_true
 
-        Description:  Test with file option with json option.
-
-        Arguments:
-
-        """
-
-        self.assertFalse(elastic_db_admin.data_out(self.data, self.args4))
-
-    @mock.patch("elastic_db_admin.gen_libs.write_file",
-                mock.Mock(return_value=True))
-    def test_file_append(self):
-
-        """Function:  test_file_append
-
-        Description:  Test with file option with append option.
+        Description:  Test with suppression is true.
 
         Arguments:
 
         """
 
-        self.assertFalse(elastic_db_admin.data_out(self.data, self.args3))
+        self.args.args_array = {"-z": True}
 
-    @mock.patch("elastic_db_admin.gen_libs.write_file",
-                mock.Mock(return_value=True))
-    def test_file(self):
+        self.assertFalse(elastic_db_admin.data_out(self.data, self.args))
 
-        """Function:  test_file
+    def test_suppress_false_no_expand(self):
 
-        Description:  Test with file option.
+        """Function:  test_suppress_false_no_expand
+
+        Description:  Test with suppression is false and no expand option.
 
         Arguments:
 
         """
 
-        self.assertFalse(elastic_db_admin.data_out(self.data, self.args2))
+        self.args.args_array = {}
+
+        with gen_libs.no_std_out():
+            self.assertFalse(elastic_db_admin.data_out(self.data, self.args))
+
+    def test_suppress_false_expand(self):
+
+        """Function:  test_suppress_false_expand
+
+        Description:  Test with suppression is false and expand option.
+
+        Arguments:
+
+        """
+
+        self.args.args_array = {"-j": True}
+
+        with gen_libs.no_std_out():
+            self.assertFalse(elastic_db_admin.data_out(self.data, self.args))
+
+    def test_not_dictionary(self):
+
+        """Function:  test_not_dictionary
+
+        Description:  Test data is not a dictionary.
+
+        Arguments:
+
+        """
+
+        self.args.args_array = {"-z": True}
+
+        with gen_libs.no_std_out():
+            self.assertFalse(elastic_db_admin.data_out("datastr", self.args))
 
     def test_no_data(self):
 
         """Function:  test_no_data
 
-        Description:  Test with no data output.
+        Description:  Test with no data send to function.
 
         Arguments:
 
         """
 
-        self.assertFalse(elastic_db_admin.data_out(self.data, self.args7))
+        self.args.args_array = {"-z": True}
+
+        with gen_libs.no_std_out():
+            self.assertFalse(elastic_db_admin.data_out("", self.args))
 
 
 if __name__ == "__main__":

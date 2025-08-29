@@ -23,12 +23,13 @@ sys.path.append(os.getcwd())
 import elastic_db_admin                         # pylint:disable=E0401,C0413
 import elastic_lib.elastic_class as elcs    # pylint:disable=E0401,C0413,R0402
 import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import lib.gen_class as gen_class           # pylint:disable=E0401,C0413,R0402
 import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ArgParser():                                      # pylint:disable=R0903
+class ArgParser():
 
     """Class:  ArgParser
 
@@ -36,6 +37,7 @@ class ArgParser():                                      # pylint:disable=R0903
 
     Methods:
         __init__
+        arg_exist
         get_val
 
     """
@@ -51,6 +53,18 @@ class ArgParser():                                      # pylint:disable=R0903
         """
 
         self.args_array = {}
+
+    def arg_exist(self, arg):
+
+        """Method:  arg_exist
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_exist.
+
+        Arguments:
+
+        """
+
+        return arg in self.args_array
 
     def get_val(self, skey, def_val=None):
 
@@ -99,12 +113,14 @@ class UnitTest(unittest.TestCase):
         self.scheme = self.cfg.scheme if hasattr(
             self.cfg, "scheme") else "https"
         self.els = elcs.ElasticSearchStatus(
-            self.cfg.host, port=self.cfg.port, user=self.user, japd=self.japd,
+            self.cfg.host, user=self.user, japd=self.japd,
             ca_cert=self.ca_cert, scheme=self.scheme)
         self.els.connect()
         self.args = ArgParser()
         self.args2 = ArgParser()
         self.args.args_array = {"-F": "WhatNameToUse"}
+        self.dtg = gen_class.TimeFormat()
+        self.dtg.create_time()
 
     def test_no_repo(self):
 
@@ -118,7 +134,8 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(
-                elastic_db_admin.failed_dumps(self.els, args=self.args2))
+                elastic_db_admin.failed_dumps(
+                    self.els, args=self.args2, dtg=self.dtg))
 
     def test_repo(self):
 
@@ -132,7 +149,8 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(
-                elastic_db_admin.failed_dumps(self.els, args=self.args))
+                elastic_db_admin.failed_dumps(
+                    self.els, args=self.args, dtg=self.dtg))
 
 
 if __name__ == "__main__":

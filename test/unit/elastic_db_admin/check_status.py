@@ -91,8 +91,7 @@ class ElasticSearchStatus():
 
         """
 
-        self.hosts = ["hosts"]
-        self.port = 9200
+        self.hosts = ["https://hosts:9200"]
         self.all_err_msg = None
         self.cluster_err_msg = None
         self.mem_err_msg = None
@@ -126,7 +125,7 @@ class ElasticSearchStatus():
 
         """
 
-        return {"node": "node_name"}
+        return {"Nodes": "node_name"}
 
     def get_cluster(self):
 
@@ -154,7 +153,7 @@ class ElasticSearchStatus():
         self.cutoff_mem = cutoff_mem
         self.cutoff_disk = cutoff_disk
 
-        return self.all_err_msg
+        return {"Cluster": "cluster_name"}
 
 
 class UnitTest(unittest.TestCase):
@@ -219,6 +218,9 @@ class UnitTest(unittest.TestCase):
         cfg2 = collections.namedtuple("Cfg", "test")
         self.cfg2 = cfg2("test")
 
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_cutoff_args(self):
 
         """Function:  test_cutoff_args
@@ -234,6 +236,9 @@ class UnitTest(unittest.TestCase):
                 self.els, check_call=self.check_call, args=self.args8,
                 cfg=self.cfg))
 
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_one_option_cfg(self):
 
         """Function:  test_one_option_cfg
@@ -249,6 +254,8 @@ class UnitTest(unittest.TestCase):
                 self.els, check_call=self.check_call, args=self.args6,
                 cfg=self.cfg))
 
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
     @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_one_option_error(self):
 
@@ -268,6 +275,8 @@ class UnitTest(unittest.TestCase):
                 self.els, check_call=self.check_call, args=self.args6,
                 cfg=self.cfg2))
 
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
     @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_incorrect_option(self):
 
@@ -285,6 +294,9 @@ class UnitTest(unittest.TestCase):
                     self.els, check_call=self.check_call, args=self.args7,
                     cfg=self.cfg2))
 
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_one_option(self):
 
         """Function:  test_one_option
@@ -300,6 +312,9 @@ class UnitTest(unittest.TestCase):
                 self.els, check_call=self.check_call, args=self.args6,
                 cfg=self.cfg2))
 
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_all(self):
 
         """Function:  test_all
@@ -315,6 +330,9 @@ class UnitTest(unittest.TestCase):
                 self.els, check_call=self.check_call, args=self.args5,
                 cfg=self.cfg2))
 
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_no_options(self):
 
         """Function:  test_no_options
@@ -330,6 +348,8 @@ class UnitTest(unittest.TestCase):
                 self.els, check_call=self.check_call, args=self.args4,
                 cfg=self.cfg2))
 
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
     @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_all_with_error(self):
 
@@ -348,6 +368,9 @@ class UnitTest(unittest.TestCase):
                 self.els, check_call=self.check_call, args=self.args,
                 cfg=self.cfg2))
 
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_all_no_error(self):
 
         """Function:  test_all_no_error
@@ -363,6 +386,9 @@ class UnitTest(unittest.TestCase):
                 self.els, check_call=self.check_call, args=self.args,
                 cfg=self.cfg2))
 
+    @mock.patch("elastic_db_admin.create_header",
+                mock.Mock(return_value={"Header": "DTG"}))
+    @mock.patch("elastic_db_admin.data_out", mock.Mock(return_value=True))
     def test_default_no_error(self):
 
         """Function:  test_default_no_error

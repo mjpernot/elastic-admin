@@ -4,6 +4,41 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.3.1] - 2025-08-19
+- Updated python-lib v4.0.3
+- Updated elastic-lib v4.2.0
+
+### Added
+- get_dumps: Retrieve dumps from the Elasticsearch cluster and return the dumps in a dictionary format, includes the option to only return failed dumps.
+- create_header: Create standard dictionary header.
+
+### Changed
+- get_data: Removed \*\*kwargs from argument list.
+- run_program: Removed \*\*kwargs from argument list and func_dict call.
+- main, process_data: Moved check_call variable from main function to process_data function.
+- main, get_data: Moved status_call variable from main function to get_data function.
+- check_status: Added call to create_header to use standard header for all calls and refactored how the data is organized.
+- get_status: Added call to create_header to use standard header for all calls and removed \*\*kwargs from get_data call.
+- list_nodes: Converted output to dictionary format and call data_out function to handle the output.
+- list_repos: Converted output to dictionary format and call data_out function to handle the output.
+- list_master: Converted output to dictionary format and call data_out function to handle the output.
+- failed_dumps: Added check for existing repo name, converted output to a dictionary format and call data_out function to handle the output.
+- list_dumps: Converted output to a dictionary format and call data_out function to handle the output.
+- data_out: Refactored the function to be more stream-lined.
+- run_program: Created gen_class.TimeFormat instance and passed to functions being called.
+- run_program: Removed "port" and "scheme" variables from the elastic_class.ElasticSearchStatus instance call.
+- config/elastic.py.TEMPLATE: Removed "port" and "scheme" entries.
+- Documentation changes.
+
+### Deprecated
+- Support for Elasticsearch v7.4, v7.12 and v7.17
+
+### Removed
+- print_failures function
+- print_dumps function
+- Support for Elasticsearch v6.4
+
+
 ## [0.3.0] - 2025-02-25
 - Field release
 - Breaking Changes

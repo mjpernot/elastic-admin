@@ -7,17 +7,17 @@
 echo ""
 echo "Unit test:"
 /usr/bin/python test/unit/elastic_db_admin/check_status.py
+/usr/bin/python test/unit/elastic_db_admin/create_header.py
 /usr/bin/python test/unit/elastic_db_admin/data_out.py
 /usr/bin/python test/unit/elastic_db_admin/failed_dumps.py
 /usr/bin/python test/unit/elastic_db_admin/get_data.py
+/usr/bin/python test/unit/elastic_db_admin/get_dumps.py
 /usr/bin/python test/unit/elastic_db_admin/get_status.py
 /usr/bin/python test/unit/elastic_db_admin/help_message.py
 /usr/bin/python test/unit/elastic_db_admin/list_dumps.py
 /usr/bin/python test/unit/elastic_db_admin/list_master.py
 /usr/bin/python test/unit/elastic_db_admin/list_nodes.py
 /usr/bin/python test/unit/elastic_db_admin/list_repos.py
-/usr/bin/python test/unit/elastic_db_admin/print_dumps.py
-/usr/bin/python test/unit/elastic_db_admin/print_failures.py
 /usr/bin/python test/unit/elastic_db_admin/process_data.py
 /usr/bin/python test/unit/elastic_db_admin/run_program.py
 /usr/bin/python test/unit/elastic_db_admin/main.py
