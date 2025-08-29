@@ -59,6 +59,56 @@ def list_dumps(els, **kwargs):                          # pylint:disable=W0613
     """
 
 
+class ArgParser():
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        get_args_keys
+        get_val
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.args_array = {}
+
+    def get_args_keys(self):
+
+        """Method:  get_args_keys
+
+        Description:  Method stub holder for gen_class.ArgParser.get_args_keys.
+
+        Arguments:
+
+        """
+
+        return list(self.args_array.keys())
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -90,11 +140,9 @@ class UnitTest(unittest.TestCase):
         self.tmp_path = os.path.join(self.base_dir, "tmp")
         self.t_file = os.path.join(self.tmp_path, "data_out.txt")
         self.config_path = os.path.join(self.test_path, "config")
-        self.args = {
-            "-c": "elastic", "-d": self.config_path, "-M": True,
-            "-o": self.t_file, "-z": True}
         self.func_names = {
             "-F": failed_dumps, "-L": list_dumps, "-M": list_master}
+        self.args = ArgParser()
 
     def test_is_connected(self):
 
@@ -106,7 +154,10 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args["-F"] = True
+        self.args.args_array = {
+            "-c": "elastic", "-d": self.config_path, "-M": True,
+            "-o": self.t_file, "-z": True, "-F": True}
+
         elastic_db_admin.run_program(self.args, self.func_names)
 
         self.assertFalse(os.path.isfile(self.t_file))
@@ -122,8 +173,10 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args["-F"] = True
-        self.args["-L"] = True
+        self.args.args_array = {
+            "-c": "elastic", "-d": self.config_path, "-M": True,
+            "-o": self.t_file, "-z": True, "-F": True, "-L": True}
+
         elastic_db_admin.run_program(self.args, self.func_names)
 
         self.assertFalse(os.path.isfile(self.t_file))
@@ -138,7 +191,10 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args["-F"] = True
+        self.args.args_array = {
+            "-c": "elastic", "-d": self.config_path, "-M": True,
+            "-o": self.t_file, "-z": True, "-F": True}
+
         elastic_db_admin.run_program(self.args, self.func_names)
 
         self.assertFalse(os.path.isfile(self.t_file))
@@ -152,6 +208,10 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
+
+        self.args.args_array = {
+            "-c": "elastic", "-d": self.config_path, "-M": True,
+            "-o": self.t_file, "-z": True}
 
         elastic_db_admin.run_program(self.args, self.func_names)
 

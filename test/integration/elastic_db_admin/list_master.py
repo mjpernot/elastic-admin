@@ -23,9 +23,60 @@ sys.path.append(os.getcwd())
 import elastic_db_admin                         # pylint:disable=E0401,C0413
 import elastic_lib.elastic_class as elcs    # pylint:disable=E0401,C0413,R0402
 import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import lib.gen_class as gen_class           # pylint:disable=E0401,C0413,R0402
 import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
+
+
+class ArgParser():                                      # pylint:disable=R0903
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        arg_exist
+        get_val
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.args_array = {}
+
+    def arg_exist(self, arg):
+
+        """Method:  arg_exist
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_exist.
+
+        Arguments:
+
+        """
+
+        return arg in self.args_array
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
 
 
 class UnitTest(unittest.TestCase):
@@ -61,9 +112,12 @@ class UnitTest(unittest.TestCase):
         self.scheme = self.cfg.scheme if hasattr(
             self.cfg, "scheme") else "https"
         self.els = elcs.ElasticSearchStatus(
-            self.cfg.host, port=self.cfg.port, user=self.user, japd=self.japd,
+            self.cfg.host, user=self.user, japd=self.japd,
             ca_cert=self.ca_cert, scheme=self.scheme)
         self.els.connect()
+        self.dtg = gen_class.TimeFormat()
+        self.dtg.create_time()
+        self.args = ArgParser()
 
     def test_list_master(self):
 
@@ -76,7 +130,9 @@ class UnitTest(unittest.TestCase):
         """
 
         with gen_libs.no_std_out():
-            self.assertFalse(elastic_db_admin.list_master(self.els))
+            self.assertFalse(
+                elastic_db_admin.list_master(
+                    self.els, args=self.args, dtg=self.dtg))
 
 
 if __name__ == "__main__":

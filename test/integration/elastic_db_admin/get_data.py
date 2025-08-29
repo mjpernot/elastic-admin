@@ -63,7 +63,7 @@ class UnitTest(unittest.TestCase):
         self.scheme = self.cfg.scheme if hasattr(
             self.cfg, "scheme") else "https"
         self.els = elcs.ElasticSearchStatus(
-            self.cfg.host, port=self.cfg.port, user=self.user, japd=self.japd,
+            self.cfg.host, user=self.user, japd=self.japd,
             ca_cert=self.ca_cert, scheme=self.scheme)
         self.els.connect()
 
