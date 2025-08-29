@@ -83,7 +83,7 @@
             -z => Suppress standard out.
 
         -F [repo_name] => Name of respository - list of database dumps that
-            have failed for some reason.  If no repo_name is passed then all 
+            have failed for some reason.  If no repo_name is passed then all
             failed dumps in all repositories are listed.
             -t email_addr [email_addr ...] => Enables emailing out all output.
                     Sends the output to one or more email addresses.
@@ -167,7 +167,6 @@
 
 # Standard
 import sys
-import datetime
 import socket
 import pprint
 
@@ -181,14 +180,12 @@ try:
     from .lib import gen_libs
     from .lib import gen_class
     from .elastic_lib import elastic_class
-    from .elastic_lib import elastic_libs
     from . import version
 
 except (ValueError, ImportError) as err:
     import lib.gen_libs as gen_libs                     # pylint:disable=R0402
     import lib.gen_class as gen_class                   # pylint:disable=R0402
     import elastic_lib.elastic_class as elastic_class   # pylint:disable=R0402
-    import elastic_lib.elastic_libs as elastic_libs     # pylint:disable=R0402
     import version
 
 __version__ = version.__version__
@@ -337,7 +334,7 @@ def failed_dumps(els, **kwargs):
     data_out(data, kwargs.get("args"))
 
 
-def get_dumps(els, repo, **kwargs): 
+def get_dumps(els, repo, **kwargs):
 
     """Function:  get_dumps
 
@@ -353,7 +350,7 @@ def get_dumps(els, repo, **kwargs):
 
     """
 
-    get_failed = auto_delete=kwargs.get("get_failed", False)
+    get_failed = kwargs.get("get_failed", False)
 
     data = {repo: []}
 
@@ -367,7 +364,6 @@ def get_dumps(els, repo, **kwargs):
                 "ShardFail": dump["shards"]["failed"],
                 "ShardTotal": dump["shards"]["total"],
                 "DumpName": dump["snapshot"]}
-
 
         elif not get_failed:
             tdata = {
@@ -504,7 +500,7 @@ def get_status(els, **kwargs):
     data_out(data, args)
 
 
-def get_data(data, els, opt, **kwargs):
+def get_data(data, els, opt, **kwargs):                 # pylint:disable=W0613
 
     """Function:  get_data
 

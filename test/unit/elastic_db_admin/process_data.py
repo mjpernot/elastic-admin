@@ -41,7 +41,8 @@ class ElasticSearchStatus():
 
     """
 
-    def __init__(self, node, port, mem, cpu, disk):     # pylint:disable=R0913
+    def __init__(                               # pylint:disable=R0913,R0917
+        self, node, port, mem, cpu, disk):
 
         """Method:  __init__
 

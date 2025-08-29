@@ -17,12 +17,10 @@
 import sys
 import os
 import unittest
-import mock
 
 # Local
 sys.path.append(os.getcwd())
 import elastic_db_admin                         # pylint:disable=E0401,C0413
-import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
 import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
