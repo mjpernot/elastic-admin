@@ -13,6 +13,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - create_header: Create standard dictionary header.
 
 ### Changed
+- check_status: Added call to create_header to use standard header for all calls and refactored how the data is organized.
 - get_status: Added call to create_header to use standard header for all calls.
 - list_nodes: Converted output to dictionary format and call data_out function to handle the output.
 - list_repos: Converted output to dictionary format and call data_out function to handle the output.

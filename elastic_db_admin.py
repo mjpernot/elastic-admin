@@ -569,6 +569,7 @@ def get_status(els, **kwargs):
     """
 
     data = create_header(kwargs.get("dtg"), name="GetStatus")
+    data["HostName"] = socket.gethostname()
     args = kwargs.get("args")
     display_list = args.get_val("-D", def_val=[])
 
@@ -584,7 +585,6 @@ def get_status(els, **kwargs):
 
 #    data["AsOf"] = datetime.datetime.strftime(
 #        datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
-    data["HostName"] = socket.gethostname()
     data["Status"] = tdata
     data_out(data, args)
 
@@ -646,6 +646,10 @@ def check_status(els, **kwargs):
     cutoff_mem = args.get_val("-m", def_val=None)
     cutoff_cpu = args.get_val("-u", def_val=None)
     cutoff_disk = args.get_val("-p", def_val=None)
+    data = create_header(kwargs.get("dtg"), name="GetStatus")
+    data["HostName"] = socket.gethostname()
+    data["Nodes"] = els.get_nodes()["Nodes"]
+    data["Cluster"] = els.get_cluster()["Cluster"]
 
     els.cutoff_mem = \
         int(cutoff_mem) if cutoff_mem else cfg.cutoff_mem if hasattr(
@@ -660,23 +664,28 @@ def check_status(els, **kwargs):
             cfg, "cutoff_disk") else els.cutoff_disk
 
     if not check_list or "all" in check_list:
-        data = els.chk_all(
+        tdata = els.chk_all(
             cutoff_cpu=els.cutoff_cpu, cutoff_mem=els.cutoff_mem,
             cutoff_disk=els.cutoff_disk)
 
     else:
-        data = process_data(
+        tdata = process_data(
             check_list, els, cutoff_cpu=els.cutoff_cpu,
             cutoff_mem=els.cutoff_mem, cutoff_disk=els.cutoff_disk, **kwargs)
 
-        if data:
-            data["HostName"] = socket.gethostname()
-            data, _, _ = gen_libs.merge_two_dicts(data, els.get_cluster())
+#        if data:
+#            data["HostName"] = socket.gethostname()
+#            data, _, _ = gen_libs.merge_two_dicts(data, els.get_cluster())
 
-    if data:
-        data["AsOf"] = datetime.datetime.strftime(
-            datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
-        data, _, _ = gen_libs.merge_two_dicts(data, els.get_nodes())
+    if tdata:
+        # Temporary fix until elastic_class can be fixed.
+        if "Cluster" in tdata:
+            del tdata["Cluster"]
+
+        data["Checks"] = tdata
+#        data["AsOf"] = datetime.datetime.strftime(
+#            datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
+#        data, _, _ = gen_libs.merge_two_dicts(data, els.get_nodes())
         data_out(data, args)
 
 
