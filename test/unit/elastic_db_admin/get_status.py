@@ -114,7 +114,7 @@ class ElasticSearchStatus():
 
         """
 
-        return {"node": "node_name"}
+        return {"Nodes": "node_name"}
 
     def get_cluster(self):
 
@@ -126,7 +126,7 @@ class ElasticSearchStatus():
 
         """
 
-        return {"cluster": "cluster_name"}
+        return {"Cluster": "cluster_name"}
 
     def get_all(self):
 
@@ -138,7 +138,7 @@ class ElasticSearchStatus():
 
         """
 
-        return {}
+        return {"Cluster": "cluster_name", "Nodes": "node_name"}
 
 
 class UnitTest(unittest.TestCase):

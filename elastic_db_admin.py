@@ -728,8 +728,8 @@ def process_data(check_list, esc, **kwargs):
     data = {}
 
     for opt in check_list:
-        if opt in func_call:
-            results = getattr(esc, func_call[opt])(
+        if opt in check_call:
+            results = getattr(esc, check_call[opt])(
                 cutoff_cpu=cutoff_cpu, cutoff_mem=cutoff_mem,
                 cutoff_disk=cutoff_disk)
 
