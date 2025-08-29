@@ -29,7 +29,7 @@ import version                                  # pylint:disable=E0401,C0413
 __version__ = version.__version__
 
 
-class ArgParser():                                      # pylint:disable=R0903
+class ArgParser():
 
     """Class:  ArgParser
 

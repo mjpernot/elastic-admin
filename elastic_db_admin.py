@@ -252,10 +252,6 @@ def list_nodes(els, **kwargs):                          # pylint:disable=W0613
     data = create_header(kwargs.get("dtg"), name="ListNodes")
     data["Nodes"] = els.nodes
 
-#    print(f'\n{"List of Nodes":25}')
-#    for item in els.nodes:
-#        print(f"{item:25}")
-
     data_out(data, kwargs.get("args"))
 
 
@@ -283,9 +279,6 @@ def list_repos(els, **kwargs):                          # pylint:disable=W0613
             "Location": els.repo_dict[repo]["settings"]["location"]}
         data["Repositories"].append(tdata)
 
-#    print(f'\n{"List of Repositories":25}')
-#    elastic_libs.list_repos2(els.repo_dict)
-
     data_out(data, kwargs.get("args"))
 
 
@@ -306,28 +299,7 @@ def list_master(els, **kwargs):                         # pylint:disable=W0613
 
     data = create_header(kwargs.get("dtg"), name="MasterNode")
     data["Master"] = els.master
-#    print(f'\n{"Master Node":25}')
-#    print(f"{els.master:25}")
     data_out(data, kwargs.get("args"))
-
-
-#def print_failures(els, repo):
-
-    """Function:  print_failures
-
-    Description:  Print the failed dumps in the current repository.
-
-    Arguments:
-        (input) els -> Elasticsearch class instance
-        (input) repo -> Repository name
-
-    """
-
-#    print(f"Repository: {repo:25}")
-
-#    elastic_libs.list_dumps(
-#        [dmp for dmp in elastic_class.get_dump_list(els.els, repo=repo)[0]
-#         if dmp["state"] != "SUCCESS"])
 
 
 def failed_dumps(els, **kwargs):
@@ -347,10 +319,7 @@ def failed_dumps(els, **kwargs):
     """
 
     repo = kwargs.get("args").get_val("-F", def_val=None)
-#    args = kwargs.get("args")
-#    repo = args.get_val("-F", def_val=None)
     data = create_header(kwargs.get("dtg"), name="FailedDumps")
-#    print(f'\n{"List of Failed Dumps:":25}')
 
     if repo and repo not in els.repo_dict:
         data["Repos"] = []
@@ -358,8 +327,6 @@ def failed_dumps(els, **kwargs):
 
     elif repo:
         data["Repos"] = [get_dumps(els, repo, get_failed=True)]
-#    if repo:
-#        print_failures(els, repo)
 
     else:
         data["Repos"] = []
@@ -367,26 +334,7 @@ def failed_dumps(els, **kwargs):
         for repo in els.get_repo_list():
             data["Repos"].append(get_dumps(els, repo, get_failed=True))
 
-#        for repo in elastic_class.get_repo_list(els.els):
-#            print_failures(els, repo)
-
     data_out(data, kwargs.get("args"))
-
-
-#def print_dumps(els, repo):
-
-    """Function:  print_dumps
-
-    Description:  Print the dumps in the current repository.
-
-    Arguments:
-        (input) els -> Elasticsearch class instance
-        (input) repo -> Repository name
-
-    """
-
-#    print(f"Repository: {repo:25}")
-#    elastic_libs.list_dumps(elastic_class.get_dump_list(els.els, repo=repo)[0])
 
 
 def get_dumps(els, repo, **kwargs): 
@@ -452,8 +400,6 @@ def list_dumps(els, **kwargs):
     """
 
     repo = kwargs.get("args").get_val("-L", def_val=None)
-#    args = kwargs.get("args")
-#    repo = args.get_val("-L", def_val=None)
     data = create_header(kwargs.get("dtg"), name="ListDumps")
 
     if repo and repo not in els.repo_dict:
@@ -463,19 +409,11 @@ def list_dumps(els, **kwargs):
     elif repo:
         data["Repos"] = [get_dumps(els, repo)]
 
-#        print(f'\n{"List of Dumps:":25}')
-#        print_dumps(els, repo)
-
     else:
         data["Repos"] = []
 
         for repo in els.get_repo_list():
             data["Repos"].append(get_dumps(els, repo))
-
-#        print(f'\n{"List of Dumps:":25}')
-#
-#        for repo in elastic_class.get_repo_list(els.els):
-#            print_dumps(els, repo)
 
     data_out(data, kwargs.get("args"))
 
@@ -499,13 +437,11 @@ def data_out(data, args):
 
     data = dict(data)
     mode = "a" if args.arg_exist("-a") else "w"
-#    indent = 4 if args.arg_exist("-j") else None
     indent = {"indent": 4} if args.arg_exist("-j") else {}
 
     if args.arg_exist("-t"):
         subj = args.get_val("-s", def_val="Elasticsearch_DB_Admin")
         mail = gen_class.setup_mail(args.get_val("-t"), subj=subj)
-#        mail.add_2_msg(json.dumps(data, indent=indent))
         mail.add_2_msg(json.dumps(data, **indent))
         mail.send_mail(use_mailx=args.arg_exist("-x"))
 
@@ -522,22 +458,6 @@ def data_out(data, args):
 
     elif not args.arg_exist("-z"):
         print(data)
-
-#    mail = gen_class.setup_mail(
-#        args.get_val("-t"),
-#        subj=args.get_val("-s", def_val="Elasticsearch_DB_Admin")) \
-#        if args.arg_exist("-t") else None
-#    ofile = args.get_val("-o") if args.get_val("-o") else None
-#
-#    if mail:
-#        mail.add_2_msg(json.dumps(data, indent=indent))
-#        mail.send_mail()
-#
-#    if ofile:
-#        gen_libs.write_file(ofile, mode, json.dumps(data, indent=indent))
-#
-#    if not args.get_val("-z", def_val=False):
-#        print(json.dumps(data, indent=indent))
 
 
 def get_status(els, **kwargs):
@@ -576,14 +496,10 @@ def get_status(els, **kwargs):
 
     else:
         tdata = {}
-#        tdata, _, _ = gen_libs.merge_two_dicts(
-#            els.get_cluster(), els.get_nodes())
 
         for opt in display_list:
             tdata = get_data(tdata, els, opt, **kwargs)
 
-#    data["AsOf"] = datetime.datetime.strftime(
-#        datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
     data["Status"] = tdata
     data_out(data, args)
 
@@ -614,7 +530,6 @@ def get_data(data, els, opt, **kwargs):
         "node": "get_node_status", "server": "get_svr_status",
         "memory": "get_mem_status", "shard": "get_shrd_status",
         "general": "get_gen_status", "disk": "get_disk_status"}
-#    func_call = dict(kwargs.get("status_call"))
     data = dict(data)
 
     if opt in status_call:
@@ -676,19 +591,13 @@ def check_status(els, **kwargs):
             check_list, els, cutoff_cpu=els.cutoff_cpu,
             cutoff_mem=els.cutoff_mem, cutoff_disk=els.cutoff_disk, **kwargs)
 
-#        if data:
-#            data["HostName"] = socket.gethostname()
-#            data, _, _ = gen_libs.merge_two_dicts(data, els.get_cluster())
-
     if tdata:
+
         # Temporary fix until elastic_class can be fixed
         if "Cluster" in tdata:
             del tdata["Cluster"]
 
         data["Checks"] = tdata
-#        data["AsOf"] = datetime.datetime.strftime(
-#            datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
-#        data, _, _ = gen_libs.merge_two_dicts(data, els.get_nodes())
         data_out(data, args)
 
 
@@ -721,7 +630,6 @@ def process_data(check_list, esc, **kwargs):
         "node": "chk_nodes", "server": "chk_server", "memory": "chk_mem",
         "shard": "chk_shards", "general": "chk_status", "disk": "chk_disk"}
     check_list = list(check_list)
-#    func_call = dict(kwargs.get("check_call"))
     cutoff_cpu = kwargs.get("cutoff_cpu")
     cutoff_mem = kwargs.get("cutoff_mem")
     cutoff_disk = kwargs.get("cutoff_disk")
@@ -767,7 +675,7 @@ def run_program(args, func_dict):
     try:
         prog_lock = gen_class.ProgramLock(sys.argv, flavor_id=flavorid)
 
-        # Intersect args_array & func_dict to find which functions to call.
+        # Intersect args_array & func_dict to find which functions to call
         for opt in set(args.get_args_keys()) & set(func_dict.keys()):
             els = elastic_class.ElasticSearchStatus(
                 cfg.host, user=user, japd=japd, ca_cert=ca_cert)
@@ -831,7 +739,6 @@ def main():
        and args.arg_dir_chk(dir_perms_chk=dir_perms_chk)            \
        and args.arg_cond_req(opt_con_req=opt_con_req_list):
         run_program(args, func_dict)
-#            args, func_dict, status_call=status_call, check_call=check_call)
 
 
 if __name__ == "__main__":
