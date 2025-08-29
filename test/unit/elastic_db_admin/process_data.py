@@ -41,7 +41,8 @@ class ElasticSearchStatus():
 
     """
 
-    def __init__(self, node, port, mem, cpu, disk):     # pylint:disable=R0913
+    def __init__(                               # pylint:disable=R0913,R0917
+        self, node, port, mem, cpu, disk):
 
         """Method:  __init__
 
@@ -134,7 +135,6 @@ class UnitTest(unittest.TestCase):
         self.cutoff_disk = 80
         self.els = ElasticSearchStatus("nodename", 1234, self.cutoff_cpu,
                                        self.cutoff_mem, self.cutoff_disk)
-        self.check_call = {"memory": "chk_mem"}
         self.check_list = ["memory"]
         self.check_list2 = ["incorrect"]
 
@@ -153,9 +153,9 @@ class UnitTest(unittest.TestCase):
 
         self.assertEqual(
             elastic_db_admin.process_data(
-                self.check_list, self.els, check_call=self.check_call,
-                cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
-                cutoff_disk=self.cutoff_disk), {"Err": "Error Message"})
+                self.check_list, self.els, cutoff_cpu=self.cutoff_cpu,
+                cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk),
+            {"Err": "Error Message"})
 
     def test_incorrect_option(self):
 
@@ -170,9 +170,9 @@ class UnitTest(unittest.TestCase):
         with gen_libs.no_std_out():
             self.assertEqual(
                 elastic_db_admin.process_data(
-                    self.check_list2, self.els, check_call=self.check_call,
-                    cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
-                    cutoff_disk=self.cutoff_disk), {})
+                    self.check_list2, self.els, cutoff_cpu=self.cutoff_cpu,
+                    cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk),
+                {})
 
     def test_one_option(self):
 
@@ -186,9 +186,8 @@ class UnitTest(unittest.TestCase):
 
         self.assertEqual(
             elastic_db_admin.process_data(
-                self.check_list, self.els, check_call=self.check_call,
-                cutoff_cpu=self.cutoff_cpu, cutoff_mem=self.cutoff_mem,
-                cutoff_disk=self.cutoff_disk), {})
+                self.check_list, self.els, cutoff_cpu=self.cutoff_cpu,
+                cutoff_mem=self.cutoff_mem, cutoff_disk=self.cutoff_disk), {})
 
 
 if __name__ == "__main__":

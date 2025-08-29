@@ -161,11 +161,9 @@ class CfgTest():                                        # pylint:disable=R0903
         """
 
         self.host = ["SERVER_NAME"]
-        self.port = 9200
         self.user = None
         self.japd = None
         self.ssl_client_ca = None
-        self.scheme = "https"
 
 
 class ElasticSearchStatus():                            # pylint:disable=R0903
@@ -192,11 +190,9 @@ class ElasticSearchStatus():                            # pylint:disable=R0903
         """
 
         self.host = "host"
-        self.port = 9200
         self.user = None
         self.japd = None
         self.ca_cert = None
-        self.scheme = "https"
         self.is_connected = True
 
     def connect(self):

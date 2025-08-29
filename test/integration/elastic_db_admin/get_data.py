@@ -63,11 +63,10 @@ class UnitTest(unittest.TestCase):
         self.scheme = self.cfg.scheme if hasattr(
             self.cfg, "scheme") else "https"
         self.els = elcs.ElasticSearchStatus(
-            self.cfg.host, port=self.cfg.port, user=self.user, japd=self.japd,
+            self.cfg.host, user=self.user, japd=self.japd,
             ca_cert=self.ca_cert, scheme=self.scheme)
         self.els.connect()
 
-        self.status_call = {"memory": "get_mem_status"}
         self.data = {}
         self.opt = "memory"
         self.opt2 = "incorrect"
@@ -85,8 +84,7 @@ class UnitTest(unittest.TestCase):
         with gen_libs.no_std_out():
             self.assertEqual(
                 elastic_db_admin.get_data(
-                    self.data, self.els, self.opt2,
-                    status_call=self.status_call), ({}))
+                    self.data, self.els, self.opt2), ({}))
 
     def test_one_option(self):
 
@@ -98,8 +96,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        data = elastic_db_admin.get_data(
-            self.data, self.els, self.opt, status_call=self.status_call)
+        data = elastic_db_admin.get_data(self.data, self.els, self.opt)
 
         self.assertTrue("memory" in data or "Memory" in data)
 
@@ -113,8 +110,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        data = elastic_db_admin.get_data(
-            self.data, self.els, self.opt, status_call=self.status_call)
+        data = elastic_db_admin.get_data(self.data, self.els, self.opt)
 
         self.assertTrue("memory" in data or "Memory" in data)
 

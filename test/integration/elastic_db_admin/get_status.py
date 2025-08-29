@@ -23,12 +23,13 @@ sys.path.append(os.getcwd())
 import elastic_db_admin                         # pylint:disable=E0401,C0413
 import elastic_lib.elastic_class as elcs    # pylint:disable=E0401,C0413,R0402
 import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import lib.gen_class as gen_class           # pylint:disable=E0401,C0413,R0402
 import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ArgParser():                                      # pylint:disable=R0903
+class ArgParser():
 
     """Class:  ArgParser
 
@@ -36,6 +37,7 @@ class ArgParser():                                      # pylint:disable=R0903
 
     Methods:
         __init__
+        arg_exist
         get_val
 
     """
@@ -51,6 +53,18 @@ class ArgParser():                                      # pylint:disable=R0903
         """
 
         self.args_array = {"-c": "elastic", "-d": "config"}
+
+    def arg_exist(self, arg):
+
+        """Method:  arg_exist
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_exist.
+
+        Arguments:
+
+        """
+
+        return arg in self.args_array
 
     def get_val(self, skey, def_val=None):
 
@@ -73,12 +87,11 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
-        test_empty_display_list
         test_incorrect_option
         test_one_option
-        test_all
         test_no_options
-        test_display_all
+        test_file
+        test_display_suppress
         test_display_default
         tearDown
 
@@ -107,48 +120,12 @@ class UnitTest(unittest.TestCase):
         self.scheme = self.cfg.scheme if hasattr(
             self.cfg, "scheme") else "https"
         self.els = elcs.ElasticSearchStatus(
-            self.cfg.host, port=self.cfg.port, user=self.user, japd=self.japd,
+            self.cfg.host, user=self.user, japd=self.japd,
             ca_cert=self.ca_cert, scheme=self.scheme)
         self.els.connect()
         self.args = ArgParser()
-        self.args2 = ArgParser()
-        self.args3 = ArgParser()
-        self.args4 = ArgParser()
-        self.args5 = ArgParser()
-        self.args6 = ArgParser()
-        self.args7 = ArgParser()
-        self.args8 = ArgParser()
-        self.args9 = ArgParser()
-        self.args.args_array = {"-D": ["all"], "-o": self.t_file, "-z": True}
-        self.args2.args_array = {
-            "-D": ["memory"], "-o": self.t_file, "-z": True}
-        self.args3.args_array = {"-D": [], "-o": self.t_file, "-z": True}
-        self.args4.args_array = {
-            "-D": [], "-j": True, "-o": self.t_file, "-z": True}
-        self.args5.args_array = {
-            "-D": ["all"], "-j": True, "-o": self.t_file, "-z": True}
-        self.args6.args_array = {
-            "-D": ["memory"], "-j": True, "-o": self.t_file, "-z": True}
-        self.args7.args_array = {
-            "-D": ["incorrect"], "-j": True, "-o": self.t_file, "-z": True}
-        self.args8.args_array8 = {"-D": [], "-o": self.t_file, "-z": True}
-        self.args9.args_array = {}
-        self.status_call = {"memory": "get_mem_status"}
-
-    def test_empty_display_list(self):
-
-        """Function:  test_empty_display_list
-
-        Description:  Test with empty display list.
-
-        Arguments:
-
-        """
-
-        elastic_db_admin.get_status(
-            self.els, status_call=self.status_call, args=self.args8)
-
-        self.assertTrue(os.path.isfile(self.t_file))
+        self.dtg = gen_class.TimeFormat()
+        self.dtg.create_time()
 
     def test_incorrect_option(self):
 
@@ -160,11 +137,11 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        with gen_libs.no_std_out():
-            elastic_db_admin.get_status(
-                self.els, status_call=self.status_call, args=self.args7)
+        self.args.args_array = {"-D": ["incorrect"]}
 
-        self.assertTrue(os.path.isfile(self.t_file))
+        with gen_libs.no_std_out():
+            self.assertFalse(elastic_db_admin.get_status(
+                self.els, args=self.args, dtg=self.dtg))
 
     def test_one_option(self):
 
@@ -176,25 +153,11 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        elastic_db_admin.get_status(
-            self.els, status_call=self.status_call, args=self.args6)
+        self.args.args_array = {"-D": ["memory"], "-z": True}
 
-        self.assertTrue(os.path.isfile(self.t_file))
-
-    def test_all(self):
-
-        """Function:  test_all
-
-        Description:  Test with all option.
-
-        Arguments:
-
-        """
-
-        elastic_db_admin.get_status(
-            self.els, status_call=self.status_call, args=self.args5)
-
-        self.assertTrue(os.path.isfile(self.t_file))
+        self.assertFalse(
+            elastic_db_admin.get_status(
+                self.els, args=self.args, dtg=self.dtg))
 
     def test_no_options(self):
 
@@ -206,25 +169,43 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        elastic_db_admin.get_status(
-            self.els, status_call=self.status_call, args=self.args4)
+        self.args.args_array = {"-D": [], "-z": True}
 
-        self.assertTrue(os.path.isfile(self.t_file))
+        self.assertFalse(
+            elastic_db_admin.get_status(
+                self.els, args=self.args, dtg=self.dtg))
 
-    def test_display_all(self):
+    def test_file(self):
 
-        """Function:  test_display_all
+        """Function:  test_file
 
-        Description:  Test with display all option.
+        Description:  Test with file option.
 
         Arguments:
 
         """
 
-        elastic_db_admin.get_status(
-            self.els, status_call=self.status_call, args=self.args)
+        self.args.args_array = {"-D": ["all"], "-o": self.t_file, "-z": True}
+
+        elastic_db_admin.get_status(self.els, args=self.args, dtg=self.dtg)
 
         self.assertTrue(os.path.isfile(self.t_file))
+
+    def test_display_suppress(self):
+
+        """Function:  test_display_suppress
+
+        Description:  Test with display default option.
+
+        Arguments:
+
+        """
+
+        self.args.args_array = {"-D": ["all"], "-z": True}
+
+        self.assertFalse(
+            elastic_db_admin.get_status(
+                self.els, args=self.args, dtg=self.dtg))
 
     def test_display_default(self):
 
@@ -236,10 +217,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        self.args.args_array = {"-D": ["all"]}
+
         with gen_libs.no_std_out():
             self.assertFalse(
                 elastic_db_admin.get_status(
-                    self.els, status_call=self.status_call, args=self.args))
+                    self.els, args=self.args, dtg=self.dtg))
 
     def tearDown(self):
 

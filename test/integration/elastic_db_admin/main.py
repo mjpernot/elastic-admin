@@ -81,9 +81,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        cmdline = gen_libs.get_inst(sys)
         self.argv_list.append("-v")
-        cmdline.argv = self.argv_list
+        sys.argv = self.argv_list
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.main())
@@ -98,9 +97,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        cmdline = gen_libs.get_inst(sys)
         self.argv_list.append("-h")
-        cmdline.argv = self.argv_list
+        sys.argv = self.argv_list
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.main())
@@ -115,10 +113,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        cmdline = gen_libs.get_inst(sys)
         self.argv_list.remove("-c")
         self.argv_list.remove("elastic")
-        cmdline.argv = self.argv_list
+        sys.argv = self.argv_list
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.main())
@@ -133,12 +130,11 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        cmdline = gen_libs.get_inst(sys)
         self.argv_list.remove("-d")
         self.argv_list.remove(self.config_path)
         self.argv_list.append("-d")
         self.argv_list.append(self.config_path2)
-        cmdline.argv = self.argv_list
+        sys.argv = self.argv_list
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.main())
@@ -153,10 +149,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        cmdline = gen_libs.get_inst(sys)
         self.argv_list.append("-s")
         self.argv_list.append("subject_line")
-        cmdline.argv = self.argv_list
+        sys.argv = self.argv_list
 
         with gen_libs.no_std_out():
             self.assertFalse(elastic_db_admin.main())
@@ -171,8 +166,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        cmdline = gen_libs.get_inst(sys)
-        cmdline.argv = self.argv_list2
+        sys.argv = self.argv_list2
         elastic_db_admin.main()
 
         self.assertTrue(os.path.isfile(self.t_file))
