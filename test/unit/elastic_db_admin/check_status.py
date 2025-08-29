@@ -91,7 +91,7 @@ class ElasticSearchStatus():
 
         """
 
-        self.hosts = ["http://hosts:9200"]
+        self.hosts = ["https://hosts:9200"]
         self.all_err_msg = None
         self.cluster_err_msg = None
         self.mem_err_msg = None

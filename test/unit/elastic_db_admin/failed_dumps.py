@@ -87,7 +87,7 @@ class ElasticSearch():                                  # pylint:disable=R0903
 
         """
 
-        self.hosts = ["http://nodename1:9200", "http://nodename2:9200"]
+        self.hosts = ["https://nodename1:9200", "https://nodename2:9200"]
         self.dump_list = None
         self.repo_dict = {"reponame": "Repo", "reponame2": "Repo"}
 

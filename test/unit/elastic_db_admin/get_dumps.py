@@ -49,7 +49,7 @@ class ElasticSearch():                                  # pylint:disable=R0903
         """
 
         self.els = "Elasticsearch class instance"
-        self.hosts = ["http://nodename1:9200", "http://nodename2:9200"]
+        self.hosts = ["https://nodename1:9200", "https://nodename2:9200"]
         self.repo = None
         self.dump_list = None
 

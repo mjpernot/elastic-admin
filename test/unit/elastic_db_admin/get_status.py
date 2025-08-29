@@ -90,7 +90,7 @@ class ElasticSearchStatus():
 
         """
 
-        self.hosts = ["http://hosts:9200"]
+        self.hosts = ["https://hosts:9200"]
 
     def get_mem_status(self):
 
