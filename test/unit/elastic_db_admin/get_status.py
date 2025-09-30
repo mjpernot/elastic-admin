@@ -138,7 +138,7 @@ class ElasticSearchStatus():
 
         """
 
-        return {"Cluster": "cluster_name", "Nodes": "node_name"}
+        return {}
 
 
 class UnitTest(unittest.TestCase):

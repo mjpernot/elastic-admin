@@ -153,7 +153,7 @@ class ElasticSearchStatus():
         self.cutoff_mem = cutoff_mem
         self.cutoff_disk = cutoff_disk
 
-        return {"Cluster": "cluster_name"}
+        return {}
 
 
 class UnitTest(unittest.TestCase):
