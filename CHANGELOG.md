@@ -9,7 +9,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Added support for Python 3.13
 - Updated mock==5.2.0
 - Updated python-lib to v4.1.0
-- Updated elastic-lib to v5.0.0
+- Updated elastic-lib to v5.0.1
 - Removed support ElasticSearch v7.4, v7.12, v7.17
 
 ### Changes
