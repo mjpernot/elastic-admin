@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.3.2] - 2025-09-30
+- Updated simplejson=3.19.2
+- Added support for Python 3.13
+- Updated mock==5.2.0
+- Updated python-lib to v4.1.0
+- Updated elastic-lib to v5.0.0
+- Removed support ElasticSearch v7.4, v7.12, v7.17
+
+### Changes
+- get_status: Removed temporary fixes that fixed removing the "Cluster" and "Nodes" keys from the dictionary.
+- check_status: Removed temporary fix that fixed removing "Cluster" key from the dictionary.
+- Documentation changes.
+
+
 ## [0.3.1] - 2025-08-19
 - Updated python-lib v4.0.3
 - Updated elastic-lib v4.2.0

@@ -112,7 +112,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
-        test_no_repo
+        test_all_repo
+        test_repo_not_exist
         test_repo
 
     """
