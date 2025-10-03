@@ -474,14 +474,6 @@ def get_status(els, **kwargs):
     if not display_list or "all" in display_list:
         tdata = els.get_all()
 
-        # Temporary fix until elastic_class can be fixed
-        if "Cluster" in tdata:
-            del tdata["Cluster"]
-
-        # Temporary fix until elastic_class can be fixed
-        if "Nodes" in tdata:
-            del tdata["Nodes"]
-
     else:
         tdata = {}
 
@@ -580,11 +572,6 @@ def check_status(els, **kwargs):
             cutoff_mem=els.cutoff_mem, cutoff_disk=els.cutoff_disk, **kwargs)
 
     if tdata:
-
-        # Temporary fix until elastic_class can be fixed
-        if "Cluster" in tdata:
-            del tdata["Cluster"]
-
         data["Checks"] = tdata
         data_out(data, args)
 

@@ -71,10 +71,6 @@ Make the appropriate changes to the Elasticsearch environment.
   * If SSL connections are being used:
     - ssl_client_ca = None
 
-  * Change these entries only if required and you know what you are doing:
-    - port = 9200
-    - scheme = "https"
-
 ```
 cp config/elastic.py.TEMPLATE config/elastic.py
 chmod 600 config/elastic.py
@@ -125,10 +121,6 @@ Make the appropriate changes to the Elasticsearch environment.
 
   * If SSL connections are being used:
     - ssl_client_ca = None
-
-  * Change these entries only if required and you know what you are doing:
-    - port = 9200
-    - scheme = "https"
 
   * Change the following entries:
     - cutoff_cpu = 70
